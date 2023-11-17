@@ -14,6 +14,10 @@
 		21473ED82B07370A002ECDC6 /* Pomodoro_Timer_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473ED72B07370A002ECDC6 /* Pomodoro_Timer_AppTests.swift */; };
 		21473EE22B07370A002ECDC6 /* Pomodoro_Timer_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EE12B07370A002ECDC6 /* Pomodoro_Timer_AppUITests.swift */; };
 		21473EE42B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EE32B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift */; };
+		21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF02B073E2A002ECDC6 /* TimerView.swift */; };
+		21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF72B0747AB002ECDC6 /* TimerModel.swift */; };
+		21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */; };
+		21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		21473EDD2B07370A002ECDC6 /* Pomodoro Timer AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pomodoro Timer AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21473EE12B07370A002ECDC6 /* Pomodoro_Timer_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pomodoro_Timer_AppUITests.swift; sourceTree = "<group>"; };
 		21473EE32B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pomodoro_Timer_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		21473EF02B073E2A002ECDC6 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		21473EF72B0747AB002ECDC6 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
+		21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +102,10 @@
 		21473EC52B073709002ECDC6 /* Pomodoro Timer App */ = {
 			isa = PBXGroup;
 			children = (
+				21473EF22B074721002ECDC6 /* Models */,
+				21473EF32B074729002ECDC6 /* Views */,
+				21473EF42B07472D002ECDC6 /* ViewModels */,
+				21473EFB2B07492C002ECDC6 /* Supporting Components */,
 				21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */,
 				21473EC82B073709002ECDC6 /* ContentView.swift */,
 				21473ECA2B07370A002ECDC6 /* Assets.xcassets */,
@@ -125,6 +137,38 @@
 				21473EE32B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift */,
 			);
 			path = "Pomodoro Timer AppUITests";
+			sourceTree = "<group>";
+		};
+		21473EF22B074721002ECDC6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				21473EF72B0747AB002ECDC6 /* TimerModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		21473EF32B074729002ECDC6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				21473EF02B073E2A002ECDC6 /* TimerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		21473EF42B07472D002ECDC6 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		21473EFB2B07492C002ECDC6 /* Supporting Components */ = {
+			isa = PBXGroup;
+			children = (
+				21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */,
+			);
+			path = "Supporting Components";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +301,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */,
+				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
+				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,
 				21473EC92B073709002ECDC6 /* ContentView.swift in Sources */,
 				21473EC72B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift in Sources */,
+				21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
