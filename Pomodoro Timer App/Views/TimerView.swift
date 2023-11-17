@@ -21,6 +21,7 @@ struct TimerView: View {
                 Spacer()
                 timerCircle
                 Spacer()
+                roundsEmojisView
                 controlButtons
                 Spacer()
             }
@@ -30,16 +31,20 @@ struct TimerView: View {
     private var timerCircle: some View {
         ZStack {
             Circle()
-            VStack {
-                Text(timeString)
-                    .foregroundColor(.white)
-                    .font(.title.bold().monospaced())
-                Text("\(timerManager.timer.rounds) rounds")
-                    .foregroundColor(.white)
-                    .font(.title3.bold().monospaced())
-            }
+            Text(timeString)
+                .foregroundColor(.white)
+                .font(.title.bold().monospaced())
         }
         .padding(.horizontal, 60)
+    }
+    
+    private var roundsEmojisView: some View {
+        HStack(spacing: 3) {
+            ForEach(0..<timerManager.timer.rounds, id: \.self) { index in
+                Text(index < timerManager.completedRounds ? "✅" : "⬛️")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+            }
+        }
     }
 
     private var controlButtons: some View {
@@ -49,6 +54,7 @@ struct TimerView: View {
             stopButton
         }
         .padding(.horizontal, 85)
+        .padding(.vertical, 15)
     }
 
     private var startButton: some View {

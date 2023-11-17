@@ -10,6 +10,7 @@ import Combine
 
 class TimerManager: ObservableObject {
     @Published var timer: DefaultTimer
+    @Published var completedRounds = 0
     var timerSubscription: AnyCancellable?
 
     init(timer: DefaultTimer) {
@@ -28,15 +29,34 @@ class TimerManager: ObservableObject {
 
     private func tickTimer() {
         if timer.seconds > 0 {
+            // Decrement seconds
             timer.seconds -= 1
         } else if timer.minutes > 0 {
+            // Move to the next minute
             timer.minutes -= 1
             timer.seconds = 59
         } else {
-            // Timer finished (add visual feedback)
-            stopTimer()
-            
-            // Need to add round completion logic here
+            processRoundCompletion()
         }
     }
+
+    private func processRoundCompletion() {
+        stopTimer()
+        // Add any visual feedback for round completion here
+
+        if completedRounds < timer.rounds {
+            completedRounds += 1
+
+            if completedRounds < timer.rounds {
+                resetTimerForNextRound()
+                startTimer()
+            }
+        }
+    }
+
+    private func resetTimerForNextRound() {
+        timer.minutes = 0
+        timer.seconds = 5
+    }
+
 }
