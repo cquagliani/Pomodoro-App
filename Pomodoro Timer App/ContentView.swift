@@ -12,6 +12,18 @@ struct ContentView: View {
         ZStack {
             Color(red: 237/255, green: 238/255, blue: 240/255, opacity: 1.0).edgesIgnoringSafeArea(.all)
             VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                                print("Navigate to settings")
+                            }) {
+                                Image(systemName: "gearshape.fill")
+                                    .font(.title)
+                                    .foregroundColor(.black)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 25)
+                }
                 TimerView()
             }
         }

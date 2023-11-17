@@ -31,6 +31,7 @@ struct TimerView: View {
     private var timerCircle: some View {
         ZStack {
             Circle()
+                .padding(.horizontal, 60)
             Text(timeString)
                 .foregroundColor(.white)
                 .font(.title.bold().monospaced())
@@ -52,6 +53,8 @@ struct TimerView: View {
             startButton
             Spacer()
             stopButton
+            Spacer()
+            resetButton
         }
         .padding(.horizontal, 85)
         .padding(.vertical, 15)
@@ -69,6 +72,13 @@ struct TimerView: View {
             timerManager.stopTimer()
         }
         .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .red))
+    }
+    
+    private var resetButton: some View {
+        Button("Reset") {
+            timerManager.resetTimer()
+        }
+        .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .yellow))
     }
 
     private var timeString: String {

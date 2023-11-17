@@ -26,6 +26,16 @@ class TimerManager: ObservableObject {
     func stopTimer() {
         timerSubscription?.cancel()
     }
+    
+    func resetTimer() {
+        // Cancel the existing timer subscription if it's active
+        timerSubscription?.cancel()
+
+        // Reset the timer to its initial values
+        timer.minutes = 0 
+        timer.seconds = 5
+        completedRounds = 0
+    }
 
     private func tickTimer() {
         if timer.seconds > 0 {
