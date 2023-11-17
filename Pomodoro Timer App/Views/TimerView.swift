@@ -32,21 +32,49 @@ struct TimerView: View {
         ZStack {
             Circle()
                 .padding(.horizontal, 60)
-            Text(timeString)
-                .foregroundColor(.white)
-                .font(.title.bold().monospaced())
+            VStack {
+                let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
+                Text(timerType)
+                    .foregroundColor(.white)
+                    .foregroundColor(.black).opacity(0.6)
+                    .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                Text(timeString)
+                    .foregroundColor(.white)
+                    .font(.title.bold().monospaced())
+            }
         }
         .padding(.horizontal, 60)
     }
     
     private var roundsEmojisView: some View {
-        HStack(spacing: 3) {
-            ForEach(0..<timerManager.timer.rounds, id: \.self) { index in
-                Text(index < timerManager.completedRounds ? "✅" : "⬛️")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Rounds")
+                .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                .foregroundColor(.black).opacity(0.6)
+                .padding(.bottom, 4)
+            HStack(spacing: 10) {
+                ForEach(emojisForRoundsAndBreaks.indices, id: \.self) { index in
+                    Text(emojisForRoundsAndBreaks[index])
+                        .font(.system(size: index % 2 == 0 ? 28 : 16))
+                }
             }
         }
     }
+
+    private var emojisForRoundsAndBreaks: [String] {
+        var emojis: [String] = []
+        
+        for index in 0..<timerManager.timer.rounds {
+            emojis.append(index < timerManager.completedRounds ? "✅" : "⬛️")
+            
+            if index < timerManager.timer.rounds - 1 {
+                emojis.append(index < timerManager.completedBreaks ? "✔️" : "☕️")
+            }
+        }
+        
+        return emojis
+    }
+
 
     private var controlButtons: some View {
         HStack {
