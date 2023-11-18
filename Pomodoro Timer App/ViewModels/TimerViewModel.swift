@@ -32,9 +32,10 @@ class TimerManager: ObservableObject {
     func resetTimer() {
         timerSubscription?.cancel()
 
-        timer.minutes = 0 
-        timer.seconds = 5
+        timer.minutes = timer.originalMinutes
+        timer.seconds = timer.originalSeconds
         completedRounds = 0
+        completedBreaks = 0
         isFocusInterval = true
     }
 
