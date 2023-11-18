@@ -13,6 +13,7 @@ class TimerManager: ObservableObject {
     @Published var completedRounds = 0
     @Published var completedBreaks = 0
     @Published var isTimerRunning = false
+    @Published var hasStartedSession = false
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -22,6 +23,7 @@ class TimerManager: ObservableObject {
 
     func startTimer() {
         isTimerRunning = true
+        hasStartedSession = true
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
@@ -33,6 +35,7 @@ class TimerManager: ObservableObject {
     }
     
     func resetTimer() {
+        hasStartedSession = false
         timerSubscription?.cancel()
 
         timer.minutes = timer.originalMinutes

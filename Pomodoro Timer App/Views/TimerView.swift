@@ -91,14 +91,15 @@ struct TimerView: View {
 
 
     private var startButton: some View {
-        Button("Start") {
+        let label = timerManager.hasStartedSession ? "Resume" : "Start"
+        return Button(label) {
             timerManager.startTimer()
         }
         .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .green))
     }
 
     private var stopButton: some View {
-        Button("Stop") {
+        Button("Pause") {
             timerManager.stopTimer()
         }
         .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .red))
