@@ -11,13 +11,13 @@ struct TimerView: View {
     @StateObject private var timerManager: TimerManager
     
     init() {
-        let timer = DefaultTimer(minutes: 0, seconds: 4, breakMinutes: 0, breakSeconds: 2)
+        let timer = DefaultTimer(minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
         _timerManager = StateObject(wrappedValue: TimerManager(timer: timer))
     }
 
     var body: some View {
         ZStack {
-            Color(red: 237/255, green: 238/255, blue: 240/255).edgesIgnoringSafeArea(.all)
+            Color(red: 250/255, green: 249/255, blue: 246/255).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
                 timerCircle
@@ -32,7 +32,6 @@ struct TimerView: View {
     private var timerCircle: some View {
         ZStack {
             Circle()
-                .padding(.horizontal, 60)
             VStack {
                 let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
                 Text(timerType)
@@ -79,15 +78,17 @@ struct TimerView: View {
 
     private var controlButtons: some View {
         HStack {
-            startButton
-            Spacer()
-            stopButton
-            Spacer()
-            resetButton
+            if timerManager.isTimerRunning {
+                stopButton
+            } else {
+                startButton
+                resetButton
+            }
         }
-        .padding(.horizontal, 85)
+        .padding(.horizontal, 45)
         .padding(.vertical, 15)
     }
+
 
     private var startButton: some View {
         Button("Start") {

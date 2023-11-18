@@ -12,6 +12,7 @@ class TimerManager: ObservableObject {
     @Published var timer: DefaultTimer
     @Published var completedRounds = 0
     @Published var completedBreaks = 0
+    @Published var isTimerRunning = false
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -20,12 +21,14 @@ class TimerManager: ObservableObject {
     }
 
     func startTimer() {
+        isTimerRunning = true
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
     }
 
     func stopTimer() {
+        isTimerRunning = false
         timerSubscription?.cancel()
     }
     
@@ -51,33 +54,37 @@ class TimerManager: ObservableObject {
     }
 
     private func processRoundCompletion() {
-            stopTimer()
+        stopTimer()
 
-            if isFocusInterval {
-                if completedRounds < timer.rounds {
-                    completedRounds += 1
-                    isFocusInterval = false
-                    resetTimerForBreak()
-                    startTimer()
-                }
+        if isFocusInterval {
+            completedRounds += 1
+
+            if completedRounds < timer.rounds {
+                isFocusInterval = false
+                resetTimerForBreak()
+                startTimer()
             } else {
-                completedBreaks += 1
-                isFocusInterval = true
+                resetTimer()
+            }
+        } else {
+            completedBreaks += 1
+            isFocusInterval = true
+
+            if completedRounds < timer.rounds {
                 resetTimerForNextRound()
-                if completedRounds < timer.rounds {
-                    startTimer()
-                }
+                startTimer()
             }
         }
+    }
 
     private func resetTimerForNextRound() {
-        timer.minutes = 0
-        timer.seconds = 5
+        timer.minutes = timer.originalMinutes
+        timer.seconds = timer.originalSeconds
     }
     
     private func resetTimerForBreak() {
-        timer.minutes = timer.breakMinutes
-        timer.seconds = timer.breakSeconds
+        timer.minutes = timer.originalBreakMinutes
+        timer.seconds = timer.originalBreakSeconds
     }
 
 }

@@ -15,7 +15,7 @@ struct TimerButtonStyle: ButtonStyle {
         configuration.label
             .fontWeight(.semibold)
             .fontDesign(.monospaced)
-            .frame(width: 100, height: 50)
+            .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
             .foregroundColor(foregroundColor)
             .background(backgroundColor)
             .cornerRadius(15)
@@ -25,3 +25,4 @@ struct TimerButtonStyle: ButtonStyle {
             .animation(.easeInOut(duration: 0.3), value: configuration.isPressed)
     }
 }
+
