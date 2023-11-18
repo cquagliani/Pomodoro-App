@@ -81,8 +81,12 @@ struct TimerView: View {
             if timerManager.isTimerRunning {
                 stopButton
             } else {
-                startButton
-                resetButton
+                if timerManager.hasStartedSession { // Only display the reset button if the timer session has begun
+                    startButton
+                    resetButton
+                } else {
+                    startButton
+                }
             }
         }
         .padding(.horizontal, 45)
