@@ -22,11 +22,12 @@ struct DefaultTimer: PomodoroTimer {
     var breakMinutes: Int
     var breakSeconds: Int
     
-    init(minutes: Int = 0, seconds: Int = 5, rounds: Int = 4, breakMinutes: Int = 0, breakSeconds: Int = 2) {
-        self.minutes = max(0, minutes)
+    init(minutes: Int = 25, seconds: Int = 0, rounds: Int = 4, breakMinutes: Int = 5, breakSeconds: Int = 0) {
+        self.minutes = max(0, min(minutes, 60))
         self.seconds = max(0, seconds)
-        self.rounds = max(0, rounds)
-        self.breakMinutes = max(0, breakMinutes)
+        self.rounds = max(0, min(rounds, 10))
+        self.breakMinutes = max(0, min(breakMinutes, 60))
         self.breakSeconds = max(0, breakSeconds)
     }
 }
+

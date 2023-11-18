@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2132F33F2B081FBD0012BA04 /* SettingsView.swift */; };
 		21473EC72B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */; };
 		21473EC92B073709002ECDC6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EC82B073709002ECDC6 /* ContentView.swift */; };
 		21473ECB2B07370A002ECDC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21473ECA2B07370A002ECDC6 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2132F33F2B081FBD0012BA04 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		21473EC32B073709002ECDC6 /* Pomodoro Timer App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pomodoro Timer App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pomodoro_Timer_AppApp.swift; sourceTree = "<group>"; };
 		21473EC82B073709002ECDC6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				21473EF02B073E2A002ECDC6 /* TimerView.swift */,
+				2132F33F2B081FBD0012BA04 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */,
 				21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */,
 				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
 				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,

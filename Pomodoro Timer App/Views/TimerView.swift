@@ -9,10 +9,20 @@ import SwiftUI
 
 struct TimerView: View {
     @StateObject private var timerManager: TimerManager
+    
+    var rounds: Int
+    var focusMinutes: Int
+    var breakMinutes: Int
+    
+    init(rounds: Int, focusMinutes: Int, breakMinutes: Int) {
+        self.rounds = rounds
+        self.focusMinutes = focusMinutes
+        self.breakMinutes = breakMinutes
 
-    init(timer: DefaultTimer = DefaultTimer()) {
+        let timer = DefaultTimer(minutes: focusMinutes, seconds: 0, rounds: rounds, breakMinutes: breakMinutes, breakSeconds: 0)
         _timerManager = StateObject(wrappedValue: TimerManager(timer: timer))
     }
+
 
     var body: some View {
         ZStack {
@@ -112,8 +122,4 @@ struct TimerView: View {
     private var timeString: String {
         String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)
     }
-}
-
-#Preview {
-    TimerView()
 }
