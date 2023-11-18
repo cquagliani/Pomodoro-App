@@ -19,5 +19,9 @@ struct TimerButtonStyle: ButtonStyle {
             .foregroundColor(foregroundColor)
             .background(backgroundColor)
             .cornerRadius(15)
+            .shadow(color: configuration.isPressed ? .gray : .clear, radius: 10)
+            .scaleEffect(configuration.isPressed ? 0.75 : 1)
+            .opacity(configuration.isPressed ? 0.8 : 1)
+            .animation(.easeInOut(duration: 0.3), value: configuration.isPressed)
     }
 }

@@ -10,19 +10,10 @@ import SwiftUI
 struct TimerView: View {
     @StateObject private var timerManager: TimerManager
     
-    var rounds: Int
-    var focusMinutes: Int
-    var breakMinutes: Int
-    
-    init(rounds: Int, focusMinutes: Int, breakMinutes: Int) {
-        self.rounds = rounds
-        self.focusMinutes = focusMinutes
-        self.breakMinutes = breakMinutes
-
-        let timer = DefaultTimer(minutes: focusMinutes, seconds: 0, rounds: rounds, breakMinutes: breakMinutes, breakSeconds: 0)
+    init() {
+        let timer = DefaultTimer(minutes: 0, seconds: 4, breakMinutes: 0, breakSeconds: 2)
         _timerManager = StateObject(wrappedValue: TimerManager(timer: timer))
     }
-
 
     var body: some View {
         ZStack {
@@ -75,7 +66,7 @@ struct TimerView: View {
         var emojis: [String] = []
         
         for index in 0..<timerManager.timer.rounds {
-            emojis.append(index < timerManager.completedRounds ? "✅" : "⬛️")
+            emojis.append(index < timerManager.completedRounds ? "✅" : "📚")
             
             if index < timerManager.timer.rounds - 1 {
                 emojis.append(index < timerManager.completedBreaks ? "✔️" : "☕️")
@@ -110,6 +101,7 @@ struct TimerView: View {
             timerManager.stopTimer()
         }
         .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .red))
+        
     }
     
     private var resetButton: some View {
