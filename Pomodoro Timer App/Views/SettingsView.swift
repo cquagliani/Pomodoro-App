@@ -40,7 +40,7 @@ struct SettingsView: View {
         Button("Cancel") {
             showingSettings = false
         }
-        .buttonStyle(TimerButtonStyle(backgroundColor: Color(red: 237/255, green: 238/255, blue: 240/255, opacity: 1.0), foregroundColor: .cyan))
+        .buttonStyle(TimerButtonStyle(foregroundColor: .cyan))
     }
     
     private var saveButton: some View {
@@ -48,7 +48,7 @@ struct SettingsView: View {
             onSave()
             showingSettings = false
         }
-        .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .green))
+        .buttonStyle(TimerButtonStyle(foregroundColor: .green))
     }
 }
 
