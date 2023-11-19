@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct TimerView: View {
-    @Environment(\.colorScheme) var currentMode
     @StateObject private var timerManager: TimerManager
-    var primaryColorLight: Color = Color(red: 250/255, green: 249/255, blue: 246/255)
-    var primaryColorDark: Color = Color(red: 44/255, green: 51/255, blue: 51/255)
     
     init() {
         let timer = DefaultTimer(minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
@@ -19,10 +16,8 @@ struct TimerView: View {
     }
 
     var body: some View {
-        let primaryColor: Color = (currentMode == .dark) ? primaryColorDark : primaryColorLight
-        
         ZStack {
-            primaryColor.edgesIgnoringSafeArea(.all)
+            Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
                 timerCircle
@@ -37,14 +32,14 @@ struct TimerView: View {
     private var timerCircle: some View {
         ZStack {
             Circle()
-                .foregroundColor(currentMode == .dark ? primaryColorLight : primaryColorDark)
+                .foregroundColor(Color.theme.invertedPrimary)
             VStack {
                 let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
                 Text(timerType)
-                    .foregroundColor(currentMode == .dark ? primaryColorDark : primaryColorLight).opacity(0.6)
+                    .foregroundColor(Color.theme.timerSubtitle)
                     .font(.system(size: 16, weight: .semibold, design: .monospaced))
                 Text(timeString)
-                    .foregroundColor(currentMode == .dark ? primaryColorDark : primaryColorLight)
+                    .foregroundColor(Color.theme.primaryColor)
                     .font(.title.bold().monospaced())
             }
         }
@@ -58,7 +53,7 @@ struct TimerView: View {
     private var roundsEmojisView: some View {
         VStack {
             Text("Rounds")
-                .foregroundColor(currentMode == .dark ? primaryColorLight : primaryColorDark).opacity(0.6)
+                .foregroundColor(Color.theme.roundSubtitle)
                 .font(.system(size: 16, weight: .semibold, design: .monospaced))
                 .padding(.bottom, 4)
             HStack(spacing: 10) {
@@ -106,14 +101,14 @@ struct TimerView: View {
         return Button(label) {
             timerManager.startTimer()
         }
-        .buttonStyle(TimerButtonStyle(foregroundColor: .green))
+        .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.greenAccent))
     }
 
     private var stopButton: some View {
         Button("Pause") {
             timerManager.stopTimer()
         }
-        .buttonStyle(TimerButtonStyle(foregroundColor: .red))
+        .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.redAccent))
         
     }
     
@@ -121,6 +116,6 @@ struct TimerView: View {
         Button("Reset") {
             timerManager.resetTimer()
         }
-        .buttonStyle(TimerButtonStyle(foregroundColor: .yellow))
+        .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
     }
 }

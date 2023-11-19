@@ -9,19 +9,16 @@ import SwiftUI
 
 struct TimerButtonStyle: ButtonStyle {
     @Environment(\.colorScheme) var currentMode
-    var primaryColorLight: Color = Color(red: 250/255, green: 249/255, blue: 246/255)
-    var primaryColorDark: Color = Color(red: 44/255, green: 51/255, blue: 51/255)
     var foregroundColor: Color
 
     func makeBody(configuration: Configuration) -> some View {
-        let backgroundColor: Color = currentMode == .dark ? primaryColorLight : primaryColorDark
         
         configuration.label
             .fontWeight(.semibold)
             .fontDesign(.monospaced)
             .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50)
             .foregroundColor(foregroundColor)
-            .background(backgroundColor)
+            .background(Color.theme.invertedPrimary)
             .overlay(darkOverlayIfNeeded)
             .cornerRadius(15)
             .shadow(color: configuration.isPressed ? .gray : .clear, radius: 10)

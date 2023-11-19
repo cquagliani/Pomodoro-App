@@ -8,33 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var colorMode: AppColorMode = .dark
-    
-    var primaryColorLight: Color = Color(red: 250/255, green: 249/255, blue: 246/255)
-    var primaryColorDark: Color = Color(red: 44/255, green: 51/255, blue: 51/255)
+    @State private var colorMode: AppColorMode = .system
     
     var body: some View {
-        let primaryColor: Color = (colorMode == .dark) ? primaryColorDark : primaryColorLight
-        
         ZStack {
-            primaryColor.edgesIgnoringSafeArea(.all)
+            Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
             VStack {
                 Text("Pomodoro Timer")
-                    .foregroundColor(colorMode == .dark ? primaryColorLight : primaryColorDark)
+                    .foregroundColor(Color.theme.invertedPrimary)
                     .font(.title)
                     .fontWeight(.bold)
                     .fontDesign(.monospaced)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 25)
                 
-                
                 Button(action: {
                     toggleColorMode()
                 }) {
                     HStack {
                         Spacer()
-                        Image(systemName: "moon.stars")
-                            .foregroundColor(colorMode == .dark ? primaryColorLight : primaryColorDark)
+                        Image(systemName: colorMode == .light ? "moon.stars" : "sun.max")
+                            .foregroundColor(Color.theme.invertedPrimary)
                             .imageScale(.medium)
                             .font(.system(size: 30))
                     }
@@ -42,8 +36,8 @@ struct ContentView: View {
                 }
                 TimerView()
             }
-            .modifier(ColorModeViewModifier(mode: colorMode))
         }
+        .modifier(ColorModeViewModifier(mode: colorMode))
     }
     
     private func toggleColorMode() {
