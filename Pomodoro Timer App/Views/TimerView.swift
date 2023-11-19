@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimerView: View {
     @StateObject private var timerManager: TimerManager
+    @State private var colorMode: AppColorMode = .system
     
     init() {
         let timer = DefaultTimer(minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
@@ -19,6 +20,7 @@ struct TimerView: View {
         ZStack {
             Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
             VStack {
+                header
                 Spacer()
                 timerCircle
                 Spacer()
@@ -27,27 +29,51 @@ struct TimerView: View {
                 Spacer()
             }
         }
+        .modifier(ColorModeViewModifier(mode: colorMode))
+    }
+    
+    private var header: some View {
+        VStack {
+            Text("Pomodoro Timer")
+                .foregroundColor(Color.theme.invertedPrimary)
+                .font(.title)
+                .fontWeight(.bold)
+                .fontDesign(.monospaced)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 20)
+            
+            Button(action: toggleColorMode) {
+                Image(systemName: colorMode == .light ? "moon.stars" : "sun.max")
+                    .imageScale(.medium)
+                    .font(.system(size: 30))
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+            .padding(.horizontal, 20)
+        }
+        .foregroundColor(Color.theme.invertedPrimary)
+    }
+    
+    private func toggleColorMode() {
+        colorMode = (colorMode == .light) ? .dark : .light
     }
 
     private var timerCircle: some View {
-        ZStack {
+        let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
+        let timeString: String = String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)
+        
+        return ZStack {
             Circle()
                 .foregroundColor(Color.theme.invertedPrimary)
             VStack {
-                let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
                 Text(timerType)
                     .foregroundColor(Color.theme.timerSubtitle)
                     .font(.system(size: 16, weight: .semibold, design: .monospaced))
                 Text(timeString)
                     .foregroundColor(Color.theme.primaryColor)
-                    .font(.title.bold().monospaced())
+                    .font(.system(size: 24, weight: .bold, design: .monospaced))
             }
         }
         .padding(.horizontal, 60)
-    }
-    
-    private var timeString: String {
-        String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)
     }
     
     private var roundsEmojisView: some View {
@@ -56,10 +82,11 @@ struct TimerView: View {
                 .foregroundColor(Color.theme.roundSubtitle)
                 .font(.system(size: 16, weight: .semibold, design: .monospaced))
                 .padding(.bottom, 4)
+            
             HStack(spacing: 10) {
                 ForEach(emojisForRoundsAndBreaks.indices, id: \.self) { index in
                     Text(emojisForRoundsAndBreaks[index])
-                        .font(.system(size: index % 2 == 0 ? 28 : 16))
+                        .font(.system(size: index % 2 == 0 ? 28 : 16)) // Break session emojis are displayed smaller than focus session emojis
                 }
             }
         }
@@ -78,18 +105,16 @@ struct TimerView: View {
         
         return emojis
     }
-
+    
     private var controlButtons: some View {
         HStack {
             if timerManager.isTimerRunning {
                 stopButton
+            } else if timerManager.hasStartedSession { // Only display the reset button if the timer session has begun
+                startButton
+                resetButton
             } else {
-                if timerManager.hasStartedSession { // Only display the reset button if the timer session has begun
-                    startButton
-                    resetButton
-                } else {
-                    startButton
-                }
+                startButton
             }
         }
         .padding(.horizontal, 45)

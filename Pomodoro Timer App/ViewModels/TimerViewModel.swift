@@ -36,13 +36,13 @@ class TimerManager: ObservableObject {
     
     func resetTimer() {
         hasStartedSession = false
+        isFocusInterval = true
         timerSubscription?.cancel()
 
         timer.minutes = timer.originalMinutes
         timer.seconds = timer.originalSeconds
         completedRounds = 0
         completedBreaks = 0
-        isFocusInterval = true
     }
 
     private func tickTimer() {
@@ -89,5 +89,4 @@ class TimerManager: ObservableObject {
         timer.minutes = timer.originalBreakMinutes
         timer.seconds = timer.originalBreakSeconds
     }
-
 }

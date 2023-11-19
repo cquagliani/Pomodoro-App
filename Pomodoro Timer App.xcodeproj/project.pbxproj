@@ -109,7 +109,7 @@
 				21473EF22B074721002ECDC6 /* Models */,
 				21473EF32B074729002ECDC6 /* Views */,
 				21473EF42B07472D002ECDC6 /* ViewModels */,
-				21473EFB2B07492C002ECDC6 /* Supporting Components */,
+				21473EFB2B07492C002ECDC6 /* Style Components */,
 				21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */,
 				21473EC82B073709002ECDC6 /* ContentView.swift */,
 				21473ECA2B07370A002ECDC6 /* Assets.xcassets */,
@@ -168,13 +168,13 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		21473EFB2B07492C002ECDC6 /* Supporting Components */ = {
+		21473EFB2B07492C002ECDC6 /* Style Components */ = {
 			isa = PBXGroup;
 			children = (
 				21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */,
 				21258FAC2B09B01000C673D4 /* ColorSettings.swift */,
 			);
-			path = "Supporting Components";
+			path = "Style Components";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
