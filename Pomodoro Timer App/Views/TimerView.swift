@@ -46,6 +46,10 @@ struct TimerView: View {
         .padding(.horizontal, 60)
     }
     
+    private var timeString: String {
+        String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)
+    }
+    
     private var roundsEmojisView: some View {
         VStack {
             Text("Rounds")
@@ -75,7 +79,6 @@ struct TimerView: View {
         return emojis
     }
 
-
     private var controlButtons: some View {
         HStack {
             if timerManager.isTimerRunning {
@@ -92,7 +95,6 @@ struct TimerView: View {
         .padding(.horizontal, 45)
         .padding(.vertical, 15)
     }
-
 
     private var startButton: some View {
         let label = timerManager.hasStartedSession ? "Resume" : "Start"
@@ -115,9 +117,5 @@ struct TimerView: View {
             timerManager.resetTimer()
         }
         .buttonStyle(TimerButtonStyle(backgroundColor: .black, foregroundColor: .yellow))
-    }
-
-    private var timeString: String {
-        String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)
     }
 }
