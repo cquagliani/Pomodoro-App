@@ -17,7 +17,11 @@ struct TimerCompletedView: View {
                 Spacer()
                 emojiView
                 completionMessage
-                restartButton
+                VStack {
+                    restartButton
+                    goHome
+                }
+
                 Spacer()
             }
             .padding(.horizontal, 45)
@@ -44,10 +48,23 @@ struct TimerCompletedView: View {
     private var restartButton: some View {
         Button("Restart Timer") {
             timerManager.resetTimer()
+            timerManager.startTimer()
             timerManager.sessionCompleted = false
         }
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
         .padding(.top, 25)
+    }
+    
+    private var goHome: some View {
+        Button("Go home") {
+            timerManager.resetTimer()
+            timerManager.sessionCompleted = false
+        }
+        .foregroundColor(Color.blue)
+        .font(.system(size: 16))
+        .fontWeight(.bold)
+        .fontDesign(.monospaced)
+        .padding(.top, 15)
     }
 }
 
