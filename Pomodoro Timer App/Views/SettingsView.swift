@@ -8,63 +8,69 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Binding var showingSettings: Bool
-    @Binding var rounds: Int
-    @Binding var focusMinutes: Int
-    @Binding var breakMinutes: Int
-    var onSave: () -> Void = {}
+    @EnvironmentObject var timerManager: TimerManager
+    @Binding var colorMode: AppColorMode
     
     var body: some View {
-        ZStack {
-            Color(red: 237/255, green: 238/255, blue: 240/255, opacity: 1.0).edgesIgnoringSafeArea(.all)
-            VStack {
-                Spacer()
-                VStack(spacing: 25) {
-                    settingsCard(emoji: "🔁", label: "Rounds", value: $rounds)
-                    settingsCard(emoji: "📚", label: "Focus", value: $focusMinutes)
-                    settingsCard(emoji: "☕️", label: "Break", value: $breakMinutes)
-                }
-                HStack {
-                    Spacer()
-                    cancelButton
-                    saveButton
-                }
-                .padding(20)
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-        }
-    }
-    
-    private var cancelButton: some View {
-        Button("Cancel") {
-            showingSettings = false
-        }
-        .buttonStyle(TimerButtonStyle(foregroundColor: .cyan))
-    }
-    
-    private var saveButton: some View {
-        Button("Save") {
-            onSave()
-            showingSettings = false
-        }
-        .buttonStyle(TimerButtonStyle(foregroundColor: .green))
-    }
-}
+        NavigationView {
+            Form {
+                Section(header: Text("Pomodoro Timer")
+                    .fontDesign(.monospaced)) {
+                    
+                    Picker("Focus Session", selection: Binding(
+                        get: { self.timerManager.timer.originalMinutes },
+                        set: { userSelection in
+                            self.timerManager.timer.originalMinutes = userSelection
+                            self.timerManager.timer.minutes = userSelection
+                        }
+                    )) {
+                        ForEach(1...60, id: \.self) { minute in
+                            Text("\(minute) min").tag(minute)
+                        }
+                    }
 
-struct settingsCard: View {
-    let emoji: String
-    let label: String
-    @Binding var value: Int
-    
-    var body: some View {
-        let maxNum: Int = (label == "Rounds") ? 10 : 60
-        VStack {
-            Text(emoji)
-            Text(label)
-                .font(.system(size: 16, weight: .semibold, design: .monospaced))
-            Stepper("\(label): \(value)", value: $value, in: 1...maxNum)
-                .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                    Picker("Short Break", selection: Binding(
+                        get: { self.timerManager.timer.originalBreakMinutes },
+                        set: { userSelection in
+                            self.timerManager.timer.originalBreakMinutes = userSelection
+                            self.timerManager.timer.breakMinutes = userSelection
+                        }
+                    )) {
+                        ForEach(1...20, id: \.self) { minute in
+                            Text("\(minute) min").tag(minute)
+                        }
+                    }
+                    
+                    Picker("Long Break", selection: Binding(
+                        get: { self.timerManager.timer.originalLongBreakMinutes },
+                        set: { userSelection in
+                            self.timerManager.timer.originalLongBreakMinutes = userSelection
+                            self.timerManager.timer.longBreakMinutes = userSelection
+                        }
+                    )) {
+                        ForEach(1...45, id: \.self) { minute in
+                            Text("\(minute) min").tag(minute)
+                        }
+                    }
+                }
+
+                Section(header: Text("Appearance")
+                    .fontDesign(.monospaced)) {
+                    Button(action: toggleColorMode) {
+                        HStack {
+                            Text("Color Mode")
+                            Spacer()
+                            Image(systemName: colorMode == .light ? "moon.stars" : "sun.max")
+                        }
+                    }
+                }
+            }
+            .navigationBarTitle("Settings", displayMode: .inline)
         }
+        .modifier(ColorModeViewModifier(mode: colorMode))
+    }
+    
+    private func toggleColorMode() {
+        colorMode = (colorMode == .light) ? .dark : .light
     }
 }

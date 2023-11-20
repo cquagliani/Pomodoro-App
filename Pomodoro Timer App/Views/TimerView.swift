@@ -9,7 +9,8 @@ import SwiftUI
 
 struct TimerView: View {
     @EnvironmentObject var timerManager: TimerManager
-    @State private var colorMode: AppColorMode = .system
+    @Binding var colorMode: AppColorMode
+    @State private var showingSettings = false
 
     var body: some View {
         ZStack {
@@ -36,27 +37,31 @@ struct TimerView: View {
     
     private var header: some View {
         VStack {
-            Text("Pomodoro Timer")
-                .foregroundColor(Color.theme.invertedPrimary)
-                .font(.title)
-                .fontWeight(.bold)
-                .fontDesign(.monospaced)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 20)
-            
-            Button(action: toggleColorMode) {
-                Image(systemName: colorMode == .light ? "moon.stars" : "sun.max")
-                    .imageScale(.medium)
-                    .font(.system(size: 30))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+            HStack {
+                Spacer()
+                Text("Pomodoro Timer")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .fontDesign(.monospaced)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 20)
+                
+                Button(action: {
+                    self.showingSettings.toggle()
+                }) {
+                    Image(systemName: "line.horizontal.3")
+                        .imageScale(.medium)
+                        .font(.system(size: 30))
+                        .padding()
+                }
             }
-            .padding(.horizontal, 20)
+            
+            .sheet(isPresented: $showingSettings) {
+                SettingsView(colorMode: $colorMode)
+            }
+            .foregroundColor(Color.theme.invertedPrimary)
         }
-        .foregroundColor(Color.theme.invertedPrimary)
-    }
-    
-    private func toggleColorMode() {
-        colorMode = (colorMode == .light) ? .dark : .light
+
     }
 
     private var timerCircle: some View {

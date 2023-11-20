@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var colorMode: AppColorMode = .system
     @StateObject private var timerManager = TimerManager(
         timer: DefaultTimer(
             rounds: 4,
@@ -15,7 +16,7 @@ struct ContentView: View {
             seconds: 0,
             breakMinutes: 5,
             breakSeconds: 0,
-            longBreakMinutes: 25,
+            longBreakMinutes: 30,
             longBreakSeconds: 0
         )
     )
@@ -27,7 +28,7 @@ struct ContentView: View {
                 TimerCompletedView()
                     .environmentObject(timerManager)
             } else {
-                TimerView()
+                TimerView(colorMode: $colorMode)
                     .environmentObject(timerManager)
             }
         }
