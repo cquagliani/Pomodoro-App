@@ -8,7 +8,23 @@
 import Foundation
 import Combine
 
-class TimerManager: ObservableObject {
+protocol TimerManagerProtocol: ObservableObject {
+    var timer: DefaultTimer { get set }
+    var completedRounds: Int { get set }
+    var completedBreaks: Int { get set }
+    var isTimerRunning: Bool { get set }
+    var hasStartedSession: Bool { get set }
+
+    func startTimer()
+    func stopTimer()
+    func resetTimer()
+    func tickTimer()
+    func processRoundCompletion()
+    func resetTimerForNextRound()
+    func resetTimerForBreak()
+}
+
+class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var timer: DefaultTimer
     @Published var completedRounds = 0
     @Published var completedBreaks = 0
@@ -45,7 +61,7 @@ class TimerManager: ObservableObject {
         completedBreaks = 0
     }
 
-    private func tickTimer() {
+    func tickTimer() {
         if timer.seconds > 0 {
             timer.seconds -= 1
         } else if timer.minutes > 0 {
@@ -56,7 +72,7 @@ class TimerManager: ObservableObject {
         }
     }
 
-    private func processRoundCompletion() {
+    func processRoundCompletion() {
         stopTimer()
 
         if isFocusInterval {
@@ -80,12 +96,12 @@ class TimerManager: ObservableObject {
         }
     }
 
-    private func resetTimerForNextRound() {
+    func resetTimerForNextRound() {
         timer.minutes = timer.originalMinutes
         timer.seconds = timer.originalSeconds
     }
     
-    private func resetTimerForBreak() {
+    func resetTimerForBreak() {
         timer.minutes = timer.originalBreakMinutes
         timer.seconds = timer.originalBreakSeconds
     }
