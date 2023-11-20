@@ -49,6 +49,7 @@ struct TimerCompletedView: View {
         Button("Restart Timer") {
             timerManager.resetTimer()
             timerManager.startTimer()
+            timerManager.hideTimerButtons = false
             timerManager.sessionCompleted = false
         }
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
@@ -58,6 +59,7 @@ struct TimerCompletedView: View {
     private var goHome: some View {
         Button("Go home") {
             timerManager.resetTimer()
+            timerManager.hideTimerButtons = false
             timerManager.sessionCompleted = false
         }
         .foregroundColor(Color.blue)

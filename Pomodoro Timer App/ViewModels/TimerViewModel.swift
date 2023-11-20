@@ -14,6 +14,7 @@ protocol TimerManagerProtocol: ObservableObject {
     var completedBreaks: Int { get set }
     var isTimerRunning: Bool { get set }
     var hasStartedSession: Bool { get set }
+    var hideTimerButtons: Bool { get set }
 
     func startTimer()
     func stopTimer()
@@ -22,6 +23,7 @@ protocol TimerManagerProtocol: ObservableObject {
     func processRoundCompletion()
     func resetTimerForNextRound()
     func resetTimerForBreak()
+    func resetTimerForLongBreak()
 }
 
 class TimerManager: TimerManagerProtocol, ObservableObject {
@@ -31,6 +33,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var isTimerRunning = false
     @Published var hasStartedSession = false
     @Published var sessionCompleted = false
+    @Published var hideTimerButtons = false
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -72,29 +75,40 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             processRoundCompletion()
         }
     }
-
+    
     func processRoundCompletion() {
         stopTimer()
 
         if isFocusInterval {
             completedRounds += 1
-
-            if completedRounds < timer.rounds {
-                isFocusInterval = false
+            isFocusInterval = false
+            
+            if completedRounds % 4 == 0 {
+                resetTimerForLongBreak()
+            } else {
                 resetTimerForBreak()
-                startTimer()
             }
+            
         } else {
             completedBreaks += 1
-            isFocusInterval = true
-
+            
             if completedRounds < timer.rounds {
+                isFocusInterval = true
                 resetTimerForNextRound()
-                startTimer()
+            } else { // End of the last break
+                hideTimerButtons = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in // Delay execution before setting sessionCompleted so user can see final emoji update
+                    self?.sessionCompleted = true
+                }
+                return
             }
         }
-        sessionCompleted = completedRounds >= timer.rounds
+
+        if !sessionCompleted {
+            startTimer()
+        }
     }
+
 
     func resetTimerForNextRound() {
         timer.minutes = timer.originalMinutes
@@ -104,5 +118,10 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func resetTimerForBreak() {
         timer.minutes = timer.originalBreakMinutes
         timer.seconds = timer.originalBreakSeconds
+    }
+    
+    func resetTimerForLongBreak() {
+        timer.minutes = timer.originalLongBreakMinutes
+        timer.seconds = timer.originalLongBreakSeconds
     }
 }

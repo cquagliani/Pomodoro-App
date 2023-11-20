@@ -14,12 +14,14 @@ class MockTimerManager: TimerManagerProtocol {
     var completedBreaks = 0
     var isTimerRunning = false
     var hasStartedSession = false
+    var hideTimerButtons = false
     var isFocusInterval = true
     var startTimerCallCount = 0
     var stopTimerCallCount = 0
     var resetTimerCallCount = 0
     var resetTimerForNextRoundCalled = false
     var resetTimerForBreakCalled = false
+    var resetTimerForLongBreakCalled = false
 
     init(timer: DefaultTimer) {
         self.timer = timer
@@ -91,6 +93,12 @@ class MockTimerManager: TimerManagerProtocol {
         resetTimerForBreakCalled = true
         timer.minutes = timer.originalBreakMinutes
         timer.seconds = timer.originalBreakSeconds
+    }
+    
+    func resetTimerForLongBreak() {
+        resetTimerForLongBreakCalled = true
+        timer.minutes = timer.longBreakMinutes
+        timer.seconds = timer.longBreakSeconds
     }
 }
 
@@ -188,5 +196,16 @@ final class TimerViewModelTests: XCTestCase {
         XCTAssertTrue(mockTimerManager.resetTimerForBreakCalled, "resetTimerForBreak should be called")
         XCTAssertEqual(mockTimerManager.timer.minutes, mockTimer.originalBreakMinutes, "Timer minutes should reset to break time")
         XCTAssertEqual(mockTimerManager.timer.seconds, mockTimer.originalBreakSeconds, "Timer seconds should reset to break time")
+    }
+    
+    func testResetTimerForLongBreak() {
+        let mockTimer = DefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0, longBreakMinutes: 30, longBreakSeconds: 0)
+        let mockTimerManager = MockTimerManager(timer: mockTimer)
+
+        mockTimerManager.resetTimerForLongBreak()
+
+        XCTAssertTrue(mockTimerManager.resetTimerForLongBreakCalled, "resetTimerForLongBreak should be called")
+        XCTAssertEqual(mockTimerManager.timer.minutes, mockTimer.originalLongBreakMinutes, "Timer minutes should reset to long break time")
+        XCTAssertEqual(mockTimerManager.timer.seconds, mockTimer.originalLongBreakSeconds, "Timer seconds should reset to long break time")
     }
 }

@@ -11,10 +11,12 @@ struct ContentView: View {
     @StateObject private var timerManager = TimerManager(
         timer: DefaultTimer(
             rounds: 4,
-            minutes: 0,
-            seconds: 2,
-            breakMinutes: 0,
-            breakSeconds: 2
+            minutes: 25,
+            seconds: 0,
+            breakMinutes: 5,
+            breakSeconds: 0,
+            longBreakMinutes: 25,
+            longBreakSeconds: 0
         )
     )
     

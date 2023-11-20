@@ -24,7 +24,9 @@ struct TimerView: View {
                     timerCircle
                     Spacer()
                     roundsEmojisView
-                    controlButtons
+                    if !timerManager.hideTimerButtons {
+                        controlButtons
+                    }
                     Spacer()
                 }
             }
@@ -91,21 +93,31 @@ struct TimerView: View {
             }
         }
     }
-
+    
     private var emojisForRoundsAndBreaks: [String] {
         var emojis: [String] = []
-        
+
         for index in 0..<timerManager.timer.rounds {
-            emojis.append(index < timerManager.completedRounds ? "✅" : "📚")
-            
-            if index < timerManager.timer.rounds - 1 {
-                emojis.append(index < timerManager.completedBreaks ? "✔️" : "☕️")
-            }
+            emojis.append(emojiForRound(index: index))
+            emojis.append(emojiForBreak(index: index))
         }
-        
+
         return emojis
     }
-    
+
+    private func emojiForRound(index: Int) -> String {
+        return index < timerManager.completedRounds ? "✅" : "📚"
+    }
+
+    private func emojiForBreak(index: Int) -> String {
+        if (index + 1) % 4 == 0 { // Every 4th break is a long break
+            return index < timerManager.completedBreaks ? "🎉" : "🏆"
+        } else {
+            return index < timerManager.completedBreaks ? "✔️" : "☕️"
+        }
+    }
+
+
     private var controlButtons: some View {
         HStack {
             if timerManager.isTimerRunning {
