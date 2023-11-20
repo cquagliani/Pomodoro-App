@@ -8,25 +8,25 @@
 import SwiftUI
 
 struct TimerView: View {
-    @StateObject private var timerManager: TimerManager
+    @EnvironmentObject var timerManager: TimerManager
     @State private var colorMode: AppColorMode = .system
-    
-    init() {
-        let timer = DefaultTimer(minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
-        _timerManager = StateObject(wrappedValue: TimerManager(timer: timer))
-    }
 
     var body: some View {
         ZStack {
             Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
-            VStack {
-                header
-                Spacer()
-                timerCircle
-                Spacer()
-                roundsEmojisView
-                controlButtons
-                Spacer()
+            
+            if timerManager.sessionCompleted {
+                TimerCompletedView()
+            } else {
+                VStack {
+                    header
+                    Spacer()
+                    timerCircle
+                    Spacer()
+                    roundsEmojisView
+                    controlButtons
+                    Spacer()
+                }
             }
         }
         .modifier(ColorModeViewModifier(mode: colorMode))

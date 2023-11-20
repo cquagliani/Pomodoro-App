@@ -30,6 +30,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var completedBreaks = 0
     @Published var isTimerRunning = false
     @Published var hasStartedSession = false
+    @Published var sessionCompleted = false
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -82,8 +83,6 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 isFocusInterval = false
                 resetTimerForBreak()
                 startTimer()
-            } else {
-                resetTimer()
             }
         } else {
             completedBreaks += 1
@@ -94,6 +93,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 startTimer()
             }
         }
+        sessionCompleted = completedRounds >= timer.rounds
     }
 
     func resetTimerForNextRound() {
