@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
 		21258FAD2B09B01000C673D4 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
 		21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */; };
 		21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkLightModeButtonStyle.swift; sourceTree = "<group>"; };
 		21258FAC2B09B01000C673D4 /* ColorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettings.swift; sourceTree = "<group>"; };
 		21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCompletedView.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			children = (
 				21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */,
 				21258FAC2B09B01000C673D4 /* ColorSettings.swift */,
+				211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */,
 			);
 			path = "Style Components";
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */,
 				21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */,
 				21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */,
+				211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */,
 				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
 				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,
 				21473EC92B073709002ECDC6 /* ContentView.swift in Sources */,

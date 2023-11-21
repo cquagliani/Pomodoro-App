@@ -46,4 +46,5 @@ struct ColorTheme {
     let greenAccent = Color("GreenAccent")
     let redAccent = Color("RedAccent")
     let yellowAccent = Color("YellowAccent")
+    let grayAccent = Color("GrayAccent")
 }

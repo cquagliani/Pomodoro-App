@@ -11,6 +11,7 @@ struct SettingsView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
     @State private var isTimerRunningWhenSettingsOpened = false
+    @State private var preventDisplaySleep = false
     
     var body: some View {
         NavigationView {
@@ -60,16 +61,26 @@ struct SettingsView: View {
 
                 Section(header: Text("Appearance")
                     .fontDesign(.monospaced)) {
-                    Button(action: toggleColorMode) {
-                        HStack {
-                            Text("Color Mode")
-                            Spacer()
-                            Image(systemName: colorMode == .light ? "moon.stars" : "sun.max")
+                    HStack {
+                        Text("Toggle Color Mode")
+                        Spacer()
+                        Button(action: toggleColorMode) {
+                            Image(systemName: colorMode == .light ? "moon.stars.fill" : "sun.max.fill")
                         }
+                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $colorMode))
                     }
                 }
+                
+                Section(header: Text("Utilities")
+                    .fontDesign(.monospaced)) {
+                        Toggle("Prevent Display Going to Sleep", isOn: $preventDisplaySleep)
+                }
+                
             }
             .navigationBarTitle("Settings", displayMode: .inline)
+            .onChange(of: preventDisplaySleep) { previousSelection, userSelection in
+                UIApplication.shared.isIdleTimerDisabled = userSelection
+            }
         }
         .modifier(ColorModeViewModifier(mode: colorMode))
         .onAppear { // Stop timer while settings are opened. Resume timer when user leaves settings if timer was previously running.
