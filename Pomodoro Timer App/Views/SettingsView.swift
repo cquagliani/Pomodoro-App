@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
+    @State private var isTimerRunningWhenSettingsOpened = false
     
     var body: some View {
         NavigationView {
@@ -22,6 +23,7 @@ struct SettingsView: View {
                         set: { userSelection in
                             self.timerManager.timer.originalMinutes = userSelection
                             self.timerManager.timer.minutes = userSelection
+                            self.timerManager.timer.seconds = 0
                         }
                     )) {
                         ForEach(1...60, id: \.self) { minute in
@@ -34,6 +36,7 @@ struct SettingsView: View {
                         set: { userSelection in
                             self.timerManager.timer.originalBreakMinutes = userSelection
                             self.timerManager.timer.breakMinutes = userSelection
+                            self.timerManager.timer.breakSeconds = 0
                         }
                     )) {
                         ForEach(1...20, id: \.self) { minute in
@@ -46,6 +49,7 @@ struct SettingsView: View {
                         set: { userSelection in
                             self.timerManager.timer.originalLongBreakMinutes = userSelection
                             self.timerManager.timer.longBreakMinutes = userSelection
+                            self.timerManager.timer.longBreakSeconds = 0
                         }
                     )) {
                         ForEach(1...45, id: \.self) { minute in
@@ -68,6 +72,17 @@ struct SettingsView: View {
             .navigationBarTitle("Settings", displayMode: .inline)
         }
         .modifier(ColorModeViewModifier(mode: colorMode))
+        .onAppear { // Stop timer while settings are opened. Resume timer when user leaves settings if timer was previously running.
+            if timerManager.isTimerRunning {
+                isTimerRunningWhenSettingsOpened = true
+                timerManager.stopTimer()
+            }
+        }
+        .onDisappear {
+            if isTimerRunningWhenSettingsOpened {
+                timerManager.startTimer()
+            }
+        }
     }
     
     private func toggleColorMode() {
