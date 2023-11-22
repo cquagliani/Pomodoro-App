@@ -5,8 +5,9 @@
 //  Created by Chris Quagliani on 11/16/23.
 //
 
-import Foundation
+import SwiftUI
 import Combine
+import ActivityKit
 
 protocol TimerManagerProtocol: ObservableObject {
     var timer: DefaultTimer { get set }
@@ -34,6 +35,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var hasStartedSession = false
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
+    @Published var currentActivity: Activity<TimerAttributes>? = nil
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -47,11 +49,19 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
+        
+        Task {
+            await startLiveActivity()
+        }
     }
 
     func stopTimer() {
         isTimerRunning = false
         timerSubscription?.cancel()
+        
+        Task {
+            await endLiveActivity()
+        }
     }
     
     func resetTimer() {
@@ -73,6 +83,10 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             timer.seconds = 59
         } else {
             processRoundCompletion()
+        }
+        
+        Task {
+            await updateLiveActivity()
         }
     }
     
@@ -123,5 +137,40 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func resetTimerForLongBreak() {
         timer.minutes = timer.originalLongBreakMinutes
         timer.seconds = timer.originalLongBreakSeconds
+    }
+    
+    
+    func startLiveActivity() async {
+        let attributes = TimerAttributes()
+        let state = TimerAttributes.TimerStatus(timeRemaining: formatTimeRemaining())
+
+        do {
+            let activity = try await Activity<TimerAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
+            DispatchQueue.main.async {
+                self.currentActivity = activity
+            }
+            await updateLiveActivity()
+        } catch {
+            print("Error starting Live Activity: \(error)")
+        }
+    }
+    
+    func updateLiveActivity() async {
+        guard let activity = currentActivity else { return }
+        var currentState = activity.contentState
+        currentState.timeRemaining = formatTimeRemaining()
+        await activity.update(using: currentState)
+    }
+
+    func endLiveActivity() async {
+        guard let activity = currentActivity else { return }
+        await activity.end(using: activity.contentState, dismissalPolicy: .immediate)
+        DispatchQueue.main.async {
+            self.currentActivity = nil
+        }
+    }
+
+    private func formatTimeRemaining() -> String {
+        return String(format: "%02dm:%02ds", timer.minutes, timer.seconds)
     }
 }
