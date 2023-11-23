@@ -14,7 +14,7 @@ struct SettingsView: View {
     @State private var isTimerRunningWhenSettingsOpened = false
     @State private var preventDisplaySleep = false
 
-    // Temporary state variables
+    // Temporary state variables to store changed variables before save button is pressed
     @State private var tempFocusSessionMinutes: Int
     @State private var tempShortBreakMinutes: Int
     @State private var tempLongBreakMinutes: Int
@@ -101,6 +101,7 @@ struct SettingsView: View {
         timerManager.timer.originalBreakMinutes = tempShortBreakMinutes
         timerManager.timer.originalLongBreakMinutes = tempLongBreakMinutes
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
+        timerManager.resetTimer() // Update to only reset if changes are made
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
     }
