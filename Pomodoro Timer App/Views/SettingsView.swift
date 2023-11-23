@@ -10,49 +10,46 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
+    @Binding var showingSettings: Bool
     @State private var isTimerRunningWhenSettingsOpened = false
     @State private var preventDisplaySleep = false
-    
+
+    // Temporary state variables
+    @State private var tempFocusSessionMinutes: Int
+    @State private var tempShortBreakMinutes: Int
+    @State private var tempLongBreakMinutes: Int
+    @State private var tempPreventDisplaySleep: Bool
+    @State private var tempColorMode: AppColorMode
+
+    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
+        self._colorMode = colorMode
+        self._showingSettings = showingSettings
+        self._tempFocusSessionMinutes = State(initialValue: timerManager.timer.originalMinutes)
+        self._tempShortBreakMinutes = State(initialValue: timerManager.timer.originalBreakMinutes)
+        self._tempLongBreakMinutes = State(initialValue: timerManager.timer.originalLongBreakMinutes)
+        self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
+        self._tempColorMode = State(initialValue: colorMode.wrappedValue)
+    }
+
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Pomodoro Timer")
                     .fontDesign(.monospaced)) {
                     
-                    Picker("Focus Session", selection: Binding(
-                        get: { self.timerManager.timer.originalMinutes },
-                        set: { userSelection in
-                            self.timerManager.timer.originalMinutes = userSelection
-                            self.timerManager.timer.minutes = userSelection
-                            self.timerManager.timer.seconds = 0
-                        }
-                    )) {
+                    Picker("Focus Session", selection: $tempFocusSessionMinutes) {
                         ForEach(1...60, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
 
-                    Picker("Short Break", selection: Binding(
-                        get: { self.timerManager.timer.originalBreakMinutes },
-                        set: { userSelection in
-                            self.timerManager.timer.originalBreakMinutes = userSelection
-                            self.timerManager.timer.breakMinutes = userSelection
-                            self.timerManager.timer.breakSeconds = 0
-                        }
-                    )) {
+                    Picker("Short Break", selection: $tempShortBreakMinutes) {
                         ForEach(1...20, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
                     
-                    Picker("Long Break", selection: Binding(
-                        get: { self.timerManager.timer.originalLongBreakMinutes },
-                        set: { userSelection in
-                            self.timerManager.timer.originalLongBreakMinutes = userSelection
-                            self.timerManager.timer.longBreakMinutes = userSelection
-                            self.timerManager.timer.longBreakSeconds = 0
-                        }
-                    )) {
+                    Picker("Long Break", selection: $tempLongBreakMinutes) {
                         ForEach(1...45, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
@@ -65,38 +62,50 @@ struct SettingsView: View {
                         Text("Toggle Color Mode")
                         Spacer()
                         Button(action: toggleColorMode) {
-                            Image(systemName: colorMode == .light ? "moon.stars.fill" : "sun.max.fill")
+                            Image(systemName: tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
                         }
-                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $colorMode))
+                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $tempColorMode))
                     }
                 }
                 
                 Section(header: Text("Utilities")
                     .fontDesign(.monospaced)) {
-                        Toggle("Prevent Display Going to Sleep", isOn: $preventDisplaySleep)
+                    Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
                 }
                 
+                // Save Button
+                Button("Save") {
+                    saveSettings()
+                }
+                .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.greenAccent))
+                .padding()
             }
             .navigationBarTitle("Settings", displayMode: .inline)
-            .onChange(of: preventDisplaySleep) { previousSelection, userSelection in
-                UIApplication.shared.isIdleTimerDisabled = userSelection
+            .onAppear {
+                if timerManager.isTimerRunning {
+                    isTimerRunningWhenSettingsOpened = true
+                    timerManager.stopTimer()
+                }
+            }
+            .onDisappear {
+                if isTimerRunningWhenSettingsOpened {
+                    timerManager.startTimer()
+                }
             }
         }
-        .modifier(ColorModeViewModifier(mode: colorMode))
-        .onAppear { // Stop timer while settings are opened. Resume timer when user leaves settings if timer was previously running.
-            if timerManager.isTimerRunning {
-                isTimerRunningWhenSettingsOpened = true
-                timerManager.stopTimer()
-            }
-        }
-        .onDisappear {
-            if isTimerRunningWhenSettingsOpened {
-                timerManager.startTimer()
-            }
-        }
+        .modifier(ColorModeViewModifier(mode: tempColorMode))
     }
-    
+
+    private func saveSettings() {
+        timerManager.timer.originalMinutes = tempFocusSessionMinutes
+        timerManager.timer.originalBreakMinutes = tempShortBreakMinutes
+        timerManager.timer.originalLongBreakMinutes = tempLongBreakMinutes
+        UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
+        colorMode = tempColorMode
+        $showingSettings.wrappedValue = false
+    }
+
     private func toggleColorMode() {
-        colorMode = (colorMode == .light) ? .dark : .light
+        tempColorMode = (tempColorMode == .light) ? .dark : .light
     }
 }

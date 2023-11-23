@@ -10,7 +10,7 @@ import SwiftUI
 struct TimerView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
-    @State private var showingSettings = false
+    @State var showingSettings = false
 
     var body: some View {
         ZStack {
@@ -57,7 +57,7 @@ struct TimerView: View {
             }
             
             .sheet(isPresented: $showingSettings) {
-                SettingsView(colorMode: $colorMode)
+                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, timerManager: timerManager)
             }
             .foregroundColor(Color.theme.invertedPrimary)
         }
