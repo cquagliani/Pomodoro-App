@@ -15,7 +15,7 @@
 		211E6FA12B0D7CBC000E1076 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 211E6FA02B0D7CBC000E1076 /* Assets.xcassets */; };
 		211E6FA52B0D7CBC000E1076 /* TimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 211E6F952B0D7CBB000E1076 /* TimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		211E6FAB2B0D7D36000E1076 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */; };
-		211E6FAC2B0D7D97000E1076 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */; };
+		211E6FAD2B0D8F30000E1076 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */; };
 		21258FAD2B09B01000C673D4 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
 		21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */; };
 		21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */; };
@@ -153,6 +153,14 @@
 			path = TimerWidget;
 			sourceTree = "<group>";
 		};
+		211E6FAE2B0D910B000E1076 /* Live Activity */ = {
+			isa = PBXGroup;
+			children = (
+				211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */,
+			);
+			path = "Live Activity";
+			sourceTree = "<group>";
+		};
 		21473EBA2B073709002ECDC6 = {
 			isa = PBXGroup;
 			children = (
@@ -183,11 +191,11 @@
 				21473EF32B074729002ECDC6 /* Views */,
 				21473EF42B07472D002ECDC6 /* ViewModels */,
 				21473EFB2B07492C002ECDC6 /* Style Components */,
+				211E6FAE2B0D910B000E1076 /* Live Activity */,
 				21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */,
 				21473EC82B073709002ECDC6 /* ContentView.swift */,
 				21473ECA2B07370A002ECDC6 /* Assets.xcassets */,
 				21473ECC2B07370A002ECDC6 /* Preview Content */,
-				211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */,
 			);
 			path = "Pomodoro Timer App";
 			sourceTree = "<group>";
@@ -416,7 +424,7 @@
 			files = (
 				211E6F9D2B0D7CBB000E1076 /* TimerWidgetBundle.swift in Sources */,
 				211E6F9F2B0D7CBB000E1076 /* TimerWidget.swift in Sources */,
-				211E6FAC2B0D7D97000E1076 /* TimerAttributes.swift in Sources */,
+				211E6FAD2B0D8F30000E1076 /* TimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
