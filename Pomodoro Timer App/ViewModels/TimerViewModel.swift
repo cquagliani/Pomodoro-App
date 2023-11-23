@@ -123,7 +123,6 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         }
     }
 
-
     func resetTimerForNextRound() {
         timer.minutes = timer.originalMinutes
         timer.seconds = timer.originalSeconds
@@ -139,13 +138,13 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalLongBreakSeconds
     }
     
-    
     func startLiveActivity() async {
         let attributes = TimerAttributes()
-        let state = TimerAttributes.TimerStatus(timeRemaining: formatTimeRemaining())
+        let status = TimerAttributes.TimerStatus(timeRemaining: formatTimeRemaining())
+        let content = ActivityContent(state: status, staleDate: nil)
 
         do {
-            let activity = try await Activity<TimerAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
+            let activity = try Activity<TimerAttributes>.request(attributes: attributes, content: content, pushType: nil)
             DispatchQueue.main.async {
                 self.currentActivity = activity
             }
@@ -157,14 +156,15 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     
     func updateLiveActivity() async {
         guard let activity = currentActivity else { return }
-        var currentState = activity.contentState
-        currentState.timeRemaining = formatTimeRemaining()
-        await activity.update(using: currentState)
+        let newState = TimerAttributes.ContentState(timeRemaining: formatTimeRemaining())
+        let updatedContent = ActivityContent(state: newState, staleDate: nil)
+        await activity.update(updatedContent)
     }
-
+    
     func endLiveActivity() async {
         guard let activity = currentActivity else { return }
-        await activity.end(using: activity.contentState, dismissalPolicy: .immediate)
+        await activity.end(activity.content, dismissalPolicy: .immediate)
+
         DispatchQueue.main.async {
             self.currentActivity = nil
         }
