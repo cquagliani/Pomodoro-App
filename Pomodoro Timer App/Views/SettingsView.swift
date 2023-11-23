@@ -97,11 +97,18 @@ struct SettingsView: View {
     }
 
     private func saveSettings() {
-        timerManager.timer.originalMinutes = tempFocusSessionMinutes
-        timerManager.timer.originalBreakMinutes = tempShortBreakMinutes
-        timerManager.timer.originalLongBreakMinutes = tempLongBreakMinutes
+        // Only update original values and reset the timer if changes were made
+        if tempFocusSessionMinutes != timerManager.timer.originalMinutes ||
+            tempShortBreakMinutes != timerManager.timer.originalBreakMinutes ||
+            tempLongBreakMinutes != timerManager.timer.originalLongBreakMinutes 
+        {
+            timerManager.timer.originalMinutes = tempFocusSessionMinutes
+            timerManager.timer.originalBreakMinutes = tempShortBreakMinutes
+            timerManager.timer.originalLongBreakMinutes = tempLongBreakMinutes
+            timerManager.resetTimer()
+        }
+        
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
-        timerManager.resetTimer() // Update to only reset if changes are made
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
     }
