@@ -72,15 +72,16 @@ struct SettingsView: View {
                     .fontDesign(.monospaced)) {
                     Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
                 }
-                
-                // Save Button
-                Button("Save") {
-                    saveSettings()
-                }
-                .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.greenAccent))
-                .padding()
             }
-            .navigationBarTitle("Settings", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Save") {
+                        saveSettings()
+                    }
+                    .padding()
+                }
+
+            }
             .onAppear {
                 if timerManager.isTimerRunning {
                     isTimerRunningWhenSettingsOpened = true
