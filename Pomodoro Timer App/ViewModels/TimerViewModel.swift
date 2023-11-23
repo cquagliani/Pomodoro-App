@@ -51,7 +51,12 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         }
         
         Task {
-            await startLiveActivity()
+            do {
+                try await startLiveActivity()
+            } catch {
+                print("Error starting Live Activity: \(error)")
+            }
+            
         }
     }
 
@@ -86,7 +91,11 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         }
         
         Task {
-            await updateLiveActivity()
+            do {
+                try await updateLiveActivity()
+            } catch {
+                print("Error updating Live Activity: \(error)")
+            }
         }
     }
     
@@ -138,24 +147,21 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalLongBreakSeconds
     }
     
-    func startLiveActivity() async {
+    func startLiveActivity() async throws {
         let attributes = TimerAttributes()
         let status = TimerAttributes.TimerStatus(timeRemaining: formatTimeRemaining())
         let content = ActivityContent(state: status, staleDate: nil)
 
-        do {
-            let activity = try Activity<TimerAttributes>.request(attributes: attributes, content: content, pushType: nil)
-            DispatchQueue.main.async {
-                self.currentActivity = activity
-            }
-            await updateLiveActivity()
-        } catch {
-            print("Error starting Live Activity: \(error)")
+        let activity = try Activity<TimerAttributes>.request(attributes: attributes, content: content, pushType: nil)
+        DispatchQueue.main.async {
+            self.currentActivity = activity
         }
+        try await updateLiveActivity()
     }
     
-    func updateLiveActivity() async {
+    func updateLiveActivity() async throws {
         guard let activity = currentActivity else { return }
+        
         let newState = TimerAttributes.ContentState(timeRemaining: formatTimeRemaining())
         let updatedContent = ActivityContent(state: newState, staleDate: nil)
         await activity.update(updatedContent)
