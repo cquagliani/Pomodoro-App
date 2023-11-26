@@ -8,8 +8,8 @@
 import XCTest
 @testable import Pomodoro_Timer_App
 
-class MockTimerManager: TimerManagerProtocol {
-    var timer: DefaultTimer
+class MockTimerManager: ObservableObject {
+    var timer: MockDefaultTimer
     var completedRounds = 0
     var completedBreaks = 0
     var isTimerRunning = false
@@ -26,7 +26,7 @@ class MockTimerManager: TimerManagerProtocol {
     var startTimerCalled = false
     var stopTimerCalled = false
 
-    init(timer: DefaultTimer) {
+    init(timer: MockDefaultTimer) {
         self.timer = timer
     }
 

@@ -32,6 +32,10 @@
 		21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF72B0747AB002ECDC6 /* TimerModel.swift */; };
 		21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */; };
 		21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */; };
+		2190D6692B12F29200F31BDB /* MockSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2190D6682B12F29200F31BDB /* MockSettingsView.swift */; };
+		2190D66C2B12F36700F31BDB /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
+		2190D66D2B12F3DB00F31BDB /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
+		2190D6722B12F8CD00F31BDB /* MockTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +105,8 @@
 		21473EF72B0747AB002ECDC6 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButtonStyle.swift; sourceTree = "<group>"; };
+		2190D6682B12F29200F31BDB /* MockSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingsView.swift; sourceTree = "<group>"; };
+		2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,7 +221,7 @@
 		21473ED62B07370A002ECDC6 /* Pomodoro Timer AppTests */ = {
 			isa = PBXGroup;
 			children = (
-				211E6FB12B100B1D000E1076 /* MockTimerManager.swift */,
+				2190D66A2B12F2D800F31BDB /* Mocks */,
 				21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */,
 				211E6FAF2B10089A000E1076 /* SettingsViewTests.swift */,
 			);
@@ -265,6 +271,16 @@
 				211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */,
 			);
 			path = "Style Components";
+			sourceTree = "<group>";
+		};
+		2190D66A2B12F2D800F31BDB /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				211E6FB12B100B1D000E1076 /* MockTimerManager.swift */,
+				2190D6682B12F29200F31BDB /* MockSettingsView.swift */,
+				2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -459,6 +475,10 @@
 				21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */,
 				211E6FB22B100B1D000E1076 /* MockTimerManager.swift in Sources */,
 				211E6FB02B10089A000E1076 /* SettingsViewTests.swift in Sources */,
+				2190D6722B12F8CD00F31BDB /* MockTimerModel.swift in Sources */,
+				2190D6692B12F29200F31BDB /* MockSettingsView.swift in Sources */,
+				2190D66C2B12F36700F31BDB /* ColorSettings.swift in Sources */,
+				2190D66D2B12F3DB00F31BDB /* DarkLightModeButtonStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

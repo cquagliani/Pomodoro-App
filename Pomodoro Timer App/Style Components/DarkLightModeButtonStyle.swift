@@ -15,7 +15,7 @@ struct DarkLightModeButtonStyle: ButtonStyle {
         configuration.label
             .frame(width: 30, height: 10, alignment: .center)
             .padding(10)
-            .background(colorMode == .dark ? .black : .grayAccent)
+            .background(colorMode == .dark ? .black : Color.theme.grayAccent)
             .foregroundColor(colorMode == .dark ? .yellow : .black)
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)

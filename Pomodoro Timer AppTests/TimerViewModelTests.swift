@@ -11,7 +11,7 @@ import XCTest
 final class TimerViewModelTests: XCTestCase {
     
     func testStartTimer() {
-        let mockTimer = DefaultTimer()
+        let mockTimer = MockDefaultTimer()
         let mockTimerManager = MockTimerManager(timer: mockTimer)
         
         XCTAssertFalse(mockTimerManager.isTimerRunning, "Timer should not be running initially")
@@ -26,7 +26,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testStopTimer() {
-        let mockTimer = DefaultTimer()
+        let mockTimer = MockDefaultTimer()
         let mockTimerManager = MockTimerManager(timer: mockTimer)
         
         mockTimerManager.startTimer()
@@ -41,7 +41,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testResetTimer() {
-        let mockTimer = DefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
+        let mockTimer = MockDefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.startTimer()
@@ -58,7 +58,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testTickTimer() {
-        let mockTimer = DefaultTimer(minutes: 1, seconds: 1)
+        let mockTimer = MockDefaultTimer(minutes: 1, seconds: 1)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.tickTimer()
@@ -71,7 +71,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testProcessRoundCompletion() {
-        let mockTimer = DefaultTimer(rounds: 2, minutes: 0, seconds: 0, breakMinutes: 1, breakSeconds: 0)
+        let mockTimer = MockDefaultTimer(rounds: 2, minutes: 0, seconds: 0, breakMinutes: 1, breakSeconds: 0)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.processRoundCompletion()
@@ -81,7 +81,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testResetTimerForNextRound() {
-        let mockTimer = DefaultTimer(minutes: 25, seconds: 0)
+        let mockTimer = MockDefaultTimer(minutes: 25, seconds: 0)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.resetTimerForNextRound()
@@ -92,7 +92,7 @@ final class TimerViewModelTests: XCTestCase {
     }
 
     func testResetTimerForBreak() {
-        let mockTimer = DefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
+        let mockTimer = MockDefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.resetTimerForBreak()
@@ -103,7 +103,7 @@ final class TimerViewModelTests: XCTestCase {
     }
     
     func testResetTimerForLongBreak() {
-        let mockTimer = DefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0, longBreakMinutes: 30, longBreakSeconds: 0)
+        let mockTimer = MockDefaultTimer(rounds: 4, minutes: 25, seconds: 0, breakMinutes: 5, breakSeconds: 0, longBreakMinutes: 30, longBreakSeconds: 0)
         let mockTimerManager = MockTimerManager(timer: mockTimer)
 
         mockTimerManager.resetTimerForLongBreak()
