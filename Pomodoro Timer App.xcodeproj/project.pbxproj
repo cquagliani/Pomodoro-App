@@ -16,6 +16,8 @@
 		211E6FA52B0D7CBC000E1076 /* TimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 211E6F952B0D7CBB000E1076 /* TimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		211E6FAB2B0D7D36000E1076 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */; };
 		211E6FAD2B0D8F30000E1076 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */; };
+		211E6FB02B10089A000E1076 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FAF2B10089A000E1076 /* SettingsViewTests.swift */; };
+		211E6FB22B100B1D000E1076 /* MockTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6FB12B100B1D000E1076 /* MockTimerManager.swift */; };
 		21258FAD2B09B01000C673D4 /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
 		21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */; };
 		21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */; };
@@ -80,6 +82,8 @@
 		211E6FA02B0D7CBC000E1076 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		211E6FA22B0D7CBC000E1076 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		211E6FAA2B0D7D36000E1076 /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
+		211E6FAF2B10089A000E1076 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
+		211E6FB12B100B1D000E1076 /* MockTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimerManager.swift; sourceTree = "<group>"; };
 		21258FAC2B09B01000C673D4 /* ColorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettings.swift; sourceTree = "<group>"; };
 		21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCompletedView.swift; sourceTree = "<group>"; };
@@ -211,7 +215,9 @@
 		21473ED62B07370A002ECDC6 /* Pomodoro Timer AppTests */ = {
 			isa = PBXGroup;
 			children = (
+				211E6FB12B100B1D000E1076 /* MockTimerManager.swift */,
 				21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */,
+				211E6FAF2B10089A000E1076 /* SettingsViewTests.swift */,
 			);
 			path = "Pomodoro Timer AppTests";
 			sourceTree = "<group>";
@@ -451,6 +457,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */,
+				211E6FB22B100B1D000E1076 /* MockTimerManager.swift in Sources */,
+				211E6FB02B10089A000E1076 /* SettingsViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

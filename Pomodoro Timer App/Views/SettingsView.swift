@@ -15,11 +15,11 @@ struct SettingsView: View {
     @State private var preventDisplaySleep = false
 
     // Temporary state variables to store changed variables before save button is pressed
-    @State private var tempFocusSessionMinutes: Int
-    @State private var tempShortBreakMinutes: Int
-    @State private var tempLongBreakMinutes: Int
-    @State private var tempPreventDisplaySleep: Bool
-    @State private var tempColorMode: AppColorMode
+    @State var tempFocusSessionMinutes: Int
+    @State var tempShortBreakMinutes: Int
+    @State var tempLongBreakMinutes: Int
+    @State var tempPreventDisplaySleep: Bool
+    @State var tempColorMode: AppColorMode
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
         self._colorMode = colorMode
@@ -97,7 +97,7 @@ struct SettingsView: View {
         .modifier(ColorModeViewModifier(mode: tempColorMode))
     }
 
-    private func saveSettings() {
+    func saveSettings() {
         // Only update original values and reset the timer if changes were made
         if tempFocusSessionMinutes != timerManager.timer.originalMinutes ||
             tempShortBreakMinutes != timerManager.timer.originalBreakMinutes ||
@@ -114,7 +114,7 @@ struct SettingsView: View {
         $showingSettings.wrappedValue = false
     }
 
-    private func toggleColorMode() {
+    func toggleColorMode() {
         tempColorMode = (tempColorMode == .light) ? .dark : .light
     }
 }
