@@ -8,28 +8,7 @@
 import SwiftUI
 
 struct MockSettingsView: View {
-    @EnvironmentObject var mockTimerManager: MockTimerManager
-    @Binding var colorMode: AppColorMode
-    @Binding var showingSettings: Bool
-    @State private var isTimerRunningWhenSettingsOpened = false
-    @State private var preventDisplaySleep = false
-
-    // Temporary state variables to store changed variables before save button is pressed
-    @State var tempFocusSessionMinutes: Int
-    @State var tempShortBreakMinutes: Int
-    @State var tempLongBreakMinutes: Int
-    @State var tempPreventDisplaySleep: Bool
-    @State var tempColorMode: AppColorMode
-
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, mockTimerManager: MockTimerManager) {
-        self._colorMode = colorMode
-        self._showingSettings = showingSettings
-        self._tempFocusSessionMinutes = State(initialValue: mockTimerManager.timer.originalMinutes)
-        self._tempShortBreakMinutes = State(initialValue: mockTimerManager.timer.originalBreakMinutes)
-        self._tempLongBreakMinutes = State(initialValue: mockTimerManager.timer.originalLongBreakMinutes)
-        self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
-        self._tempColorMode = State(initialValue: colorMode.wrappedValue)
-    }
+    @ObservedObject var viewModel: MockSettingsViewModel
 
     var body: some View {
         NavigationView {
@@ -37,19 +16,19 @@ struct MockSettingsView: View {
                 Section(header: Text("Pomodoro Timer")
                     .fontDesign(.monospaced)) {
                     
-                    Picker("Focus Session", selection: $tempFocusSessionMinutes) {
+                    Picker("Focus Session", selection: $viewModel.tempFocusSessionMinutes) {
                         ForEach(1...60, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
 
-                    Picker("Short Break", selection: $tempShortBreakMinutes) {
+                    Picker("Short Break", selection: $viewModel.tempShortBreakMinutes) {
                         ForEach(1...20, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
                     
-                    Picker("Long Break", selection: $tempLongBreakMinutes) {
+                    Picker("Long Break", selection: $viewModel.tempLongBreakMinutes) {
                         ForEach(1...45, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
@@ -61,61 +40,41 @@ struct MockSettingsView: View {
                     HStack {
                         Text("Toggle Color Mode")
                         Spacer()
-                        Button(action: toggleColorMode) {
-                            Image(systemName: tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
+                        Button(action: viewModel.toggleColorMode) {
+                            Image(systemName: viewModel.tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
                         }
-                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $tempColorMode))
+                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $viewModel.tempColorMode))
                     }
                 }
                 
                 Section(header: Text("Utilities")
                     .fontDesign(.monospaced)) {
-                    Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
+                    Toggle("Prevent Display Going to Sleep", isOn: $viewModel.tempPreventDisplaySleep)
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        saveSettings()
+                        viewModel.saveSettings()
                     }
                     .padding()
                 }
 
             }
             .onAppear {
-                if mockTimerManager.isTimerRunning {
-                    isTimerRunningWhenSettingsOpened = true
-                    mockTimerManager.stopTimer()
+                if viewModel.mockTimerManager.isTimerRunning {
+                    viewModel.isTimerRunningWhenSettingsOpened = true
+                    viewModel.mockTimerManager.stopTimer()
                 }
             }
             .onDisappear {
-                if isTimerRunningWhenSettingsOpened {
-                    mockTimerManager.startTimer()
+                if viewModel.isTimerRunningWhenSettingsOpened {
+                    viewModel.mockTimerManager.startTimer()
                 }
             }
         }
-        .modifier(ColorModeViewModifier(mode: tempColorMode))
-    }
-
-    func saveSettings() {
-        // Only update original values and reset the timer if changes were made
-        if tempFocusSessionMinutes != mockTimerManager.timer.originalMinutes ||
-            tempShortBreakMinutes != mockTimerManager.timer.originalBreakMinutes ||
-            tempLongBreakMinutes != mockTimerManager.timer.originalLongBreakMinutes
-        {
-            mockTimerManager.timer.originalMinutes = tempFocusSessionMinutes
-            mockTimerManager.timer.originalBreakMinutes = tempShortBreakMinutes
-            mockTimerManager.timer.originalLongBreakMinutes = tempLongBreakMinutes
-            mockTimerManager.resetTimer()
-        }
-        
-        UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
-        colorMode = tempColorMode
-        $showingSettings.wrappedValue = false
-    }
-
-    func toggleColorMode() {
-        tempColorMode = (tempColorMode == .light) ? .dark : .light
+        .modifier(ColorModeViewModifier(mode: viewModel.tempColorMode))
     }
 }
+
 

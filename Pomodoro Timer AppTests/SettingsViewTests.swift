@@ -10,22 +10,29 @@ import XCTest
 import SwiftUI
 
 class SettingsViewTests: XCTestCase {
-    let mockTimer = MockDefaultTimer()
+    var mockTimer: MockDefaultTimer!
     var mockTimerManager: MockTimerManager!
-    var settingsView: MockSettingsView!
+    var viewModel: MockSettingsViewModel!
+
+    override func setUp() {
+        super.setUp()
+        mockTimer = MockDefaultTimer()
+        mockTimerManager = MockTimerManager(timer: mockTimer)
+
+        let colorModeBinding = Binding.constant(AppColorMode.light)
+        let showingSettingsBinding = Binding.constant(true)
+        viewModel = MockSettingsViewModel(colorMode: colorModeBinding, showingSettings: showingSettingsBinding, mockTimerManager: mockTimerManager)
+    }
 
     func testSaveSettings_WhenTimerValuesChanged_ShouldResetTimer() {
-        settingsView.tempFocusSessionMinutes = 30 // Different from default value
-        settingsView.tempShortBreakMinutes = 5
-        settingsView.tempLongBreakMinutes = 10
-        settingsView.saveSettings()
+        viewModel.tempFocusSessionMinutes = 30 // Different from default value
+        viewModel.saveSettings()
         XCTAssertTrue(mockTimerManager.resetTimerCalled)
     }
 
     func testSaveSettings_WhenColorModeChanged_ShouldUpdateColorMode() {
-        settingsView.colorMode = .light
-        settingsView.tempColorMode = .dark
-        settingsView.saveSettings()
-        XCTAssertEqual(settingsView.colorMode, .dark, "Color mode should be updated to dark after saving settings.")
+        viewModel.tempColorMode = .dark
+        viewModel.saveSettings()
+        XCTAssertEqual(viewModel.tempColorMode, .dark)
     }
 }

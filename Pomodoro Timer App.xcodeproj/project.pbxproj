@@ -22,6 +22,7 @@
 		21258FE92B0B04D900C673D4 /* TimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */; };
 		21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */; };
 		2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2132F33F2B081FBD0012BA04 /* SettingsView.swift */; };
+		21385EC52B14002100D84EB3 /* MockSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21385EC42B14002100D84EB3 /* MockSettingsViewModel.swift */; };
 		21473EC72B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */; };
 		21473EC92B073709002ECDC6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EC82B073709002ECDC6 /* ContentView.swift */; };
 		21473ECB2B07370A002ECDC6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21473ECA2B07370A002ECDC6 /* Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		21258FE82B0B04D900C673D4 /* TimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModelTests.swift; sourceTree = "<group>"; };
 		21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCompletedView.swift; sourceTree = "<group>"; };
 		2132F33F2B081FBD0012BA04 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		21385EC42B14002100D84EB3 /* MockSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingsViewModel.swift; sourceTree = "<group>"; };
 		21473EC32B073709002ECDC6 /* Pomodoro Timer App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pomodoro Timer App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pomodoro_Timer_AppApp.swift; sourceTree = "<group>"; };
 		21473EC82B073709002ECDC6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				211E6FB12B100B1D000E1076 /* MockTimerManager.swift */,
 				2190D6682B12F29200F31BDB /* MockSettingsView.swift */,
 				2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */,
+				21385EC42B14002100D84EB3 /* MockSettingsViewModel.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 				211E6FB02B10089A000E1076 /* SettingsViewTests.swift in Sources */,
 				2190D6722B12F8CD00F31BDB /* MockTimerModel.swift in Sources */,
 				2190D6692B12F29200F31BDB /* MockSettingsView.swift in Sources */,
+				21385EC52B14002100D84EB3 /* MockSettingsViewModel.swift in Sources */,
 				2190D66C2B12F36700F31BDB /* ColorSettings.swift in Sources */,
 				2190D66D2B12F3DB00F31BDB /* DarkLightModeButtonStyle.swift in Sources */,
 			);
