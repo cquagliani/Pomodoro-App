@@ -56,8 +56,18 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "211E6F942B0D7CBB000E1076"
+            BuildableName = "TimerWidgetExtension.appex"
+            BlueprintName = "TimerWidgetExtension"
+            ReferencedContainer = "container:Pomodoro Timer App.xcodeproj">
+         </BuildableReference>
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "21473EC22B073709002ECDC6"
@@ -65,7 +75,7 @@
             BlueprintName = "Pomodoro Timer App"
             ReferencedContainer = "container:Pomodoro Timer App.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCWidgetKind"
