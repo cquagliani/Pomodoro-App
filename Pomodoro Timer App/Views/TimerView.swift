@@ -21,6 +21,7 @@ struct TimerView: View {
             } else {
                 VStack {
                     header
+                    Spacer()
                     timerContainer
                     Spacer()
                     roundsEmojisView
