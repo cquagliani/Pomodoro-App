@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import ActivityKit
+import UIKit
 
 protocol TimerManagerProtocol: ObservableObject {
     var timer: DefaultTimer { get set }
@@ -36,16 +37,19 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
     @Published var currentActivity: Activity<TimerAttributes>? = nil
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
     init(timer: DefaultTimer) {
         self.timer = timer
+        setupLifecycleEventHandling()
     }
 
     func startTimer() {
         isTimerRunning = true
         hasStartedSession = true
+        beginBackgroundTask()
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
@@ -62,6 +66,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
 
     func stopTimer() {
         isTimerRunning = false
+        endBackgroundTask()
         timerSubscription?.cancel()
         
         Task {
@@ -178,5 +183,32 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
 
     private func formatTimeRemaining() -> String {
         return String(format: "%02dm:%02ds", timer.minutes, timer.seconds)
+    }
+    
+    
+    // Functions to persist timer while running in the background
+    private func setupLifecycleEventHandling() {
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.beginBackgroundTask()
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.endBackgroundTask()
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func beginBackgroundTask() {
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
+    }
+
+    private func endBackgroundTask() {
+        UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
     }
 }
