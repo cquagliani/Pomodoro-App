@@ -53,6 +53,7 @@ struct TimerCompletedView: View {
             timerManager.sessionCompleted = false
         }
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
+        .frame(maxWidth: 500)
         .padding(.top, 25)
     }
     
