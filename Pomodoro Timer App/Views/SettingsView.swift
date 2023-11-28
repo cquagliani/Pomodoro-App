@@ -35,8 +35,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section(header: Text("Pomodoro Timer")
-                    .fontDesign(.monospaced)) {
-                    
+                    .font(.timerSubtitle)) {
                     Picker("Focus Session", selection: $tempFocusSessionMinutes) {
                         ForEach(1...60, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
@@ -57,7 +56,7 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("Appearance")
-                    .fontDesign(.monospaced)) {
+                    .font(.timerSubtitle)) {
                     HStack {
                         Text("Toggle Color Mode")
                         Spacer()
@@ -69,7 +68,7 @@ struct SettingsView: View {
                 }
                 
                 Section(header: Text("Utilities")
-                    .fontDesign(.monospaced)) {
+                    .font(.timerSubtitle)) {
                     Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
                 }
             }
@@ -78,9 +77,9 @@ struct SettingsView: View {
                     Button("Save") {
                         saveSettings()
                     }
+                    .foregroundColor(Color.blue)
                     .padding()
                 }
-
             }
             .onAppear {
                 if timerManager.isTimerRunning {

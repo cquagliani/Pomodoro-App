@@ -21,17 +21,15 @@ struct TimerCompletedView: View {
                     restartButton
                     goHome
                 }
-
                 Spacer()
             }
-            .padding(.horizontal, 45)
+            .padding(.horizontal, UIConstants.horizontalPadding)
         }
     }
 
     private var emojiView: some View {
         Text("🏆")
-            .imageScale(.medium)
-            .font(.system(size: 60))
+            .font(.system(size: UIConstants.largeEmojiSize))
             .frame(maxWidth: .infinity, alignment: .center)
             .padding()
     }
@@ -41,7 +39,6 @@ struct TimerCompletedView: View {
             .foregroundColor(Color.theme.invertedPrimary)
             .font(.title3)
             .fontWeight(.bold)
-            .fontDesign(.monospaced)
             .multilineTextAlignment(.center)
     }
 
@@ -53,8 +50,8 @@ struct TimerCompletedView: View {
             timerManager.sessionCompleted = false
         }
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
-        .frame(maxWidth: 500)
-        .padding(.top, 25)
+        .frame(maxWidth: UIConstants.maxControlButtonWidth)
+        .padding(.top, UIConstants.buttonTopPadding)
     }
     
     private var goHome: some View {
@@ -64,12 +61,11 @@ struct TimerCompletedView: View {
             timerManager.sessionCompleted = false
         }
         .foregroundColor(Color.blue)
-        .font(.system(size: 16))
-        .fontWeight(.bold)
-        .fontDesign(.monospaced)
-        .padding(.top, 15)
+        .font(.timerSubtitle)
+        .padding(.top, UIConstants.buttonTopPadding)
     }
 }
+
 
 #Preview {
     TimerCompletedView()

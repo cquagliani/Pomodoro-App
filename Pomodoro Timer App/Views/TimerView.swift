@@ -3,7 +3,6 @@
 //  Pomodoro Timer App
 //
 //  Created by Chris Quagliani on 11/16/23.
-//
 
 import SwiftUI
 
@@ -44,7 +43,7 @@ struct TimerView: View {
                 }) {
                     Image(systemName: "line.horizontal.3")
                         .imageScale(.medium)
-                        .font(.system(size: 30))
+                        .font(.largeImageIcon)
                         .padding()
                 }
             }
@@ -61,36 +60,34 @@ struct TimerView: View {
 
         return ZStack {
             Spacer()
-            RoundedRectangle(cornerRadius: 30)
+            RoundedRectangle(cornerRadius: UIConstants.cornerRadius)
                 .foregroundColor(Color.theme.invertedPrimary)
-                .frame(maxWidth: 325, maxHeight: 300)
+                .frame(maxWidth: UIConstants.maxTimerContainerWidth, maxHeight: UIConstants.maxTimerContainerHeight)
             Spacer()
             VStack {
                 Text(timerType)
                     .foregroundColor(Color.theme.timerSubtitle)
-                    .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                    .font(.timerSubtitle)
                 Text(timeString)
                     .foregroundColor(Color.theme.primaryColor)
-                    .font(.system(size: 36, weight: .bold, design: .monospaced))
+                    .font(.timerTitle)
             }
         }
-        .padding(.top, 10)
-        .padding(.horizontal, 45)
+        .padding(.top, UIConstants.topPadding)
+        .padding(.horizontal, UIConstants.horizontalPadding)
     }
-    
-
     
     private var roundsEmojisView: some View {
         VStack {
             Text("Rounds")
                 .foregroundColor(Color.theme.roundSubtitle)
-                .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                .font(.timerSubtitle)
                 .padding(.bottom, 4)
             
             HStack(spacing: 10) {
                 ForEach(emojisForRoundsAndBreaks.indices, id: \.self) { index in
                     Text(emojisForRoundsAndBreaks[index])
-                        .font(.system(size: index % 2 == 0 ? 28 : 16)) // Break session emojis are displayed smaller than focus session emojis
+                        .font(.system(size: index % 2 == 0 ? UIConstants.roundsEmojiSize : UIConstants.breaksEmojiSize))
                 }
             }
         }
@@ -120,22 +117,21 @@ struct TimerView: View {
         }
     }
 
-
     private var controlButtons: some View {
-            HStack {
-                if timerManager.isTimerRunning {
-                    stopButton
-                } else if timerManager.hasStartedSession { // Only display the reset button if the timer session has begun
-                    startButton
-                    resetButton
-                } else {
-                    startButton
-                }
+        HStack {
+            if timerManager.isTimerRunning {
+                stopButton
+            } else if timerManager.hasStartedSession { // Only display the reset button if the timer session has begun
+                startButton
+                resetButton
+            } else {
+                startButton
             }
-            .padding(.horizontal, 45)
-            .padding(.top, 5)
-            .frame(maxWidth: 500)
         }
+        .padding(.horizontal, UIConstants.horizontalPadding)
+        .padding(.top, 5)
+        .frame(maxWidth: UIConstants.maxControlButtonWidth)
+    }
 
     private var startButton: some View {
         let label = timerManager.hasStartedSession ? "Resume" : "Start"
@@ -160,3 +156,4 @@ struct TimerView: View {
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
     }
 }
+
