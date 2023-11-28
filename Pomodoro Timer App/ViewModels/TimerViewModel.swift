@@ -10,25 +10,8 @@ import Combine
 import ActivityKit
 import UIKit
 
-protocol TimerManagerProtocol: ObservableObject {
-    var timer: DefaultTimer { get set }
-    var completedRounds: Int { get set }
-    var completedBreaks: Int { get set }
-    var isTimerRunning: Bool { get set }
-    var hasStartedSession: Bool { get set }
-    var hideTimerButtons: Bool { get set }
-
-    func startTimer()
-    func stopTimer()
-    func resetTimer()
-    func tickTimer()
-    func processRoundCompletion()
-    func resetTimerForNextRound()
-    func resetTimerForBreak()
-    func resetTimerForLongBreak()
-}
-
 class TimerManager: TimerManagerProtocol, ObservableObject {
+    
     @Published var timer: DefaultTimer
     @Published var completedRounds = 0
     @Published var completedBreaks = 0
