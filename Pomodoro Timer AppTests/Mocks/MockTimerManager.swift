@@ -5,8 +5,15 @@
 //  Created by Chris Quagliani on 11/23/23.
 //
 
+import ActivityKit
+import Combine
 import XCTest
 @testable import Pomodoro_Timer_App
+
+enum MockError: Error {
+    case testError
+}
+
 
 class MockTimerManager: ObservableObject {
     var timer: MockDefaultTimer
@@ -25,6 +32,18 @@ class MockTimerManager: ObservableObject {
     var resetTimerCalled = false
     var startTimerCalled = false
     var stopTimerCalled = false
+    
+    @Published var currentActivity: Activity<TimerAttributes>? = nil
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+    var timerSubscription: AnyCancellable?
+    
+    var startLiveActivityCalled = false
+    var startLiveActivityShouldThrowError = false
+    var updateLiveActivityCalled = false
+    var updateLiveActivityShouldThrowError = false
+    var updateLiveActivityCallCount = 0
+    var endLiveActivityCalled = false
+    var endLiveActivityShouldThrowError = false
 
     init(timer: MockDefaultTimer) {
         self.timer = timer
@@ -106,5 +125,29 @@ class MockTimerManager: ObservableObject {
         timer.minutes = timer.longBreakMinutes
         timer.seconds = timer.longBreakSeconds
     }
+    
+    func startLiveActivity() async throws {
+        startLiveActivityCalled = true
 
+        if startLiveActivityShouldThrowError {
+            throw MockError.testError
+        }
+    }
+    
+    func updateLiveActivity() async throws {
+        updateLiveActivityCalled = true
+        updateLiveActivityCallCount += 1
+        
+        if updateLiveActivityShouldThrowError {
+            throw MockError.testError
+        }
+    }
+    
+    func endLiveActivity() async throws {
+        endLiveActivityCalled = true
+        
+        if endLiveActivityShouldThrowError {
+            throw MockError.testError
+        }
+    }
 }

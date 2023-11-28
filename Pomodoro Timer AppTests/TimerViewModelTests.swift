@@ -112,4 +112,76 @@ final class TimerViewModelTests: XCTestCase {
         XCTAssertEqual(mockTimerManager.timer.minutes, mockTimer.originalLongBreakMinutes, "Timer minutes should reset to long break time")
         XCTAssertEqual(mockTimerManager.timer.seconds, mockTimer.originalLongBreakSeconds, "Timer seconds should reset to long break time")
     }
+    
+    func testStartLiveActivity() async throws {
+        let mockTimer = MockDefaultTimer()
+        let mockTimerManager = MockTimerManager(timer: mockTimer)
+
+        XCTAssertFalse(mockTimerManager.startLiveActivityCalled, "startLiveActivity should not be called initially")
+
+        try await mockTimerManager.startLiveActivity()
+
+        XCTAssertTrue(mockTimerManager.startLiveActivityCalled, "startLiveActivity should be called after execution")
+
+        // Testing Error Scenario
+        mockTimerManager.startLiveActivityShouldThrowError = true
+
+        do {
+            try await mockTimerManager.startLiveActivity()
+            XCTFail("startLiveActivity should have thrown an error")
+        } catch MockError.testError {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testUpdateLiveActivity() async throws {
+        let mockTimer = MockDefaultTimer()
+        let mockTimerManager = MockTimerManager(timer: mockTimer)
+
+        XCTAssertEqual(mockTimerManager.updateLiveActivityCallCount, 0, "updateLiveActivity should not be called initially")
+
+        try await mockTimerManager.updateLiveActivity()
+
+        XCTAssertTrue(mockTimerManager.updateLiveActivityCalled, "updateLiveActivity should be called after execution")
+        XCTAssertEqual(mockTimerManager.updateLiveActivityCallCount, 1, "updateLiveActivity call count should be incremented")
+
+        // Testing Error Scenario
+        mockTimerManager.updateLiveActivityShouldThrowError = true
+
+        do {
+            try await mockTimerManager.updateLiveActivity()
+            XCTFail("updateLiveActivity should have thrown an error")
+        } catch MockError.testError {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testEndLiveActivity() async throws {
+        let mockTimer = MockDefaultTimer()
+        let mockTimerManager = MockTimerManager(timer: mockTimer)
+
+        XCTAssertFalse(mockTimerManager.endLiveActivityCalled, "endLiveActivity should not be called initially")
+
+        try await mockTimerManager.endLiveActivity()
+
+        XCTAssertTrue(mockTimerManager.endLiveActivityCalled, "endLiveActivity should be called after execution")
+
+        // Testing Error Scenario
+        mockTimerManager.endLiveActivityShouldThrowError = true
+
+        do {
+            try await mockTimerManager.endLiveActivity()
+            XCTFail("endLiveActivity should have thrown an error")
+        } catch MockError.testError {
+            // Expected error
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+
 }
