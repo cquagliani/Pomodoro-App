@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		210841B32B157B0600A6BDDC /* TimerManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B22B157B0600A6BDDC /* TimerManagerProtocol.swift */; };
+		210841B52B157BBE00A6BDDC /* TimerActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */; };
+		210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */; };
 		211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
 		211E6F982B0D7CBB000E1076 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F972B0D7CBB000E1076 /* WidgetKit.framework */; };
 		211E6F9A2B0D7CBB000E1076 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F992B0D7CBB000E1076 /* SwiftUI.framework */; };
@@ -32,7 +34,7 @@
 		21473EE42B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EE32B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift */; };
 		21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF02B073E2A002ECDC6 /* TimerView.swift */; };
 		21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF72B0747AB002ECDC6 /* TimerModel.swift */; };
-		21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */; };
+		21473EFA2B0747F8002ECDC6 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EF92B0747F8002ECDC6 /* TimerManager.swift */; };
 		21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */; };
 		2190D6692B12F29200F31BDB /* MockSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2190D6682B12F29200F31BDB /* MockSettingsView.swift */; };
 		2190D66C2B12F36700F31BDB /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
@@ -80,6 +82,8 @@
 
 /* Begin PBXFileReference section */
 		210841B22B157B0600A6BDDC /* TimerManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerProtocol.swift; sourceTree = "<group>"; };
+		210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityManager.swift; sourceTree = "<group>"; };
+		210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkLightModeButtonStyle.swift; sourceTree = "<group>"; };
 		211E6F952B0D7CBB000E1076 /* TimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		211E6F972B0D7CBB000E1076 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -107,7 +111,7 @@
 		21473EE32B07370A002ECDC6 /* Pomodoro_Timer_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pomodoro_Timer_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		21473EF02B073E2A002ECDC6 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		21473EF72B0747AB002ECDC6 /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
-		21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		21473EF92B0747F8002ECDC6 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButtonStyle.swift; sourceTree = "<group>"; };
 		2190D6682B12F29200F31BDB /* MockSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingsView.swift; sourceTree = "<group>"; };
 		2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimerModel.swift; sourceTree = "<group>"; };
@@ -262,8 +266,10 @@
 		21473EF42B07472D002ECDC6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				21473EF92B0747F8002ECDC6 /* TimerViewModel.swift */,
 				210841B22B157B0600A6BDDC /* TimerManagerProtocol.swift */,
+				21473EF92B0747F8002ECDC6 /* TimerManager.swift */,
+				210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */,
+				210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -462,8 +468,9 @@
 			files = (
 				2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */,
 				21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */,
-				21473EFA2B0747F8002ECDC6 /* TimerViewModel.swift in Sources */,
+				21473EFA2B0747F8002ECDC6 /* TimerManager.swift in Sources */,
 				211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */,
+				210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */,
 				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
 				211E6FAB2B0D7D36000E1076 /* TimerAttributes.swift in Sources */,
 				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,
@@ -472,6 +479,7 @@
 				21473EC72B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift in Sources */,
 				21258FAD2B09B01000C673D4 /* ColorSettings.swift in Sources */,
 				21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */,
+				210841B52B157BBE00A6BDDC /* TimerActivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

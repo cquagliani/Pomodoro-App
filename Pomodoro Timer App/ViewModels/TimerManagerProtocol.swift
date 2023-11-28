@@ -23,7 +23,4 @@ protocol TimerManagerProtocol: ObservableObject {
     func resetTimerForNextRound()
     func resetTimerForBreak()
     func resetTimerForLongBreak()
-    func startLiveActivity() async throws
-    func updateLiveActivity() async throws
-    func endLiveActivity() async throws
 }

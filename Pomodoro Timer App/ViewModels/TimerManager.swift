@@ -7,10 +7,12 @@
 
 import SwiftUI
 import Combine
-import ActivityKit
 import UIKit
 
 class TimerManager: TimerManagerProtocol, ObservableObject {
+    private let activityManager = TimerActivityManager()
+    private let backgroundTaskManager = BackgroundTaskManager()
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     
     @Published var timer: DefaultTimer
     @Published var completedRounds = 0
@@ -19,8 +21,6 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var hasStartedSession = false
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
-    @Published var currentActivity: Activity<TimerAttributes>? = nil
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     var isFocusInterval = true
     var timerSubscription: AnyCancellable?
 
@@ -32,28 +32,28 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func startTimer() {
         isTimerRunning = true
         hasStartedSession = true
-        beginBackgroundTask()
+        backgroundTaskManager.beginBackgroundTask()
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
+        activityManager.setTimer(minutes: timer.minutes, seconds: timer.seconds)
         
         Task {
             do {
-                try await startLiveActivity()
+                try await activityManager.startLiveActivity()
             } catch {
                 print("Error starting Live Activity: \(error)")
             }
-            
         }
     }
 
     func stopTimer() {
         isTimerRunning = false
-        endBackgroundTask()
+        backgroundTaskManager.endBackgroundTask()
         timerSubscription?.cancel()
         
         Task {
-            await endLiveActivity()
+            await activityManager.endLiveActivity()
         }
     }
     
@@ -77,10 +77,11 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         } else {
             processRoundCompletion()
         }
+        activityManager.setTimer(minutes: timer.minutes, seconds: timer.seconds)
         
         Task {
             do {
-                try await updateLiveActivity()
+                try await activityManager.updateLiveActivity()
             } catch {
                 print("Error updating Live Activity: \(error)")
             }
@@ -135,63 +136,18 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalLongBreakSeconds
     }
     
-    func startLiveActivity() async throws {
-        let attributes = TimerAttributes()
-        let status = TimerAttributes.TimerStatus(timeRemaining: formatTimeRemaining())
-        let content = ActivityContent(state: status, staleDate: nil)
-
-        let activity = try Activity<TimerAttributes>.request(attributes: attributes, content: content, pushType: nil)
-        DispatchQueue.main.async {
-            self.currentActivity = activity
-        }
-        try await updateLiveActivity()
-    }
-    
-    func updateLiveActivity() async throws {
-        guard let activity = currentActivity else { return }
-        
-        let newState = TimerAttributes.ContentState(timeRemaining: formatTimeRemaining())
-        let updatedContent = ActivityContent(state: newState, staleDate: nil)
-        await activity.update(updatedContent)
-    }
-    
-    func endLiveActivity() async {
-        guard let activity = currentActivity else { return }
-        await activity.end(activity.content, dismissalPolicy: .immediate)
-
-        DispatchQueue.main.async {
-            self.currentActivity = nil
-        }
-    }
-
-    private func formatTimeRemaining() -> String {
-        return String(format: "%02dm:%02ds", timer.minutes, timer.seconds)
-    }
-    
-    
     // Functions to persist timer while running in the background
     private func setupLifecycleEventHandling() {
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.beginBackgroundTask()
+            self?.backgroundTaskManager.beginBackgroundTask()
         }
 
         NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.endBackgroundTask()
+            self?.backgroundTaskManager.endBackgroundTask()
         }
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func beginBackgroundTask() {
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask { [weak self] in
-            self?.endBackgroundTask()
-        }
-    }
-
-    private func endBackgroundTask() {
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        backgroundTaskID = .invalid
     }
 }
