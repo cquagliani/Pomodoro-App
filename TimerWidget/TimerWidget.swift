@@ -13,24 +13,21 @@ struct TimerWidgetView : View {
     let context: ActivityViewContext<TimerAttributes>
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Pomodoro Timer")
-                    .font(.system(size: 16))
-                    .fontWeight(.bold)
-                    .fontDesign(.monospaced)
-                    .foregroundColor(.white).opacity(0.6)
-                
-                Spacer()
-            }
-            .padding(.bottom, 5)
-
+        HStack {
+            Text("Pomodoro Timer")
+                .font(.system(size: 16))
+                .fontWeight(.semibold)
+                .fontDesign(.monospaced)
+                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+            Spacer()
             Text(context.state.timeRemaining)
-                .font(.system(size: 22))
+                .font(.system(size: 28))
                 .fontWeight(.semibold)
                 .fontDesign(.monospaced)
         }
-        .padding()
+        .padding(.horizontal)
+        .padding(.vertical, 25)
+        .activityBackgroundTint(Color.black.opacity(0.5))
     }
 }
 
