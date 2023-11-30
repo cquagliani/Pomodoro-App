@@ -44,23 +44,40 @@ struct TimerWidget: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-
+                    Text("\(context.state.timerType) Timer")
+                        .font(.system(size: 14))
+                        .fontWeight(.semibold)
+                        .fontDesign(.monospaced)
+                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                        .padding(.leading, 3)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-
+                    Text(context.state.timeRemaining)
+                        .font(.system(size: 26))
+                        .fontWeight(.semibold)
+                        .fontDesign(.monospaced)
+                        .padding(.trailing, 3)
                 }
                 DynamicIslandExpandedRegion(.center) {
 
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-
+                    ProgressBar(progress: context.state.progress, nextRoundEmoji: context.state.timerType == "Focus" ? "☕️" : "📚")
+                        .padding(.bottom, 20)
                 }
             } compactLeading: {
-                
+                Text(context.state.timerType == "Focus" ? "☕️" : "📚")
+                    .font(.system(size: 14))
             } compactTrailing: {
-               
+                Text(context.state.timeRemaining)
+                    .font(.system(size: 14))
+                    .fontWeight(.semibold)
+                    .fontDesign(.monospaced)
             } minimal: {
-
+                Text(context.state.timeRemaining)
+                    .font(.system(size: 14))
+                    .fontWeight(.semibold)
+                    .fontDesign(.monospaced)
             }
         }
     }
@@ -80,7 +97,7 @@ struct ProgressBar: View {
                         .cornerRadius(20)
                     
                     Rectangle() // Active progress fill
-                        .frame(width: geometry.size.width * CGFloat(progress), height: 15)
+                        .frame(width: (geometry.size.width - 38) * CGFloat(progress), height: 15) // width is based on screen minus emoji and HStack spacing
                         .foregroundColor(.white)
                         .animation(.linear, value: progress)
                         .clipShape(RoundedRectangle(cornerRadius: 20))
