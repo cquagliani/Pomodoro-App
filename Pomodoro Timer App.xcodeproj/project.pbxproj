@@ -12,6 +12,7 @@
 		210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */; };
 		210841B92B15B92500A6BDDC /* FontStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B82B15B92500A6BDDC /* FontStyles.swift */; };
 		210841BB2B15B97400A6BDDC /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841BA2B15B97400A6BDDC /* UIConstants.swift */; };
+		210841BC2B1821A000A6BDDC /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
 		211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
 		211E6F982B0D7CBB000E1076 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F972B0D7CBB000E1076 /* WidgetKit.framework */; };
 		211E6F9A2B0D7CBB000E1076 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F992B0D7CBB000E1076 /* SwiftUI.framework */; };
@@ -464,6 +465,7 @@
 			files = (
 				211E6F9D2B0D7CBB000E1076 /* TimerWidgetBundle.swift in Sources */,
 				211E6F9F2B0D7CBB000E1076 /* TimerWidget.swift in Sources */,
+				210841BC2B1821A000A6BDDC /* ColorSettings.swift in Sources */,
 				211E6FAD2B0D8F30000E1076 /* TimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

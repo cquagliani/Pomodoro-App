@@ -14,8 +14,9 @@ struct TimerAttributes: ActivityAttributes {
     
     public struct ContentState: Codable, Hashable {
         var timeRemaining: String
-//        var timerType: String
-//        var completedRounds: Int
-//        var completedBreaks: Int
+        var timerType: String
+        var completedRounds: Int
+        var completedBreaks: Int
+        var progress: Float
     }
 }

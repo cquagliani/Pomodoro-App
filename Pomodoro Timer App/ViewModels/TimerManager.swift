@@ -12,7 +12,6 @@ import UIKit
 class TimerManager: TimerManagerProtocol, ObservableObject {
     private let activityManager = TimerActivityManager()
     private let backgroundTaskManager = BackgroundTaskManager()
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     
     @Published var timer: DefaultTimer
     @Published var completedRounds = 0
@@ -21,8 +20,9 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var hasStartedSession = false
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
-    var isFocusInterval = true
+    @Published var isFocusInterval = true
     var timerSubscription: AnyCancellable?
+    private var totalTimeInSeconds: Int = 0
 
     init(timer: DefaultTimer) {
         self.timer = timer
@@ -32,11 +32,19 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func startTimer() {
         isTimerRunning = true
         hasStartedSession = true
+        totalTimeInSeconds = (timer.minutes * 60) + timer.seconds
         backgroundTaskManager.beginBackgroundTask()
         timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
             self?.tickTimer()
         }
-        activityManager.setTimer(minutes: timer.minutes, seconds: timer.seconds)
+        activityManager.setTimer(
+            minutes: timer.minutes,
+            seconds: timer.seconds,
+            progress: 0,
+            timerType: isFocusInterval ? "Focus" : "Break",
+            completedRounds: completedRounds,
+            completedBreaks: completedBreaks
+        )
         
         Task {
             do {
@@ -66,6 +74,15 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalSeconds
         completedRounds = 0
         completedBreaks = 0
+        totalTimeInSeconds = (timer.minutes * 60) + timer.seconds
+        activityManager.setTimer(
+            minutes: timer.minutes,
+            seconds: timer.seconds,
+            progress: 0,
+            timerType: isFocusInterval ? "Focus" : "Break",
+            completedRounds: completedRounds,
+            completedBreaks: completedBreaks
+        )
     }
 
     func tickTimer() {
@@ -77,7 +94,15 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         } else {
             processRoundCompletion()
         }
-        activityManager.setTimer(minutes: timer.minutes, seconds: timer.seconds)
+        let progress = calculateProgress()
+        activityManager.setTimer(
+            minutes: timer.minutes,
+            seconds: timer.seconds,
+            progress: progress,
+            timerType: isFocusInterval ? "Focus" : "Break",
+            completedRounds: completedRounds,
+            completedBreaks: completedBreaks
+        )
         
         Task {
             do {
@@ -86,6 +111,12 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 print("Error updating Live Activity: \(error)")
             }
         }
+    }
+    
+    private func calculateProgress() -> Float {
+        let remainingTimeInSeconds = (timer.minutes * 60) + timer.seconds
+        let progress = Float(totalTimeInSeconds - remainingTimeInSeconds) / Float(totalTimeInSeconds)
+        return max(0.0, min(progress, 1.0))
     }
     
     func processRoundCompletion() {
