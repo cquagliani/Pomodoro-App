@@ -35,7 +35,7 @@ struct TimerCompletedView: View {
     }
 
     private var completionMessage: some View {
-        Text("Way to go, your timer has completed!")
+        Text("Congratulations! You've earned a gold trophy.")
             .foregroundColor(Color.theme.invertedPrimary)
             .font(.title3)
             .fontWeight(.bold)

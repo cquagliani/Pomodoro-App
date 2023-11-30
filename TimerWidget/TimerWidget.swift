@@ -13,6 +13,7 @@ struct TimerWidgetView : View {
     let context: ActivityViewContext<TimerAttributes>
     
     var body: some View {
+        
         VStack {
             HStack {
                 Text("\(context.state.timerType) Timer")
@@ -28,17 +29,20 @@ struct TimerWidgetView : View {
             }
             .activityBackgroundTint(Color.black.opacity(0.6))
             
-            ProgressBar(progress: context.state.progress, nextRoundEmoji: context.state.timerType == "Focus" ? "☕️" : "📚")
+            ProgressBar(progress: context.state.progress, nextRoundEmoji: calculateEmoji(context: context))
                 .padding(.bottom, 20)
         }
         .padding()
     }
+
 }
 
 struct TimerWidget: Widget {
     let kind: String = "TimerWidget"
     
     var body: some WidgetConfiguration {
+        
+        
         ActivityConfiguration(for: TimerAttributes.self) { context in
             TimerWidgetView(context: context)
         } dynamicIsland: { context in
@@ -62,7 +66,7 @@ struct TimerWidget: Widget {
 
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    ProgressBar(progress: context.state.progress, nextRoundEmoji: context.state.timerType == "Focus" ? "☕️" : "📚")
+                    ProgressBar(progress: context.state.progress, nextRoundEmoji: calculateEmoji(context: context))
                         .padding(.bottom, 20)
                 }
             } compactLeading: {
@@ -108,4 +112,16 @@ struct ProgressBar: View {
             }
         }
     }
+}
+
+fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -> String {
+    let calculateEmoji: String
+    
+    if context.state.completedBreaks < 3 {
+        calculateEmoji = context.state.timerType == "Focus" ? "☕️" : "📚"
+    } else {
+        calculateEmoji = context.state.completedRounds == 4 ? "🎉" : "🏆"
+    }
+    
+    return calculateEmoji
 }
