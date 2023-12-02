@@ -11,11 +11,6 @@ import UserNotifications
 class NotificationManager: NSObject, ObservableObject {
     static let shared = NotificationManager()
 
-    override init() {
-        super.init()
-        UNUserNotificationCenter.current().delegate = self
-    }
-
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             print("Permission granted: \(granted)")
@@ -45,33 +40,13 @@ class NotificationManager: NSObject, ObservableObject {
             }
         }
     }
+    
+    func checkNotificationAuthorization(completion: @escaping (Bool) -> Void) {
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                DispatchQueue.main.async {
+                    completion(settings.authorizationStatus == .authorized)
+                }
+            }
+        }
 
-}
-
-// MARK: - UNUserNotificationCenterDelegate
-extension NotificationManager: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound])
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
-    }
-}
-
-// MARK: - UIApplicationDelegate
-extension NotificationManager: UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // Handle device token registration
-    }
-
-    func application(_ application: UIApplication,
-                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // Handle failure
-    }
 }

@@ -125,7 +125,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         // Define notification content
         let notificationTitle: String
         let notificationBody: String
-        let timeInterval: TimeInterval = 0
+        let timeInterval: TimeInterval = 1
 
         if isFocusInterval {
             completedRounds += 1
@@ -143,15 +143,20 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         } else {
             completedBreaks += 1
 
-            notificationTitle = "Break Complete"
-            notificationBody = "Ready to focus? Completed Breaks: \(completedBreaks)"
-
             if completedRounds < timer.rounds {
                 isFocusInterval = true
                 resetTimerForNextRound()
-            } else {
-                // End of the last break
+                
+                notificationTitle = "Break Complete"
+                notificationBody = "Ready to focus? Completed Breaks: \(completedBreaks)"
+                
+            } else { // End of the last break
+                
+                notificationTitle = "Pomodoro Session Complete"
+                notificationBody = "Congrats! You made it to the end of your pomodoro session."
+                
                 hideTimerButtons = true
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
                     self?.sessionCompleted = true
                 }
@@ -166,7 +171,6 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             startTimer()
         }
     }
-
 
     func resetTimerForNextRound() {
         timer.minutes = timer.originalMinutes
