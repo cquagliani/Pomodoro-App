@@ -10,14 +10,23 @@ import SwiftUI
 struct ContentView: View {
     @State private var colorMode: AppColorMode = .system
     @StateObject private var timerManager = TimerManager(
+//        timer: DefaultTimer(
+//            rounds: 4,
+//            minutes: 25,
+//            seconds: 0,
+//            breakMinutes: 5,
+//            breakSeconds: 0,
+//            longBreakMinutes: 30,
+//            longBreakSeconds: 0
+//        )
         timer: DefaultTimer(
             rounds: 4,
-            minutes: 25,
-            seconds: 0,
-            breakMinutes: 5,
-            breakSeconds: 0,
-            longBreakMinutes: 30,
-            longBreakSeconds: 0
+            minutes: 0,
+            seconds: 5,
+            breakMinutes: 0,
+            breakSeconds: 5,
+            longBreakMinutes: 0,
+            longBreakSeconds: 5
         )
     )
     
