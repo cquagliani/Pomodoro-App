@@ -132,7 +132,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             isFocusInterval = false
 
             notificationTitle = "Focus Round Complete"
-            notificationBody = "Time for a break! Completed Rounds: \(completedRounds)"
+            notificationBody = "Time for a break!"
 
             if completedRounds % 4 == 0 {
                 resetTimerForLongBreak()
@@ -148,7 +148,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 resetTimerForNextRound()
                 
                 notificationTitle = "Break Complete"
-                notificationBody = "Ready to focus? Completed Breaks: \(completedBreaks)"
+                notificationBody = "Ready to focus? \(timer.rounds - completedRounds) rounds to go!"
                 
             } else { // End of the last break
                 
