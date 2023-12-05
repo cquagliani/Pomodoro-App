@@ -85,6 +85,8 @@ struct SettingsView: View {
                 }
             }
             .onAppear {
+                
+                checkNotificationPermission()
                 if timerManager.isTimerRunning {
                     isTimerRunningWhenSettingsOpened = true
                     timerManager.stopTimer()
@@ -123,4 +125,12 @@ struct SettingsView: View {
     func toggleColorMode() {
         tempColorMode = (tempColorMode == .light) ? .dark : .light
     }
+    
+    func checkNotificationPermission() {
+        NotificationManager.shared.checkNotificationAuthorization { authorized in
+            self.tempAllowNotifications = authorized
+        }
+    }
+
+
 }
