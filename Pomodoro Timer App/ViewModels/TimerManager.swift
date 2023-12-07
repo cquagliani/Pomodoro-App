@@ -121,11 +121,9 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     
     func processRoundCompletion() {
         stopTimer()
-
-        // Define notification content
+        
         let notificationTitle: String
         let notificationBody: String
-        let timeInterval: TimeInterval = 1
 
         if isFocusInterval {
             completedRounds += 1
@@ -165,7 +163,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         }
 
         // Schedule the notification
-        NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody, timeInterval: timeInterval)
+        NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody)
 
         if !sessionCompleted {
             startTimer()
