@@ -121,31 +121,49 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     
     func processRoundCompletion() {
         stopTimer()
+        
+        let notificationTitle: String
+        let notificationBody: String
 
         if isFocusInterval {
             completedRounds += 1
             isFocusInterval = false
-            
+
+            notificationTitle = "Focus Round Complete"
+            notificationBody = "Time for a break!"
+
             if completedRounds % 4 == 0 {
                 resetTimerForLongBreak()
             } else {
                 resetTimerForBreak()
             }
-            
+
         } else {
             completedBreaks += 1
-            
+
             if completedRounds < timer.rounds {
                 isFocusInterval = true
                 resetTimerForNextRound()
+                
+                notificationTitle = "Break Complete"
+                notificationBody = "Ready to focus? \(timer.rounds - completedRounds) rounds to go!"
+                
             } else { // End of the last break
+                
+                notificationTitle = "Pomodoro Session Complete"
+                notificationBody = "Congrats! You made it to the end of your pomodoro session."
+                
                 hideTimerButtons = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in // Delay execution before setting sessionCompleted so user can see final emoji update
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
                     self?.sessionCompleted = true
                 }
                 return
             }
         }
+
+        // Schedule the notification
+        NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody)
 
         if !sessionCompleted {
             startTimer()

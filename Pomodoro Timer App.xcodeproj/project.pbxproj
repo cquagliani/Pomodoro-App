@@ -13,6 +13,7 @@
 		210841B92B15B92500A6BDDC /* FontStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B82B15B92500A6BDDC /* FontStyles.swift */; };
 		210841BB2B15B97400A6BDDC /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841BA2B15B97400A6BDDC /* UIConstants.swift */; };
 		210841BC2B1821A000A6BDDC /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
+		210841BE2B19C42900A6BDDC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841BD2B19C42900A6BDDC /* NotificationManager.swift */; };
 		211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
 		211E6F982B0D7CBB000E1076 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F972B0D7CBB000E1076 /* WidgetKit.framework */; };
 		211E6F9A2B0D7CBB000E1076 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 211E6F992B0D7CBB000E1076 /* SwiftUI.framework */; };
@@ -89,6 +90,7 @@
 		210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		210841B82B15B92500A6BDDC /* FontStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStyles.swift; sourceTree = "<group>"; };
 		210841BA2B15B97400A6BDDC /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
+		210841BD2B19C42900A6BDDC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkLightModeButtonStyle.swift; sourceTree = "<group>"; };
 		211E6F952B0D7CBB000E1076 /* TimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		211E6F972B0D7CBB000E1076 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
@@ -275,6 +277,7 @@
 				21473EF92B0747F8002ECDC6 /* TimerManager.swift */,
 				210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */,
 				210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */,
+				210841BD2B19C42900A6BDDC /* NotificationManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */,
+				210841BE2B19C42900A6BDDC /* NotificationManager.swift in Sources */,
 				21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */,
 				21473EFA2B0747F8002ECDC6 /* TimerManager.swift in Sources */,
 				211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */,

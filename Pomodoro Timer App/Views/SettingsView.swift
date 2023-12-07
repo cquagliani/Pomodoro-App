@@ -19,6 +19,7 @@ struct SettingsView: View {
     @State var tempShortBreakMinutes: Int
     @State var tempLongBreakMinutes: Int
     @State var tempPreventDisplaySleep: Bool
+    @State var tempAllowNotifications: Bool
     @State var tempColorMode: AppColorMode
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
@@ -29,6 +30,7 @@ struct SettingsView: View {
         self._tempLongBreakMinutes = State(initialValue: timerManager.timer.originalLongBreakMinutes)
         self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
         self._tempColorMode = State(initialValue: colorMode.wrappedValue)
+        self._tempAllowNotifications = State(initialValue: false)
     }
 
     var body: some View {
@@ -69,6 +71,7 @@ struct SettingsView: View {
                 
                 Section(header: Text("Utilities")
                     .font(.timerSubtitle)) {
+                    Toggle("Allow Notifications", isOn: $tempAllowNotifications)
                     Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
                 }
             }
@@ -82,6 +85,8 @@ struct SettingsView: View {
                 }
             }
             .onAppear {
+                
+                checkNotificationPermission()
                 if timerManager.isTimerRunning {
                     isTimerRunningWhenSettingsOpened = true
                     timerManager.stopTimer()
@@ -108,6 +113,10 @@ struct SettingsView: View {
             timerManager.resetTimer()
         }
         
+        if tempAllowNotifications {
+            NotificationManager.shared.requestNotificationPermission()
+        }
+        
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
@@ -116,4 +125,12 @@ struct SettingsView: View {
     func toggleColorMode() {
         tempColorMode = (tempColorMode == .light) ? .dark : .light
     }
+    
+    func checkNotificationPermission() {
+        NotificationManager.shared.checkNotificationAuthorization { authorized in
+            self.tempAllowNotifications = authorized
+        }
+    }
+
+
 }
