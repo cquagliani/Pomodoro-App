@@ -42,7 +42,6 @@ struct TimerWidget: Widget {
     
     var body: some WidgetConfiguration {
         
-        
         ActivityConfiguration(for: TimerAttributes.self) { context in
             TimerWidgetView(context: context)
         } dynamicIsland: { context in
