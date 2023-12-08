@@ -102,21 +102,20 @@ struct ProgressBar: View {
 
                 // Active progress fill
                 Rectangle()
-                    .frame(width: max(geometry.size.width * CGFloat(progress), 0), height: 20)
+                    .frame(width: max(geometry.size.width * CGFloat(progress), 30), height: 20)
                     .foregroundColor(.white)
                     .cornerRadius(20)
                     .overlay(
                         Text(nextRoundEmoji)
                             .font(.system(size: 15))
                             .background(Color.white)
-                            .padding(.trailing, 5)
+                            .padding(5)
                             .cornerRadius(20),
                         alignment: .trailing
                     )
                     .animation(.linear, value: progress)
             }
         }
-        .frame(height: 20)
     }
 }
 
@@ -133,18 +132,18 @@ fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -
 }
 
 
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
-    }
-}
-
-extension View {
-    func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners) )
-    }
-}
+//struct RoundedCorner: Shape {
+//    var radius: CGFloat = .infinity
+//    var corners: UIRectCorner = .allCorners
+//    
+//    func path(in rect: CGRect) -> Path {
+//        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+//        return Path(path.cgPath)
+//    }
+//}
+//
+//extension View {
+//    func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+//        clipShape(RoundedCorner(radius: radius, corners: corners) )
+//    }
+//}
