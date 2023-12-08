@@ -69,7 +69,7 @@ struct TimerWidget: Widget {
                         .padding(.bottom, 20)
                 }
             } compactLeading: {
-                Text(context.state.timerType == "Focus" ? "☕️" : "📚")
+                Text(context.state.timerType == "Focus" ? "📚" : "☕️")
                     .font(.system(size: 14))
             } compactTrailing: {
                 Text(context.state.timeRemaining)
@@ -123,7 +123,7 @@ fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -
     let calculateEmoji: String
     
     if context.state.completedBreaks < 3 {
-        calculateEmoji = context.state.timerType == "Focus" ? "☕️" : "📚"
+        calculateEmoji = context.state.timerType == "Focus" ? "📚" : "☕️"
     } else {
         calculateEmoji = context.state.completedRounds == 4 ? "🎉" : "🏆"
     }
