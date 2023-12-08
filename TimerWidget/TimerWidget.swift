@@ -92,24 +92,31 @@ struct ProgressBar: View {
 
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: 10) {
-                ZStack(alignment: .leading) {
-                    Rectangle() // Static progress bar
-                        .frame(height: 15)
-                        .opacity(0.3)
-                        .cornerRadius(20)
-                    
-                    Rectangle() // Active progress fill
-                        .frame(width: (geometry.size.width - 38) * CGFloat(progress), height: 15) // width is based on screen minus emoji and HStack spacing
-                        .foregroundColor(.white)
-                        .animation(.linear, value: progress)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                }
+            ZStack(alignment: .leading) {
                 
-                Text(nextRoundEmoji)
-                    .font(.system(size: 25))
+                // Static progress bar background
+                Rectangle()
+                    .frame(height: 20)
+                    .opacity(0.3)
+                    .cornerRadius(20)
+
+                // Active progress fill
+                Rectangle()
+                    .frame(width: max(geometry.size.width * CGFloat(progress), 0), height: 20)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                    .overlay(
+                        Text(nextRoundEmoji)
+                            .font(.system(size: 15))
+                            .background(Color.white)
+                            .padding(.trailing, 5)
+                            .cornerRadius(20),
+                        alignment: .trailing
+                    )
+                    .animation(.linear, value: progress)
             }
         }
+        .frame(height: 20)
     }
 }
 
@@ -123,4 +130,21 @@ fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -
     }
     
     return calculateEmoji
+}
+
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+extension View {
+    func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners) )
+    }
 }
