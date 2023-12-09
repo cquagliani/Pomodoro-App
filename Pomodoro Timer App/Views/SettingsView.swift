@@ -21,6 +21,8 @@ struct SettingsView: View {
     @State var tempPreventDisplaySleep: Bool
     @State var tempAllowNotifications: Bool
     @State var tempColorMode: AppColorMode
+    @State var focusEmoji: String
+    @State var breakEmoji: String
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
         self._colorMode = colorMode
@@ -31,6 +33,8 @@ struct SettingsView: View {
         self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
         self._tempColorMode = State(initialValue: colorMode.wrappedValue)
         self._tempAllowNotifications = State(initialValue: false)
+        self._focusEmoji = State(initialValue: "📚")
+        self._breakEmoji = State(initialValue: "☕️")
     }
 
     var body: some View {
@@ -66,6 +70,20 @@ struct SettingsView: View {
                             Image(systemName: tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
                         }
                         .buttonStyle(DarkLightModeButtonStyle(colorMode: $tempColorMode))
+                    }
+                        
+                    Picker("Focus Emoji", selection: $focusEmoji) {
+                        let allEmojis = generateEmojiArray()
+                        ForEach(allEmojis, id: \.self) { emoji in
+                            Text(emoji).tag(emoji)
+                        }
+                    }
+                    
+                    Picker("Break Emoji", selection: $breakEmoji) {
+                        let allEmojis = generateEmojiArray()
+                        ForEach(allEmojis, id: \.self) { emoji in
+                            Text(emoji).tag(emoji)
+                        }
                     }
                 }
                 
@@ -130,6 +148,33 @@ struct SettingsView: View {
         NotificationManager.shared.checkNotificationAuthorization { authorized in
             self.tempAllowNotifications = authorized
         }
+    }
+    
+    func generateEmojiArray() -> [String] {
+        var emojis = [String]()
+        let ranges = [
+            0x1F600...0x1F64F, // Emoticons
+            0x1F300...0x1F5FF, // Misc Symbols and Pictographs
+            0x1F680...0x1F6FF, // Transport and Map
+            0x1F700...0x1F77F, // Alchemical Symbols
+            0x2600...0x26FF,   // Misc Symbols
+            0x2700...0x27BF,   // Dingbats
+            0xFE00...0xFE0F,   // Variation Selectors
+            0x1F900...0x1F9FF, // Supplemental Symbols and Pictographs
+            0x1FA70...0x1FAFF  // Symbols and Pictographs Extended-A
+            // Note: This list may not include all emojis and may contain some non-emoji characters.
+        ]
+
+        ranges.forEach { range in
+            for i in range {
+                let c = String(UnicodeScalar(i)!)
+                if c.unicodeScalars.first?.properties.isEmoji ?? false {
+                    emojis.append(c)
+                }
+            }
+        }
+
+        return emojis
     }
 
 
