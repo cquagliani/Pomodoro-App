@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct Pomodoro_Timer_AppApp: App {
-//    @UIApplicationDelegateAdaptor(NotificationManager.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {

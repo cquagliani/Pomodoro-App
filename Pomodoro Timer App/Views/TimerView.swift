@@ -10,6 +10,8 @@ struct TimerView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
     @State var showingSettings = false
+    @State var focusEmoji: String = "📚"
+    @State var breakEmoji: String = "☕️"
 
     var body: some View {
         ZStack {
@@ -48,7 +50,7 @@ struct TimerView: View {
                 }
             }
             .sheet(isPresented: $showingSettings) {
-                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, timerManager: timerManager)
+                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, focusEmoji: $focusEmoji, breakEmoji: $breakEmoji, timerManager: timerManager)
             }
             .foregroundColor(Color.theme.invertedPrimary)
         }
@@ -106,14 +108,14 @@ struct TimerView: View {
     }
 
     private func emojiForRound(index: Int) -> String {
-        return index < timerManager.completedRounds ? "✅" : "📚"
+        return index < timerManager.completedRounds ? "✅" : "\(focusEmoji)"
     }
 
     private func emojiForBreak(index: Int) -> String {
         if (index + 1) % 4 == 0 { // Every 4th break is a long break
             return index < timerManager.completedBreaks ? "🎉" : "🏆"
         } else {
-            return index < timerManager.completedBreaks ? "✔️" : "☕️"
+            return index < timerManager.completedBreaks ? "✔️" : "\(breakEmoji)"
         }
     }
 

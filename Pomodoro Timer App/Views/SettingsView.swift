@@ -11,6 +11,8 @@ struct SettingsView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
     @Binding var showingSettings: Bool
+    @Binding var focusEmoji: String
+    @Binding var breakEmoji: String
     @State private var isTimerRunningWhenSettingsOpened = false
     @State private var preventDisplaySleep = false
 
@@ -21,21 +23,20 @@ struct SettingsView: View {
     @State var tempPreventDisplaySleep: Bool
     @State var tempAllowNotifications: Bool
     @State var tempColorMode: AppColorMode
-    @State var focusEmoji: String
-    @State var breakEmoji: String
 
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
+    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
         self._colorMode = colorMode
         self._showingSettings = showingSettings
+        self._focusEmoji = focusEmoji
+        self._breakEmoji = breakEmoji
         self._tempFocusSessionMinutes = State(initialValue: timerManager.timer.originalMinutes)
         self._tempShortBreakMinutes = State(initialValue: timerManager.timer.originalBreakMinutes)
         self._tempLongBreakMinutes = State(initialValue: timerManager.timer.originalLongBreakMinutes)
         self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
         self._tempColorMode = State(initialValue: colorMode.wrappedValue)
         self._tempAllowNotifications = State(initialValue: false)
-        self._focusEmoji = State(initialValue: "📚")
-        self._breakEmoji = State(initialValue: "☕️")
     }
+
 
     var body: some View {
         let allEmojis = EmojiGenerator.shared.generateEmojiArray()
