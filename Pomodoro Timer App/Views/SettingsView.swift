@@ -38,6 +38,7 @@ struct SettingsView: View {
     }
 
     var body: some View {
+        let allEmojis = EmojiGenerator.shared.generateEmojiArray()
         NavigationView {
             Form {
                 Section(header: Text("Pomodoro Timer")
@@ -73,14 +74,12 @@ struct SettingsView: View {
                     }
                         
                     Picker("Focus Emoji", selection: $focusEmoji) {
-                        let allEmojis = generateEmojiArray()
                         ForEach(allEmojis, id: \.self) { emoji in
                             Text(emoji).tag(emoji)
                         }
                     }
                     
                     Picker("Break Emoji", selection: $breakEmoji) {
-                        let allEmojis = generateEmojiArray()
                         ForEach(allEmojis, id: \.self) { emoji in
                             Text(emoji).tag(emoji)
                         }
@@ -149,8 +148,19 @@ struct SettingsView: View {
             self.tempAllowNotifications = authorized
         }
     }
-    
+}
+
+class EmojiGenerator {
+    static let shared = EmojiGenerator()
+    private var emojiArray: [String]?
+
+    private init() {}
+
     func generateEmojiArray() -> [String] {
+        if let cachedArray = emojiArray { // Return the cached array if it's already generated
+            return cachedArray
+        }
+
         var emojis = [String]()
         let ranges = [
             0x1F600...0x1F64F, // Emoticons
@@ -162,7 +172,6 @@ struct SettingsView: View {
             0xFE00...0xFE0F,   // Variation Selectors
             0x1F900...0x1F9FF, // Supplemental Symbols and Pictographs
             0x1FA70...0x1FAFF  // Symbols and Pictographs Extended-A
-            // Note: This list may not include all emojis and may contain some non-emoji characters.
         ]
 
         ranges.forEach { range in
@@ -174,8 +183,9 @@ struct SettingsView: View {
             }
         }
 
+        // Cache the generated array for future use
+        emojiArray = emojis
+
         return emojis
     }
-
-
 }
