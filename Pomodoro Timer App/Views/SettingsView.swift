@@ -8,35 +8,24 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @ObservedObject var viewModel: SettingsViewModel
     @EnvironmentObject var timerManager: TimerManager
+    
     @Binding var colorMode: AppColorMode
     @Binding var showingSettings: Bool
     @Binding var focusEmoji: String
     @Binding var breakEmoji: String
+    
     @State private var isTimerRunningWhenSettingsOpened = false
-    @State private var preventDisplaySleep = false
     @State var showingFocusEmojiGrid = false
     @State var showingBreakEmojiGrid = false
 
-    // Temporary state variables to store changed variables before save button is pressed
-    @State var tempFocusSessionMinutes: Int
-    @State var tempShortBreakMinutes: Int
-    @State var tempLongBreakMinutes: Int
-    @State var tempPreventDisplaySleep: Bool
-    @State var tempAllowNotifications: Bool
-    @State var tempColorMode: AppColorMode
-
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
+        self.viewModel = SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, timerManager: timerManager)
         self._colorMode = colorMode
         self._showingSettings = showingSettings
         self._focusEmoji = focusEmoji
         self._breakEmoji = breakEmoji
-        self._tempFocusSessionMinutes = State(initialValue: timerManager.timer.originalMinutes)
-        self._tempShortBreakMinutes = State(initialValue: timerManager.timer.originalBreakMinutes)
-        self._tempLongBreakMinutes = State(initialValue: timerManager.timer.originalLongBreakMinutes)
-        self._tempPreventDisplaySleep = State(initialValue: UIApplication.shared.isIdleTimerDisabled)
-        self._tempColorMode = State(initialValue: colorMode.wrappedValue)
-        self._tempAllowNotifications = State(initialValue: false)
     }
 
     var body: some View {
@@ -44,19 +33,19 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Pomodoro Timer")
                     .font(.timerSubtitle)) {
-                    Picker("Focus Session", selection: $tempFocusSessionMinutes) {
+                        Picker("Focus Session", selection: $viewModel.tempFocusSessionMinutes) {
                         ForEach(1...60, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
 
-                    Picker("Short Break", selection: $tempShortBreakMinutes) {
+                        Picker("Short Break", selection: $viewModel.tempShortBreakMinutes) {
                         ForEach(1...20, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
                     }
                     
-                    Picker("Long Break", selection: $tempLongBreakMinutes) {
+                        Picker("Long Break", selection: $viewModel.tempLongBreakMinutes) {
                         ForEach(1...45, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
                         }
@@ -64,16 +53,16 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("Appearance")
-                    .font(.timerSubtitle)) 
+                    .font(.timerSubtitle))
                 {
         
                     HStack {
                         Text("Toggle Color Mode")
                         Spacer()
-                        Button(action: toggleColorMode) {
-                            Image(systemName: tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
+                        Button(action: viewModel.toggleColorMode) {
+                            Image(systemName: viewModel.tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
                         }
-                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $tempColorMode))
+                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $viewModel.tempColorMode))
                     }
                         
                     Button(action: { showingFocusEmojiGrid.toggle() }) {
@@ -99,25 +88,24 @@ struct SettingsView: View {
                     }
 
                 }
-                
+
                 Section(header: Text("Utilities")
                     .font(.timerSubtitle)) {
-                    Toggle("Allow Notifications", isOn: $tempAllowNotifications)
-                    Toggle("Prevent Display Going to Sleep", isOn: $tempPreventDisplaySleep)
+                    Toggle("Allow Notifications", isOn: $viewModel.tempAllowNotifications)
+                    Toggle("Prevent Display Going to Sleep", isOn: $viewModel.tempPreventDisplaySleep)
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        saveSettings()
+                        viewModel.saveSettings()
                     }
                     .foregroundColor(Color.blue)
                     .padding()
                 }
             }
             .onAppear {
-                
-                checkNotificationPermission()
+                viewModel.checkNotificationPermission()
                 if timerManager.isTimerRunning {
                     isTimerRunningWhenSettingsOpened = true
                     timerManager.stopTimer()
@@ -129,6 +117,6 @@ struct SettingsView: View {
                 }
             }
         }
-        .modifier(ColorModeViewModifier(mode: tempColorMode))
+        .modifier(ColorModeViewModifier(mode: viewModel.tempColorMode))
     }
 }
