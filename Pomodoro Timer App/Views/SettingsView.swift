@@ -21,7 +21,7 @@ struct SettingsView: View {
     @State var showingBreakEmojiGrid = false
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
-        self.viewModel = SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, timerManager: timerManager)
+        self.viewModel = SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, focusEmoji: focusEmoji, breakEmoji: breakEmoji, timerManager: timerManager)
         self._colorMode = colorMode
         self._showingSettings = showingSettings
         self._focusEmoji = focusEmoji

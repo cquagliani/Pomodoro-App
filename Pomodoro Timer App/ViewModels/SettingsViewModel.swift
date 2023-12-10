@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import Foundation
 
 class SettingsViewModel: ObservableObject {
     @Binding var colorMode: AppColorMode
     @Binding var showingSettings: Bool
+    
+    @Binding var focusEmoji: String
+    @Binding var breakEmoji: String
     
     @Published var tempFocusSessionMinutes: Int
     @Published var tempShortBreakMinutes: Int
@@ -19,10 +23,15 @@ class SettingsViewModel: ObservableObject {
     @Published var tempColorMode: AppColorMode
 
     private var timerManager: TimerManager
+    
+    // Shared UserDefaults instance
+    let sharedUserDefaults: SharedUserDefaults?
 
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, timerManager: TimerManager) {
+    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
         self._colorMode = colorMode
         self._showingSettings = showingSettings
+        self._focusEmoji = focusEmoji
+        self._breakEmoji = breakEmoji
         self.timerManager = timerManager
         self.tempFocusSessionMinutes = timerManager.timer.originalMinutes
         self.tempShortBreakMinutes = timerManager.timer.originalBreakMinutes
@@ -30,6 +39,9 @@ class SettingsViewModel: ObservableObject {
         self.tempPreventDisplaySleep = UIApplication.shared.isIdleTimerDisabled
         self.tempColorMode = colorMode.wrappedValue
         self.tempAllowNotifications = false
+        
+        // Initialize shared UserDefaults
+        self.sharedUserDefaults = SharedUserDefaults()
     }
 
     func saveSettings() {
@@ -51,6 +63,7 @@ class SettingsViewModel: ObservableObject {
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
+        sharedUserDefaults?.saveSettings(minutes: tempFocusSessionMinutes, breakMinutes: tempShortBreakMinutes, longBreakMinutes: tempLongBreakMinutes, focusEmoji: focusEmoji, breakEmoji: breakEmoji, colorMode: colorMode)
     }
 
     
@@ -65,4 +78,3 @@ class SettingsViewModel: ObservableObject {
         }
     }
 }
-

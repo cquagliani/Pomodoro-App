@@ -30,6 +30,8 @@
 		21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */; };
 		212AD68D2B2592DB00C59A7A /* EmojiGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AD68C2B2592DB00C59A7A /* EmojiGridView.swift */; };
 		212AD6912B2594E400C59A7A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AD6902B2594E400C59A7A /* SettingsViewModel.swift */; };
+		212AD6952B2663CD00C59A7A /* SharedUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AD6942B2663CD00C59A7A /* SharedUserDefaults.swift */; };
+		212AD6962B2664AD00C59A7A /* SharedUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212AD6942B2663CD00C59A7A /* SharedUserDefaults.swift */; };
 		2132F3402B081FBD0012BA04 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2132F33F2B081FBD0012BA04 /* SettingsView.swift */; };
 		21385EC52B14002100D84EB3 /* MockSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21385EC42B14002100D84EB3 /* MockSettingsViewModel.swift */; };
 		21473EC72B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21473EC62B073709002ECDC6 /* Pomodoro_Timer_AppApp.swift */; };
@@ -109,6 +111,9 @@
 		21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCompletedView.swift; sourceTree = "<group>"; };
 		212AD68C2B2592DB00C59A7A /* EmojiGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiGridView.swift; sourceTree = "<group>"; };
 		212AD6902B2594E400C59A7A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		212AD6922B26586A00C59A7A /* TimerWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimerWidgetExtension.entitlements; sourceTree = "<group>"; };
+		212AD6932B2658E900C59A7A /* Pomodoro Timer App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pomodoro Timer App.entitlements"; sourceTree = "<group>"; };
+		212AD6942B2663CD00C59A7A /* SharedUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedUserDefaults.swift; sourceTree = "<group>"; };
 		2132F33F2B081FBD0012BA04 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		21385EC42B14002100D84EB3 /* MockSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingsViewModel.swift; sourceTree = "<group>"; };
 		21473EC32B073709002ECDC6 /* Pomodoro Timer App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pomodoro Timer App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +198,7 @@
 		21473EBA2B073709002ECDC6 = {
 			isa = PBXGroup;
 			children = (
+				212AD6922B26586A00C59A7A /* TimerWidgetExtension.entitlements */,
 				21473EC52B073709002ECDC6 /* Pomodoro Timer App */,
 				21473ED62B07370A002ECDC6 /* Pomodoro Timer AppTests */,
 				21473EE02B07370A002ECDC6 /* Pomodoro Timer AppUITests */,
@@ -216,6 +222,7 @@
 		21473EC52B073709002ECDC6 /* Pomodoro Timer App */ = {
 			isa = PBXGroup;
 			children = (
+				212AD6932B2658E900C59A7A /* Pomodoro Timer App.entitlements */,
 				21473EF22B074721002ECDC6 /* Models */,
 				21473EF32B074729002ECDC6 /* Views */,
 				21473EF42B07472D002ECDC6 /* ViewModels */,
@@ -260,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				21473EF72B0747AB002ECDC6 /* TimerModel.swift */,
+				212AD6942B2663CD00C59A7A /* SharedUserDefaults.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -476,6 +484,7 @@
 				211E6F9F2B0D7CBB000E1076 /* TimerWidget.swift in Sources */,
 				210841BC2B1821A000A6BDDC /* ColorSettings.swift in Sources */,
 				211E6FAD2B0D8F30000E1076 /* TimerAttributes.swift in Sources */,
+				212AD6962B2664AD00C59A7A /* SharedUserDefaults.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +501,7 @@
 				210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */,
 				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
 				211E6FAB2B0D7D36000E1076 /* TimerAttributes.swift in Sources */,
+				212AD6952B2663CD00C59A7A /* SharedUserDefaults.swift in Sources */,
 				210841BB2B15B97400A6BDDC /* UIConstants.swift in Sources */,
 				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,
 				210841B32B157B0600A6BDDC /* TimerManagerProtocol.swift in Sources */,
@@ -555,6 +565,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TimerWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B6D4WCK28L;
@@ -582,6 +593,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TimerWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = B6D4WCK28L;
@@ -729,6 +741,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Pomodoro Timer App/Pomodoro Timer App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomodoro Timer App/Preview Content\"";
@@ -759,6 +772,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Pomodoro Timer App/Pomodoro Timer App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomodoro Timer App/Preview Content\"";

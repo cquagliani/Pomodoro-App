@@ -13,7 +13,6 @@ struct TimerWidgetView : View {
     let context: ActivityViewContext<TimerAttributes>
     
     var body: some View {
-        
         VStack {
             HStack {
                 Text("\(context.state.timerType) Timer")
@@ -41,8 +40,8 @@ struct TimerWidget: Widget {
     let kind: String = "TimerWidget"
     
     var body: some WidgetConfiguration {
-        
-        ActivityConfiguration(for: TimerAttributes.self) { context in
+
+        return ActivityConfiguration(for: TimerAttributes.self) { context in
             TimerWidgetView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -69,7 +68,7 @@ struct TimerWidget: Widget {
                         .padding(.bottom, 20)
                 }
             } compactLeading: {
-                Text(context.state.timerType == "Focus" ? "📚" : "☕️")
+                Text(calculateEmoji(context: context))
                     .font(.system(size: 14))
             } compactTrailing: {
                 Text(context.state.timeRemaining)
@@ -120,30 +119,14 @@ struct ProgressBar: View {
 }
 
 fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -> String {
-    let calculateEmoji: String
+    let settings = SharedUserDefaults.shared?.getSettings()
     
+    let focusEmoji = settings?.focusEmoji ?? "📚" // Default if not set
+    let breakEmoji = settings?.breakEmoji ?? "☕️" // Default if not set
+
     if context.state.completedBreaks < 3 {
-        calculateEmoji = context.state.timerType == "Focus" ? "📚" : "☕️"
+        return context.state.timerType == "Focus" ? "\(focusEmoji)" : "\(breakEmoji)"
     } else {
-        calculateEmoji = context.state.completedRounds == 4 ? "🎉" : "🏆"
+        return context.state.completedRounds == 4 ? "🎉" : "🏆"
     }
-    
-    return calculateEmoji
 }
-
-
-//struct RoundedCorner: Shape {
-//    var radius: CGFloat = .infinity
-//    var corners: UIRectCorner = .allCorners
-//    
-//    func path(in rect: CGRect) -> Path {
-//        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-//        return Path(path.cgPath)
-//    }
-//}
-//
-//extension View {
-//    func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-//        clipShape(RoundedCorner(radius: radius, corners: corners) )
-//    }
-//}
