@@ -15,6 +15,8 @@ struct SettingsView: View {
     @Binding var breakEmoji: String
     @State private var isTimerRunningWhenSettingsOpened = false
     @State private var preventDisplaySleep = false
+    @State var showingFocusEmojiGrid = false
+    @State var showingBreakEmojiGrid = false
 
     // Temporary state variables to store changed variables before save button is pressed
     @State var tempFocusSessionMinutes: Int
@@ -37,9 +39,7 @@ struct SettingsView: View {
         self._tempAllowNotifications = State(initialValue: false)
     }
 
-
     var body: some View {
-        let allEmojis = EmojiGenerator.shared.generateEmojiArray()
         NavigationView {
             Form {
                 Section(header: Text("Pomodoro Timer")
@@ -64,7 +64,9 @@ struct SettingsView: View {
                 }
 
                 Section(header: Text("Appearance")
-                    .font(.timerSubtitle)) {
+                    .font(.timerSubtitle)) 
+                {
+        
                     HStack {
                         Text("Toggle Color Mode")
                         Spacer()
@@ -74,17 +76,28 @@ struct SettingsView: View {
                         .buttonStyle(DarkLightModeButtonStyle(colorMode: $tempColorMode))
                     }
                         
-                    Picker("Focus Emoji", selection: $focusEmoji) {
-                        ForEach(allEmojis, id: \.self) { emoji in
-                            Text(emoji).tag(emoji)
+                    Button(action: { showingFocusEmojiGrid.toggle() }) {
+                        HStack {
+                            Text("Focus Emoji")
+                            Spacer()
+                            Text(focusEmoji)
                         }
                     }
-                    
-                    Picker("Break Emoji", selection: $breakEmoji) {
-                        ForEach(allEmojis, id: \.self) { emoji in
-                            Text(emoji).tag(emoji)
+                    .sheet(isPresented: $showingFocusEmojiGrid) {
+                        EmojiGridView(emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], selection: $focusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                    }
+                        
+                    Button(action: { showingBreakEmojiGrid.toggle() }) {
+                        HStack {
+                            Text("Break Emoji")
+                            Spacer()
+                            Text(breakEmoji)
                         }
                     }
+                    .sheet(isPresented: $showingBreakEmojiGrid) {
+                        EmojiGridView(emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], selection: $breakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                    }
+
                 }
                 
                 Section(header: Text("Utilities")
@@ -151,42 +164,45 @@ struct SettingsView: View {
     }
 }
 
-class EmojiGenerator {
-    static let shared = EmojiGenerator()
-    private var emojiArray: [String]?
+struct EmojiGridView: View {
+    let emojis: [String]
+    @Binding var selection: String
+    @Binding var showingFocusEmojiGrid: Bool
+    @Binding var showingBreakEmojiGrid: Bool
+    private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
 
-    private init() {}
-
-    func generateEmojiArray() -> [String] {
-        if let cachedArray = emojiArray { // Return the cached array if it's already generated
-            return cachedArray
-        }
-
-        var emojis = [String]()
-        let ranges = [
-            0x1F600...0x1F64F, // Emoticons
-            0x1F300...0x1F5FF, // Misc Symbols and Pictographs
-            0x1F680...0x1F6FF, // Transport and Map
-            0x1F700...0x1F77F, // Alchemical Symbols
-            0x2600...0x26FF,   // Misc Symbols
-            0x2700...0x27BF,   // Dingbats
-            0xFE00...0xFE0F,   // Variation Selectors
-            0x1F900...0x1F9FF, // Supplemental Symbols and Pictographs
-            0x1FA70...0x1FAFF  // Symbols and Pictographs Extended-A
-        ]
-
-        ranges.forEach { range in
-            for i in range {
-                let c = String(UnicodeScalar(i)!)
-                if c.unicodeScalars.first?.properties.isEmoji ?? false {
-                    emojis.append(c)
+    var body: some View {
+        let roundType = showingFocusEmojiGrid == true ? "Focus" : "Break"
+        NavigationView {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(emojis, id: \.self) { emoji in
+                        Button(action: {
+                            self.selection = emoji
+                        }) {
+                            Text(emoji)
+                                .font(.title) // Adjust the font size as necessary
+                                .frame(width: 30, height: 30) // Adjust the frame size as necessary
+                                .padding()
+                                .background(self.selection == emoji ? Color.gray.opacity(0.5) : Color.clear)
+                                .cornerRadius(8)
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationBarTitle(Text("Select \(roundType) Emoji"), displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        showingFocusEmojiGrid = false
+                        showingBreakEmojiGrid = false
+                    }
+                    .foregroundColor(Color/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .padding()
                 }
             }
         }
-
-        // Cache the generated array for future use
-        emojiArray = emojis
-
-        return emojis
     }
 }
+
