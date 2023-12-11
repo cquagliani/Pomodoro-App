@@ -11,10 +11,11 @@ import Foundation
 class SettingsViewModel: ObservableObject {
     @Binding var colorMode: AppColorMode
     @Binding var showingSettings: Bool
-    
     @Binding var focusEmoji: String
     @Binding var breakEmoji: String
     
+    @Published var tempFocusEmoji: String
+    @Published var tempBreakEmoji: String
     @Published var tempFocusSessionMinutes: Int
     @Published var tempShortBreakMinutes: Int
     @Published var tempLongBreakMinutes: Int
@@ -33,6 +34,8 @@ class SettingsViewModel: ObservableObject {
         self._focusEmoji = focusEmoji
         self._breakEmoji = breakEmoji
         self.timerManager = timerManager
+        self.tempFocusEmoji = focusEmoji.wrappedValue
+        self.tempBreakEmoji = breakEmoji.wrappedValue
         self.tempFocusSessionMinutes = timerManager.timer.originalMinutes
         self.tempShortBreakMinutes = timerManager.timer.originalBreakMinutes
         self.tempLongBreakMinutes = timerManager.timer.originalLongBreakMinutes
@@ -64,12 +67,15 @@ class SettingsViewModel: ObservableObject {
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
         
+        focusEmoji = tempFocusEmoji
+        breakEmoji = tempBreakEmoji
+        
         sharedUserDefaults?.saveSettings(
             minutes: tempFocusSessionMinutes,
             breakMinutes: tempShortBreakMinutes,
             longBreakMinutes: tempLongBreakMinutes,
-            focusEmoji: focusEmoji,
-            breakEmoji: breakEmoji,
+            focusEmoji: tempFocusEmoji,
+            breakEmoji: tempBreakEmoji,
             colorMode: colorMode
         )
     }

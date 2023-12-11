@@ -69,22 +69,22 @@ struct SettingsView: View {
                         HStack {
                             Text("Focus Emoji")
                             Spacer()
-                            Text(focusEmoji)
+                            Text(viewModel.tempFocusEmoji)
                         }
                     }
                     .sheet(isPresented: $showingFocusEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $focusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $viewModel.tempFocusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
                     }
                         
                     Button(action: { showingBreakEmojiGrid.toggle() }) {
                         HStack {
                             Text("Break Emoji")
                             Spacer()
-                            Text(breakEmoji)
+                            Text(viewModel.tempBreakEmoji)
                         }
                     }
                     .sheet(isPresented: $showingBreakEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $breakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $viewModel.tempBreakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
                     }
 
                 }
