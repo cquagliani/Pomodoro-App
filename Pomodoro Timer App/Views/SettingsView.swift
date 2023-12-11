@@ -73,7 +73,7 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingFocusEmojiGrid) {
-                        EmojiGridView(emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], selection: $focusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $focusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
                     }
                         
                     Button(action: { showingBreakEmojiGrid.toggle() }) {
@@ -84,7 +84,7 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingBreakEmojiGrid) {
-                        EmojiGridView(emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], selection: $breakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $breakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
                     }
 
                 }

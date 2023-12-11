@@ -63,14 +63,20 @@ class SettingsViewModel: ObservableObject {
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
         colorMode = tempColorMode
         $showingSettings.wrappedValue = false
-        sharedUserDefaults?.saveSettings(minutes: tempFocusSessionMinutes, breakMinutes: tempShortBreakMinutes, longBreakMinutes: tempLongBreakMinutes, focusEmoji: focusEmoji, breakEmoji: breakEmoji, colorMode: colorMode)
+        
+        sharedUserDefaults?.saveSettings(
+            minutes: tempFocusSessionMinutes,
+            breakMinutes: tempShortBreakMinutes,
+            longBreakMinutes: tempLongBreakMinutes,
+            focusEmoji: focusEmoji,
+            breakEmoji: breakEmoji,
+            colorMode: colorMode
+        )
     }
 
-    
     func toggleColorMode() {
         tempColorMode = (tempColorMode == .light) ? .dark : .light
     }
-    
     
     func checkNotificationPermission() {
         NotificationManager.shared.checkNotificationAuthorization { authorized in

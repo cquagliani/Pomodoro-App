@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct EmojiGridView: View {
+    @Binding var colorMode: AppColorMode
     let emojis: [String]
-    @Binding var selection: String
+    @Binding var emojiSelection: String
     @Binding var showingFocusEmojiGrid: Bool
     @Binding var showingBreakEmojiGrid: Bool
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
@@ -17,35 +18,40 @@ struct EmojiGridView: View {
     var body: some View {
         let roundType = showingFocusEmojiGrid == true ? "Focus" : "Break"
         
-        NavigationView {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(emojis, id: \.self) { emoji in
-                        Button(action: {
-                            self.selection = emoji
-                        }) {
-                            Text(emoji)
-                                .font(.title)
-                                .frame(width: 30, height: 30)
-                                .padding()
-                                .background(self.selection == emoji ? Color.gray.opacity(0.5) : Color.clear)
-                                .cornerRadius(8)
+        ZStack {
+            Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
+            
+            NavigationView {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(emojis, id: \.self) { emoji in
+                            Button(action: {
+                                emojiSelection = emoji
+                            }) {
+                                Text(emoji)
+                                    .font(.title)
+                                    .frame(width: 30, height: 30)
+                                    .padding()
+                                    .background(emojiSelection == emoji ? Color.gray.opacity(0.5) : Color.clear)
+                                    .cornerRadius(8)
+                            }
                         }
                     }
-                }
-                .padding()
-            }
-            .navigationBarTitle(Text("Select \(roundType) Emoji"), displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        showingFocusEmojiGrid = false
-                        showingBreakEmojiGrid = false
-                    }
-                    .foregroundColor(Color/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                     .padding()
+                }
+                .navigationBarTitle(Text("Select \(roundType) Emoji"), displayMode: .inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Done") {
+                            showingFocusEmojiGrid = false
+                            showingBreakEmojiGrid = false
+                        }
+                        .foregroundColor(Color/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                        .padding()
+                    }
                 }
             }
         }
+        .modifier(ColorModeViewModifier(mode: colorMode))
     }
 }
