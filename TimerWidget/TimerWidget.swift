@@ -19,7 +19,7 @@ struct TimerWidgetView : View {
                     .font(.system(size: 16))
                     .fontWeight(.semibold)
                     .fontDesign(.monospaced)
-                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                    .opacity(0.8)
                 Spacer()
                 Text(context.state.timeRemaining)
                     .font(.system(size: 28))
@@ -50,7 +50,7 @@ struct TimerWidget: Widget {
                         .font(.system(size: 14))
                         .fontWeight(.semibold)
                         .fontDesign(.monospaced)
-                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                        .opacity(0.8)
                         .padding(.leading, 3)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
@@ -119,10 +119,10 @@ struct ProgressBar: View {
 }
 
 fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -> String {
-    let settings = SharedUserDefaults.shared?.getSettings()
+    let settings = SharedUserDefaults.shared.getSettings()
     
-    let focusEmoji = settings?.focusEmoji ?? "📚" // Default if not set
-    let breakEmoji = settings?.breakEmoji ?? "☕️" // Default if not set
+    let focusEmoji = settings.focusEmoji
+    let breakEmoji = settings.breakEmoji
 
     if context.state.completedBreaks < 3 {
         return context.state.timerType == "Focus" ? "\(focusEmoji)" : "\(breakEmoji)"

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import Combine
-import UIKit
 
 class TimerManager: TimerManagerProtocol, ObservableObject {
     private let activityManager = TimerActivityManager()
@@ -21,12 +19,13 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
     @Published var isFocusInterval = true
-    var timerSubscription: AnyCancellable?
+    private var timerTask: Task<Void, Never>?
+    private var liveActivityTask: Task<Void, Never>?
     private var totalTimeInSeconds: Int = 0
 
     init(timer: DefaultTimer) {
         self.timer = timer
-        setupLifecycleEventHandling()
+        backgroundTaskManager.setupLifecycleObservers()
     }
 
     func startTimer() {
@@ -34,8 +33,15 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         hasStartedSession = true
         totalTimeInSeconds = (timer.minutes * 60) + timer.seconds
         backgroundTaskManager.beginBackgroundTask()
-        timerSubscription = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { [weak self] _ in
-            self?.tickTimer()
+        timerTask?.cancel()
+        timerTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                guard !Task.isCancelled else { break }
+                await MainActor.run {
+                    self?.tickTimer()
+                }
+            }
         }
         activityManager.setTimer(
             minutes: timer.minutes,
@@ -58,7 +64,8 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func stopTimer() {
         isTimerRunning = false
         backgroundTaskManager.endBackgroundTask()
-        timerSubscription?.cancel()
+        timerTask?.cancel()
+        liveActivityTask?.cancel()
         
         Task {
             await activityManager.endLiveActivity()
@@ -68,7 +75,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     func resetTimer() {
         hasStartedSession = false
         isFocusInterval = true
-        timerSubscription?.cancel()
+        timerTask?.cancel()
 
         timer.minutes = timer.originalMinutes
         timer.seconds = timer.originalSeconds
@@ -104,7 +111,8 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             completedBreaks: completedBreaks
         )
         
-        Task {
+        liveActivityTask?.cancel()
+        liveActivityTask = Task {
             do {
                 try await activityManager.updateLiveActivity()
             } catch {
@@ -153,6 +161,8 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 notificationTitle = "Pomodoro Session Complete"
                 notificationBody = "Congrats! You made it to the end of your pomodoro session."
                 
+                NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody)
+                
                 hideTimerButtons = true
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
@@ -185,18 +195,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalLongBreakSeconds
     }
     
-    // Functions to persist timer while running in the background
-    private func setupLifecycleEventHandling() {
-        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.backgroundTaskManager.beginBackgroundTask()
-        }
-
-        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.backgroundTaskManager.endBackgroundTask()
-        }
-    }
-
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        backgroundTaskManager.removeLifecycleObservers()
     }
 }

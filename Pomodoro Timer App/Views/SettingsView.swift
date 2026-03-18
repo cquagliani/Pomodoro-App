@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @StateObject var viewModel: SettingsViewModel
     @EnvironmentObject var timerManager: TimerManager
     
     @Binding var colorMode: AppColorMode
@@ -21,7 +21,7 @@ struct SettingsView: View {
     @State var showingBreakEmojiGrid = false
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
-        self.viewModel = SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, focusEmoji: focusEmoji, breakEmoji: breakEmoji, timerManager: timerManager)
+        self._viewModel = StateObject(wrappedValue: SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, focusEmoji: focusEmoji, breakEmoji: breakEmoji, timerManager: timerManager))
         self._colorMode = colorMode
         self._showingSettings = showingSettings
         self._focusEmoji = focusEmoji
@@ -73,7 +73,7 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingFocusEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $viewModel.tempFocusEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Focus Emoji", emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $viewModel.tempFocusEmoji, isPresented: $showingFocusEmojiGrid)
                     }
                         
                     Button(action: { showingBreakEmojiGrid.toggle() }) {
@@ -84,7 +84,7 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingBreakEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $viewModel.tempBreakEmoji, showingFocusEmojiGrid: $showingFocusEmojiGrid, showingBreakEmojiGrid: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Break Emoji", emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $viewModel.tempBreakEmoji, isPresented: $showingBreakEmojiGrid)
                     }
 
                 }

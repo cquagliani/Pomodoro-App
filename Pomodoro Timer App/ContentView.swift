@@ -22,16 +22,8 @@ struct ContentView: View {
     )
     
     var body: some View {
-        ZStack {
-            Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
-            if timerManager.sessionCompleted {
-                TimerCompletedView()
-                    .environmentObject(timerManager)
-            } else {
-                TimerView(colorMode: $colorMode)
-                    .environmentObject(timerManager)
-            }
-        }
+        TimerView(colorMode: $colorMode)
+            .environmentObject(timerManager)
     }
 }
 

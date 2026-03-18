@@ -80,43 +80,13 @@ struct TimerView: View {
     }
     
     private var roundsEmojisView: some View {
-        VStack {
-            Text("Rounds")
-                .foregroundColor(Color.theme.roundSubtitle)
-                .font(.timerSubtitle)
-                .padding(.bottom, 4)
-            
-            HStack(spacing: 10) {
-                ForEach(emojisForRoundsAndBreaks.indices, id: \.self) { index in
-                    Text(emojisForRoundsAndBreaks[index])
-                        .font(.system(size: index % 2 == 0 ? UIConstants.roundsEmojiSize : UIConstants.breaksEmojiSize))
-                }
-            }
-        }
-        .padding(.top, 16)
-    }
-    
-    private var emojisForRoundsAndBreaks: [String] {
-        var emojis: [String] = []
-
-        for index in 0..<timerManager.timer.rounds {
-            emojis.append(emojiForRound(index: index))
-            emojis.append(emojiForBreak(index: index))
-        }
-
-        return emojis
-    }
-
-    private func emojiForRound(index: Int) -> String {
-        return index < timerManager.completedRounds ? "✅" : "\(focusEmoji)"
-    }
-
-    private func emojiForBreak(index: Int) -> String {
-        if (index + 1) % 4 == 0 { // Every 4th break is a long break
-            return index < timerManager.completedBreaks ? "🎉" : "🏆"
-        } else {
-            return index < timerManager.completedBreaks ? "✔️" : "\(breakEmoji)"
-        }
+        RoundsEmojisView(
+            rounds: timerManager.timer.rounds,
+            completedRounds: timerManager.completedRounds,
+            completedBreaks: timerManager.completedBreaks,
+            focusEmoji: focusEmoji,
+            breakEmoji: breakEmoji
+        )
     }
 
     private var controlButtons: some View {
@@ -156,6 +126,47 @@ struct TimerView: View {
             timerManager.resetTimer()
         }
         .buttonStyle(TimerButtonStyle(foregroundColor: Color.theme.yellowAccent))
+    }
+}
+
+// Extracted to its own view so SwiftUI only re-evaluates when
+// rounds/completedRounds/completedBreaks/emojis actually change,
+// not on every timer tick.
+private struct RoundsEmojisView: View {
+    let rounds: Int
+    let completedRounds: Int
+    let completedBreaks: Int
+    let focusEmoji: String
+    let breakEmoji: String
+
+    var body: some View {
+        VStack {
+            Text("Rounds")
+                .foregroundColor(Color.theme.roundSubtitle)
+                .font(.timerSubtitle)
+                .padding(.bottom, 4)
+
+            HStack(spacing: 10) {
+                ForEach(emojis.indices, id: \.self) { index in
+                    Text(emojis[index])
+                        .font(.system(size: index % 2 == 0 ? UIConstants.roundsEmojiSize : UIConstants.breaksEmojiSize))
+                }
+            }
+        }
+        .padding(.top, 16)
+    }
+
+    private var emojis: [String] {
+        var result: [String] = []
+        for index in 0..<rounds {
+            result.append(index < completedRounds ? "✅" : focusEmoji)
+            if (index + 1) % 4 == 0 {
+                result.append(index < completedBreaks ? "🎉" : "🏆")
+            } else {
+                result.append(index < completedBreaks ? "✔️" : breakEmoji)
+            }
+        }
+        return result
     }
 }
 

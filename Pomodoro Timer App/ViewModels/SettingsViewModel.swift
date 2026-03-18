@@ -26,7 +26,7 @@ class SettingsViewModel: ObservableObject {
     private var timerManager: TimerManager
     
     // Shared UserDefaults instance
-    let sharedUserDefaults: SharedUserDefaults?
+    let sharedUserDefaults: SharedUserDefaults
 
     init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
         self._colorMode = colorMode
@@ -70,7 +70,7 @@ class SettingsViewModel: ObservableObject {
         focusEmoji = tempFocusEmoji
         breakEmoji = tempBreakEmoji
         
-        sharedUserDefaults?.saveSettings(
+        sharedUserDefaults.saveSettings(
             minutes: tempFocusSessionMinutes,
             breakMinutes: tempShortBreakMinutes,
             longBreakMinutes: tempLongBreakMinutes,

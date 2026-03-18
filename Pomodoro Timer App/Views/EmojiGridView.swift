@@ -9,15 +9,13 @@ import SwiftUI
 
 struct EmojiGridView: View {
     @Binding var colorMode: AppColorMode
+    let title: String
     let emojis: [String]
     @Binding var emojiSelection: String
-    @Binding var showingFocusEmojiGrid: Bool
-    @Binding var showingBreakEmojiGrid: Bool
+    @Binding var isPresented: Bool
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
 
     var body: some View {
-        let roundType = showingFocusEmojiGrid == true ? "Focus" : "Break"
-        
         ZStack {
             Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
             
@@ -39,14 +37,13 @@ struct EmojiGridView: View {
                     }
                     .padding()
                 }
-                .navigationBarTitle(Text("Select \(roundType) Emoji"), displayMode: .inline)
+                .navigationBarTitle(Text(title), displayMode: .inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Done") {
-                            showingFocusEmojiGrid = false
-                            showingBreakEmojiGrid = false
+                            isPresented = false
                         }
-                        .foregroundColor(Color/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                        .foregroundColor(.blue)
                         .padding()
                     }
                 }

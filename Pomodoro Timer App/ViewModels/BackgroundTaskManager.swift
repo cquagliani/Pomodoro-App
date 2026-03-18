@@ -20,4 +20,18 @@ class BackgroundTaskManager {
         UIApplication.shared.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
     }
+    
+    func setupLifecycleObservers() {
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.beginBackgroundTask()
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.endBackgroundTask()
+        }
+    }
+    
+    func removeLifecycleObservers() {
+        NotificationCenter.default.removeObserver(self)
+    }
 }

@@ -11,11 +11,8 @@ class SharedUserDefaults {
     static let shared = SharedUserDefaults()
     let userDefaults: UserDefaults
     
-    init?() {
-        guard let userDefaults = UserDefaults(suiteName: "group.com.pomodoro-timer") else {
-            return nil
-        }
-        self.userDefaults = userDefaults
+    init() {
+        self.userDefaults = UserDefaults(suiteName: "group.com.pomodoro-timer") ?? .standard
     }
 
     func saveSettings(minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
@@ -28,9 +25,9 @@ class SharedUserDefaults {
     }
 
     func getSettings() -> (minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
-        let minutes = userDefaults.integer(forKey: "focusSessionMinutes")
-        let breakMinutes = userDefaults.integer(forKey: "shortBreakMinutes")
-        let longBreakMinutes = userDefaults.integer(forKey: "longBreakMinutes")
+        let minutes = userDefaults.object(forKey: "focusSessionMinutes") != nil ? userDefaults.integer(forKey: "focusSessionMinutes") : 25
+        let breakMinutes = userDefaults.object(forKey: "shortBreakMinutes") != nil ? userDefaults.integer(forKey: "shortBreakMinutes") : 5
+        let longBreakMinutes = userDefaults.object(forKey: "longBreakMinutes") != nil ? userDefaults.integer(forKey: "longBreakMinutes") : 30
         let focusEmoji = userDefaults.string(forKey: "focusEmoji") ?? "📚"
         let breakEmoji = userDefaults.string(forKey: "breakEmoji") ?? "☕️"
         let colorModeRawValue = userDefaults.string(forKey: "colorMode") ?? AppColorMode.system.rawValue
