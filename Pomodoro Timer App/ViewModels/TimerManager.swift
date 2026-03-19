@@ -31,6 +31,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     }
 
     func startTimer() {
+        let isResuming = hasStartedSession
         isTimerRunning = true
         hasStartedSession = true
 
@@ -65,11 +66,24 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             completedBreaks: completedBreaks
         )
 
-        Task {
-            do {
-                try await activityManager.startLiveActivity()
-            } catch {
-                print("Error starting Live Activity: \(error)")
+        if isResuming {
+            // Activity already exists — just update it
+            liveActivityTask?.cancel()
+            liveActivityTask = Task {
+                do {
+                    try await activityManager.updateLiveActivity()
+                } catch {
+                    print("Error updating Live Activity: \(error)")
+                }
+            }
+        } else {
+            // First start of session — create the Live Activity
+            Task {
+                do {
+                    try await activityManager.startLiveActivity()
+                } catch {
+                    print("Error starting Live Activity: \(error)")
+                }
             }
         }
     }
@@ -87,15 +101,30 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timerTask?.cancel()
         liveActivityTask?.cancel()
 
-        Task {
-            await activityManager.endLiveActivity()
+        // Update the Live Activity to reflect paused state — don't end it
+        activityManager.setTimer(
+            minutes: timer.minutes,
+            seconds: timer.seconds,
+            progress: calculateProgress(),
+            timerType: isFocusInterval ? "Focus" : "Break",
+            completedRounds: completedRounds,
+            completedBreaks: completedBreaks
+        )
+        liveActivityTask = Task {
+            do {
+                try await activityManager.updateLiveActivity()
+            } catch {
+                print("Error updating Live Activity on pause: \(error)")
+            }
         }
     }
 
     func resetTimer() {
         hasStartedSession = false
+        isTimerRunning = false
         isFocusInterval = true
         timerTask?.cancel()
+        liveActivityTask?.cancel()
         endDate = nil
         pausedRemainingSeconds = 0
 
@@ -112,6 +141,11 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             completedRounds: completedRounds,
             completedBreaks: completedBreaks
         )
+
+        // End the Live Activity when the session is fully reset
+        Task {
+            await activityManager.endLiveActivity()
+        }
     }
 
     func tickTimer() {
@@ -188,6 +222,12 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 notificationBody = "Congrats! You made it to the end of your pomodoro session."
 
                 NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody)
+
+                // End the Live Activity since the full session is complete
+                liveActivityTask?.cancel()
+                Task {
+                    await activityManager.endLiveActivity()
+                }
 
                 hideTimerButtons = true
 
