@@ -33,6 +33,12 @@ struct SettingsView: View {
             Form {
                 Section(header: Text("Pomodoro Timer")
                     .font(.timerSubtitle)) {
+                        Picker("Rounds", selection: $viewModel.tempRounds) {
+                        ForEach(1...10, id: \.self) { round in
+                            Text("\(round)").tag(round)
+                        }
+                    }
+
                         Picker("Focus Session", selection: $viewModel.tempFocusSessionMinutes) {
                         ForEach(1...60, id: \.self) { minute in
                             Text("\(minute) min").tag(minute)
@@ -50,19 +56,21 @@ struct SettingsView: View {
                             Text("\(minute) min").tag(minute)
                         }
                     }
+
+                        Picker("Long Break Every", selection: $viewModel.tempLongBreakInterval) {
+                        ForEach(2...10, id: \.self) { interval in
+                            Text("\(interval) rounds").tag(interval)
+                        }
+                    }
                 }
 
                 Section(header: Text("Appearance")
                     .font(.timerSubtitle))
                 {
-        
-                    HStack {
-                        Text("Toggle Color Mode")
-                        Spacer()
-                        Button(action: viewModel.toggleColorMode) {
-                            Image(systemName: viewModel.tempColorMode == .light ? "moon.stars.fill" : "sun.max.fill")
-                        }
-                        .buttonStyle(DarkLightModeButtonStyle(colorMode: $viewModel.tempColorMode))
+                    Picker("Color Mode", selection: $viewModel.tempColorMode) {
+                        Text("System").tag(AppColorMode.system)
+                        Text("Light").tag(AppColorMode.light)
+                        Text("Dark").tag(AppColorMode.dark)
                     }
                         
                     Button(action: { showingFocusEmojiGrid.toggle() }) {
@@ -73,7 +81,7 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingFocusEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Focus Emoji", emojis: ["📚", "⚡️", "🚀", "🏎️", "🧠", "✍️", "🧐", "🌞"], emojiSelection: $viewModel.tempFocusEmoji, isPresented: $showingFocusEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Focus Emoji", emojiSelection: $viewModel.tempFocusEmoji, isPresented: $showingFocusEmojiGrid)
                     }
                         
                     Button(action: { showingBreakEmojiGrid.toggle() }) {
@@ -84,9 +92,44 @@ struct SettingsView: View {
                         }
                     }
                     .sheet(isPresented: $showingBreakEmojiGrid) {
-                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Break Emoji", emojis: ["☕️", "🎮", "🍪", "🪩", "🏝️", "🤠", "😎", "🌚"], emojiSelection: $viewModel.tempBreakEmoji, isPresented: $showingBreakEmojiGrid)
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Break Emoji", emojiSelection: $viewModel.tempBreakEmoji, isPresented: $showingBreakEmojiGrid)
                     }
 
+                }
+
+                Section(header: Text("Daily Goal")
+                    .font(.timerSubtitle)) {
+                    HStack {
+                        Text("Completed Today")
+                        Spacer()
+                        Text("\(DailyStatsManager.shared.completedRoundsToday) / \(viewModel.tempDailyGoal)")
+                            .foregroundColor(.secondary)
+                    }
+
+                    Picker("Daily Focus Goal", selection: $viewModel.tempDailyGoal) {
+                        ForEach(1...20, id: \.self) { goal in
+                            Text("\(goal) rounds").tag(goal)
+                        }
+                    }
+                }
+
+                Section(header: Text("Auto-Start")
+                    .font(.timerSubtitle)) {
+                    Toggle("Auto-Start Breaks", isOn: $viewModel.tempAutoStartBreaks)
+                    Toggle("Auto-Start Focus Sessions", isOn: $viewModel.tempAutoStartFocus)
+                }
+
+                Section(header: Text("Sound & Haptics")
+                    .font(.timerSubtitle)) {
+                    Picker("Completion Sound", selection: $viewModel.tempCompletionSound) {
+                        ForEach(SoundManager.CompletionSound.allCases, id: \.self) { sound in
+                            Text(sound.rawValue).tag(sound)
+                        }
+                    }
+                    .onChange(of: viewModel.tempCompletionSound) { newSound in
+                        SoundManager.shared.playCompletionSound(newSound)
+                    }
+                    Toggle("Haptic Feedback", isOn: $viewModel.tempHapticFeedback)
                 }
 
                 Section(header: Text("Utilities")
@@ -94,8 +137,41 @@ struct SettingsView: View {
                     Toggle("Allow Notifications", isOn: $viewModel.tempAllowNotifications)
                     Toggle("Prevent Display Going to Sleep", isOn: $viewModel.tempPreventDisplaySleep)
                 }
+
+                Section {
+                    Button("Reset to Defaults") {
+                        viewModel.resetToDefaults()
+                    }
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+
+                Section(header: Text("About")
+                    .font(.timerSubtitle),
+                    footer: Text("Timer settings and emoji preferences are synced to the home screen widget automatically.")
+                        .font(.caption)
+                ) {
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
+                            .foregroundColor(.secondary)
+                    }
+                    HStack {
+                        Text("Build")
+                        Spacer()
+                        Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1")
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        showingSettings = false
+                    }
+                    .foregroundColor(.secondary)
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         viewModel.saveSettings()

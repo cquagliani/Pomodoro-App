@@ -101,7 +101,7 @@ struct ProgressBar: View {
 
                 // Active progress fill
                 Rectangle()
-                    .frame(width: max(geometry.size.width * CGFloat(progress), 30), height: 20)
+                    .frame(width: max(geometry.size.width * CGFloat(progress.isNaN ? 0 : progress), 30), height: 20)
                     .foregroundColor(.white)
                     .cornerRadius(20)
                     .overlay(

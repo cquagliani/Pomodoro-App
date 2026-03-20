@@ -19,6 +19,11 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
     @Published var isFocusInterval = true
+    var autoStartBreaks = true
+    var autoStartFocus = true
+    var completionSound: SoundManager.CompletionSound = .chime
+    var hapticFeedbackEnabled = true
+    var longBreakInterval = 4
     private var timerTask: Task<Void, Never>?
     private var liveActivityTask: Task<Void, Never>?
     private var totalTimeInSeconds: Int = 0
@@ -184,23 +189,30 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         guard totalTimeInSeconds > 0 else { return 0 }
         let remainingTimeInSeconds = (timer.minutes * 60) + timer.seconds
         let progress = Float(totalTimeInSeconds - remainingTimeInSeconds) / Float(totalTimeInSeconds)
-        return max(0.0, min(progress, 1.0))
+        let clamped = max(0.0, min(progress, 1.0))
+        return clamped.isNaN ? 0 : clamped
     }
 
     func processRoundCompletion() {
         stopTimer()
+
+        SoundManager.shared.playCompletionSound(completionSound)
+        if hapticFeedbackEnabled {
+            SoundManager.shared.triggerHaptic()
+        }
 
         let notificationTitle: String
         let notificationBody: String
 
         if isFocusInterval {
             completedRounds += 1
+            DailyStatsManager.shared.recordCompletedRound()
             isFocusInterval = false
 
             notificationTitle = "Focus Round Complete"
             notificationBody = "Time for a break!"
 
-            if completedRounds % 4 == 0 {
+            if longBreakInterval > 0 && completedRounds % longBreakInterval == 0 {
                 resetTimerForLongBreak()
             } else {
                 resetTimerForBreak()
@@ -242,7 +254,10 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         NotificationManager.shared.scheduleNotification(title: notificationTitle, body: notificationBody)
 
         if !sessionCompleted {
-            startTimer()
+            let shouldAutoStart = isFocusInterval ? autoStartFocus : autoStartBreaks
+            if shouldAutoStart {
+                startTimer()
+            }
         }
     }
 

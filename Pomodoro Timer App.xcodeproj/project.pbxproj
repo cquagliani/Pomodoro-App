@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210663DA2F6BA15C0050FE05 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210663D92F6BA15C0050FE05 /* SoundManager.swift */; };
+		210663DE2F6BA27D0050FE05 /* DailyStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210663DD2F6BA27D0050FE05 /* DailyStatsManager.swift */; };
+		210663E02F6BA8C90050FE05 /* EmojiKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210663DF2F6BA8C90050FE05 /* EmojiKeywords.swift */; };
+		210663E12F6BA8C90050FE05 /* EmojiKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210663DF2F6BA8C90050FE05 /* EmojiKeywords.swift */; };
 		210841B32B157B0600A6BDDC /* TimerManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B22B157B0600A6BDDC /* TimerManagerProtocol.swift */; };
 		210841B52B157BBE00A6BDDC /* TimerActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */; };
 		210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */; };
@@ -89,6 +93,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		210663D92F6BA15C0050FE05 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		210663DD2F6BA27D0050FE05 /* DailyStatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyStatsManager.swift; sourceTree = "<group>"; };
+		210663DF2F6BA8C90050FE05 /* EmojiKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiKeywords.swift; sourceTree = "<group>"; };
 		210841B22B157B0600A6BDDC /* TimerManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerProtocol.swift; sourceTree = "<group>"; };
 		210841B42B157BBE00A6BDDC /* TimerActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityManager.swift; sourceTree = "<group>"; };
 		210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
@@ -268,6 +275,7 @@
 			children = (
 				21473EF72B0747AB002ECDC6 /* TimerModel.swift */,
 				212AD6942B2663CD00C59A7A /* SharedUserDefaults.swift */,
+				210663DF2F6BA8C90050FE05 /* EmojiKeywords.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -292,6 +300,8 @@
 				210841B62B157C5300A6BDDC /* BackgroundTaskManager.swift */,
 				210841BD2B19C42900A6BDDC /* NotificationManager.swift */,
 				212AD6902B2594E400C59A7A /* SettingsViewModel.swift */,
+				210663D92F6BA15C0050FE05 /* SoundManager.swift */,
+				210663DD2F6BA27D0050FE05 /* DailyStatsManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -480,6 +490,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				210663E02F6BA8C90050FE05 /* EmojiKeywords.swift in Sources */,
 				211E6F9D2B0D7CBB000E1076 /* TimerWidgetBundle.swift in Sources */,
 				211E6F9F2B0D7CBB000E1076 /* TimerWidget.swift in Sources */,
 				210841BC2B1821A000A6BDDC /* ColorSettings.swift in Sources */,
@@ -497,11 +508,14 @@
 				21258FEB2B0B120300C673D4 /* TimerCompletedView.swift in Sources */,
 				212AD68D2B2592DB00C59A7A /* EmojiGridView.swift in Sources */,
 				21473EFA2B0747F8002ECDC6 /* TimerManager.swift in Sources */,
+				210663DA2F6BA15C0050FE05 /* SoundManager.swift in Sources */,
 				211E6F5F2B0C3523000E1076 /* DarkLightModeButtonStyle.swift in Sources */,
+				210663E12F6BA8C90050FE05 /* EmojiKeywords.swift in Sources */,
 				210841B72B157C5300A6BDDC /* BackgroundTaskManager.swift in Sources */,
 				21473EF12B073E2A002ECDC6 /* TimerView.swift in Sources */,
 				211E6FAB2B0D7D36000E1076 /* TimerAttributes.swift in Sources */,
 				212AD6952B2663CD00C59A7A /* SharedUserDefaults.swift in Sources */,
+				210663DE2F6BA27D0050FE05 /* DailyStatsManager.swift in Sources */,
 				210841BB2B15B97400A6BDDC /* UIConstants.swift in Sources */,
 				21473EF82B0747AB002ECDC6 /* TimerModel.swift in Sources */,
 				210841B32B157B0600A6BDDC /* TimerManagerProtocol.swift in Sources */,

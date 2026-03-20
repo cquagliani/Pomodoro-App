@@ -15,7 +15,8 @@ class SharedUserDefaults {
         self.userDefaults = UserDefaults(suiteName: "group.com.pomodoro-timer") ?? .standard
     }
 
-    func saveSettings(minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
+    func saveSettings(rounds: Int, minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
+        userDefaults.set(rounds, forKey: "rounds")
         userDefaults.set(minutes, forKey: "focusSessionMinutes")
         userDefaults.set(breakMinutes, forKey: "shortBreakMinutes")
         userDefaults.set(longBreakMinutes, forKey: "longBreakMinutes")
@@ -24,7 +25,8 @@ class SharedUserDefaults {
         userDefaults.set(colorMode.rawValue, forKey: "colorMode")
     }
 
-    func getSettings() -> (minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
+    func getSettings() -> (rounds: Int, minutes: Int, breakMinutes: Int, longBreakMinutes: Int, focusEmoji: String, breakEmoji: String, colorMode: AppColorMode) {
+        let rounds = userDefaults.object(forKey: "rounds") != nil ? userDefaults.integer(forKey: "rounds") : 4
         let minutes = userDefaults.object(forKey: "focusSessionMinutes") != nil ? userDefaults.integer(forKey: "focusSessionMinutes") : 25
         let breakMinutes = userDefaults.object(forKey: "shortBreakMinutes") != nil ? userDefaults.integer(forKey: "shortBreakMinutes") : 5
         let longBreakMinutes = userDefaults.object(forKey: "longBreakMinutes") != nil ? userDefaults.integer(forKey: "longBreakMinutes") : 30
@@ -32,6 +34,6 @@ class SharedUserDefaults {
         let breakEmoji = userDefaults.string(forKey: "breakEmoji") ?? "☕️"
         let colorModeRawValue = userDefaults.string(forKey: "colorMode") ?? AppColorMode.system.rawValue
         let colorMode = AppColorMode(rawValue: colorModeRawValue) ?? .system
-        return (minutes, breakMinutes, longBreakMinutes, focusEmoji, breakEmoji, colorMode)
+        return (rounds, minutes, breakMinutes, longBreakMinutes, focusEmoji, breakEmoji, colorMode)
     }
 }
