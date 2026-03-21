@@ -12,6 +12,7 @@ struct TimerView: View {
     @State var showingSettings = false
     @State var focusEmoji: String = "📚"
     @State var breakEmoji: String = "☕️"
+    @State var longBreakEmoji: String = "🏆"
 
     var body: some View {
         ZStack {
@@ -50,7 +51,7 @@ struct TimerView: View {
                 }
             }
             .sheet(isPresented: $showingSettings) {
-                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, focusEmoji: $focusEmoji, breakEmoji: $breakEmoji, timerManager: timerManager)
+                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, focusEmoji: $focusEmoji, breakEmoji: $breakEmoji, longBreakEmoji: $longBreakEmoji, timerManager: timerManager)
             }
             .foregroundColor(Color.theme.invertedPrimary)
         }
@@ -85,7 +86,8 @@ struct TimerView: View {
             completedRounds: timerManager.completedRounds,
             completedBreaks: timerManager.completedBreaks,
             focusEmoji: focusEmoji,
-            breakEmoji: breakEmoji
+            breakEmoji: breakEmoji,
+            longBreakEmoji: longBreakEmoji
         )
     }
 
@@ -138,6 +140,7 @@ private struct RoundsEmojisView: View {
     let completedBreaks: Int
     let focusEmoji: String
     let breakEmoji: String
+    let longBreakEmoji: String
 
     var body: some View {
         VStack {
@@ -161,7 +164,7 @@ private struct RoundsEmojisView: View {
         for index in 0..<rounds {
             result.append(index < completedRounds ? "✅" : focusEmoji)
             if (index + 1) % 4 == 0 {
-                result.append(index < completedBreaks ? "🎉" : "🏆")
+                result.append(index < completedBreaks ? "🎉" : longBreakEmoji)
             } else {
                 result.append(index < completedBreaks ? "✔️" : breakEmoji)
             }

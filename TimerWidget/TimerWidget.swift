@@ -123,10 +123,11 @@ fileprivate func calculateEmoji(context: ActivityViewContext<TimerAttributes>) -
     
     let focusEmoji = settings.focusEmoji
     let breakEmoji = settings.breakEmoji
+    let longBreakEmoji = settings.longBreakEmoji
 
     if context.state.completedBreaks < 3 {
         return context.state.timerType == "Focus" ? "\(focusEmoji)" : "\(breakEmoji)"
     } else {
-        return context.state.completedRounds == 4 ? "🎉" : "🏆"
+        return context.state.completedRounds == 4 ? "🎉" : longBreakEmoji
     }
 }

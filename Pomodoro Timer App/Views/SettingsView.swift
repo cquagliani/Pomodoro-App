@@ -15,17 +15,21 @@ struct SettingsView: View {
     @Binding var showingSettings: Bool
     @Binding var focusEmoji: String
     @Binding var breakEmoji: String
+    @Binding var longBreakEmoji: String
     
     @State private var isTimerRunningWhenSettingsOpened = false
     @State var showingFocusEmojiGrid = false
     @State var showingBreakEmojiGrid = false
+    @State var showingLongBreakEmojiGrid = false
+    @State private var showingResetConfirmation = false
 
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, timerManager: TimerManager) {
-        self._viewModel = StateObject(wrappedValue: SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, focusEmoji: focusEmoji, breakEmoji: breakEmoji, timerManager: timerManager))
+    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, longBreakEmoji: Binding<String>, timerManager: TimerManager) {
+        self._viewModel = StateObject(wrappedValue: SettingsViewModel(colorMode: colorMode, showingSettings: showingSettings, focusEmoji: focusEmoji, breakEmoji: breakEmoji, longBreakEmoji: longBreakEmoji, timerManager: timerManager))
         self._colorMode = colorMode
         self._showingSettings = showingSettings
         self._focusEmoji = focusEmoji
         self._breakEmoji = breakEmoji
+        self._longBreakEmoji = longBreakEmoji
     }
 
     var body: some View {
@@ -95,6 +99,17 @@ struct SettingsView: View {
                         EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Break Emoji", emojiSelection: $viewModel.tempBreakEmoji, isPresented: $showingBreakEmojiGrid)
                     }
 
+                    Button(action: { showingLongBreakEmojiGrid.toggle() }) {
+                        HStack {
+                            Text("Long Break Emoji")
+                            Spacer()
+                            Text(viewModel.tempLongBreakEmoji)
+                        }
+                    }
+                    .sheet(isPresented: $showingLongBreakEmojiGrid) {
+                        EmojiGridView(colorMode: $viewModel.tempColorMode, title: "Select Long Break Emoji", emojiSelection: $viewModel.tempLongBreakEmoji, isPresented: $showingLongBreakEmojiGrid)
+                    }
+
                 }
 
                 Section(header: Text("Daily Goal")
@@ -140,28 +155,18 @@ struct SettingsView: View {
 
                 Section {
                     Button("Reset to Defaults") {
-                        viewModel.resetToDefaults()
+                        showingResetConfirmation = true
                     }
-                    .foregroundColor(.red)
+                    .foregroundColor(viewModel.isDefaults ? .secondary : .red)
                     .frame(maxWidth: .infinity, alignment: .center)
-                }
-
-                Section(header: Text("About")
-                    .font(.timerSubtitle),
-                    footer: Text("Timer settings and emoji preferences are synced to the home screen widget automatically.")
-                        .font(.caption)
-                ) {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
-                            .foregroundColor(.secondary)
-                    }
-                    HStack {
-                        Text("Build")
-                        Spacer()
-                        Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "1")
-                            .foregroundColor(.secondary)
+                    .disabled(viewModel.isDefaults)
+                    .alert("Reset to Defaults", isPresented: $showingResetConfirmation) {
+                        Button("Cancel", role: .cancel) { }
+                        Button("Reset", role: .destructive) {
+                            viewModel.resetToDefaults()
+                        }
+                    } message: {
+                        Text("Are you sure?")
                     }
                 }
             }
