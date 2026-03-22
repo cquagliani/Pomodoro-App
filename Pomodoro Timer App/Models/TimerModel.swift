@@ -44,21 +44,21 @@ struct DefaultTimer: PomodoroTimer {
     var originalLongBreakMinutes: Int
     var originalLongBreakSeconds: Int
     
-    init(rounds: Int = 4, minutes: Int = 25, seconds: Int = 0, breakMinutes: Int = 5, breakSeconds: Int = 0, longBreakMinutes: Int = 0, longBreakSeconds: Int = 5) {
+    init(rounds: Int = 4, minutes: Int = 25, seconds: Int = 0, breakMinutes: Int = 5, breakSeconds: Int = 0, longBreakMinutes: Int = 30, longBreakSeconds: Int = 0) {
         self.rounds = max(0, min(rounds, 10))
         self.minutes = max(0, min(minutes, 60))
-        self.seconds = max(0, seconds)
+        self.seconds = max(0, min(seconds, 59))
         self.breakMinutes = max(0, min(breakMinutes, 60))
-        self.breakSeconds = max(0, breakSeconds)
+        self.breakSeconds = max(0, min(breakSeconds, 59))
         self.longBreakMinutes = max(0, min(longBreakMinutes, 60))
-        self.longBreakSeconds = max(0, longBreakSeconds)
+        self.longBreakSeconds = max(0, min(longBreakSeconds, 59))
         
         self.originalRounds = max(0, min(rounds, 10))
         self.originalMinutes = max(0, min(minutes, 60))
-        self.originalSeconds = max(0, seconds)
+        self.originalSeconds = max(0, min(seconds, 59))
         self.originalBreakMinutes = max(0, min(breakMinutes, 60))
-        self.originalBreakSeconds = max(0, breakSeconds)
+        self.originalBreakSeconds = max(0, min(breakSeconds, 59))
         self.originalLongBreakMinutes = max(0, min(longBreakMinutes, 60))
-        self.originalLongBreakSeconds = max(0, longBreakSeconds)
+        self.originalLongBreakSeconds = max(0, min(longBreakSeconds, 59))
     }
 }

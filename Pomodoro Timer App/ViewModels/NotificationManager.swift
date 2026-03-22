@@ -5,7 +5,7 @@
 //  Created by Chris Quagliani on 11/30/23.
 //
 
-import UIKit
+import Foundation
 import UserNotifications
 
 class NotificationManager: NSObject, ObservableObject {
@@ -14,14 +14,6 @@ class NotificationManager: NSObject, ObservableObject {
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             print("Permission granted: \(granted)")
-            guard granted else { return }
-            self.registerForPushNotifications()
-        }
-    }
-
-    private func registerForPushNotifications() {
-        DispatchQueue.main.async {
-            UIApplication.shared.registerForRemoteNotifications()
         }
     }
     

@@ -13,7 +13,7 @@ struct Pomodoro_Timer_AppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .defaultAppStorage(UserDefaults(suiteName: "group.com.pomodoro-timer")!)
+                .defaultAppStorage(UserDefaults(suiteName: "group.com.pomodoro-timer") ?? .standard)
         }
     }
 }

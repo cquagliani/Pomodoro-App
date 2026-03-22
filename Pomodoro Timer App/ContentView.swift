@@ -8,30 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var colorMode: AppColorMode = .system
-    @StateObject private var timerManager = TimerManager(
-        timer: DefaultTimer(
-            rounds: 4,
-            minutes: 25,
-            seconds: 0,
-            breakMinutes: 5,
-            breakSeconds: 0,
-            longBreakMinutes: 30,
-            longBreakSeconds: 0
-        )
-    )
-    
+    @State private var colorMode: AppColorMode
+
+    @StateObject private var timerManager: TimerManager
+
+    init() {
+        let settings = SharedUserDefaults.shared.getSettings()
+        _colorMode = State(initialValue: settings.colorMode)
+        _timerManager = StateObject(wrappedValue: TimerManager(
+            timer: DefaultTimer(
+                rounds: settings.rounds,
+                minutes: settings.minutes,
+                seconds: 0,
+                breakMinutes: settings.breakMinutes,
+                breakSeconds: 0,
+                longBreakMinutes: settings.longBreakMinutes,
+                longBreakSeconds: 0
+            )
+        ))
+    }
+
     var body: some View {
-        ZStack {
-            Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
-            if timerManager.sessionCompleted {
-                TimerCompletedView()
-                    .environmentObject(timerManager)
-            } else {
-                TimerView(colorMode: $colorMode)
-                    .environmentObject(timerManager)
-            }
-        }
+        TimerView(colorMode: $colorMode)
+            .environmentObject(timerManager)
     }
 }
 

@@ -6,7 +6,6 @@
 //
 
 import ActivityKit
-import Combine
 import XCTest
 @testable import Pomodoro_Timer_App
 
@@ -35,7 +34,6 @@ class MockTimerManager: ObservableObject {
     
     @Published var currentActivity: Activity<TimerAttributes>? = nil
     private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-    var timerSubscription: AnyCancellable?
     
     var startLiveActivityCalled = false
     var startLiveActivityShouldThrowError = false
@@ -122,8 +120,8 @@ class MockTimerManager: ObservableObject {
     
     func resetTimerForLongBreak() {
         resetTimerForLongBreakCalled = true
-        timer.minutes = timer.longBreakMinutes
-        timer.seconds = timer.longBreakSeconds
+        timer.minutes = timer.originalLongBreakMinutes
+        timer.seconds = timer.originalLongBreakSeconds
     }
     
     func startLiveActivity() async throws {
