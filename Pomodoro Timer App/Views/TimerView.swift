@@ -25,6 +25,7 @@ struct TimerView: View {
                     header
                     Spacer()
                     timerContainer
+                    progressBar
                     Spacer()
                     roundsEmojisView
                     if !timerManager.hideTimerButtons {
@@ -79,7 +80,24 @@ struct TimerView: View {
         .padding(.top, UIConstants.topPadding)
         .padding(.horizontal, UIConstants.horizontalPadding)
     }
-    
+
+    private var progressBar: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(Color.theme.invertedPrimary.opacity(0.3))
+
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(Color.theme.greenAccent)
+                    .frame(width: geometry.size.width * CGFloat(timerManager.progress))
+                    .animation(.linear(duration: 0.3), value: timerManager.progress)
+            }
+        }
+        .frame(maxWidth: UIConstants.maxTimerContainerWidth * 0.8, maxHeight: 6)
+        .padding(.top, 8)
+        .padding(.horizontal, UIConstants.horizontalPadding)
+    }
+
     private var roundsEmojisView: some View {
         RoundsEmojisView(
             rounds: timerManager.timer.rounds,

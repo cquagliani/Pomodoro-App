@@ -22,6 +22,7 @@ class MockTimerManager: ObservableObject {
     var hasStartedSession = false
     var hideTimerButtons = false
     var isFocusInterval = true
+    var progress: Float = 0
     var startTimerCallCount = 0
     var stopTimerCallCount = 0
     var resetTimerCallCount = 0

@@ -14,6 +14,7 @@ protocol TimerManagerProtocol: ObservableObject {
     var isTimerRunning: Bool { get set }
     var hasStartedSession: Bool { get set }
     var hideTimerButtons: Bool { get set }
+    var progress: Float { get set }
 
     func startTimer()
     func stopTimer()

@@ -111,6 +111,24 @@ class SettingsViewModel: ObservableObject {
         )
     }
 
+    var hasChanges: Bool {
+        tempRounds != timerManager.timer.originalRounds ||
+        tempFocusSessionMinutes != timerManager.timer.originalMinutes ||
+        tempShortBreakMinutes != timerManager.timer.originalBreakMinutes ||
+        tempLongBreakMinutes != timerManager.timer.originalLongBreakMinutes ||
+        tempLongBreakInterval != timerManager.longBreakInterval ||
+        tempAutoStartBreaks != timerManager.autoStartBreaks ||
+        tempAutoStartFocus != timerManager.autoStartFocus ||
+        tempCompletionSound != timerManager.completionSound ||
+        tempHapticFeedback != timerManager.hapticFeedbackEnabled ||
+        tempDailyGoal != DailyStatsManager.shared.dailyGoal ||
+        tempPreventDisplaySleep != UIApplication.shared.isIdleTimerDisabled ||
+        tempFocusEmoji != focusEmoji ||
+        tempBreakEmoji != breakEmoji ||
+        tempLongBreakEmoji != longBreakEmoji ||
+        tempColorMode != colorMode
+    }
+
     var isDefaults: Bool {
         tempRounds == 4 &&
         tempFocusSessionMinutes == 25 &&

@@ -19,6 +19,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     @Published var sessionCompleted = false
     @Published var hideTimerButtons = false
     @Published var isFocusInterval = true
+    @Published var progress: Float = 0
     var autoStartBreaks = true
     var autoStartFocus = true
     var completionSound: SoundManager.CompletionSound = .chime
@@ -48,7 +49,9 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         } else {
             remainingSeconds = (timer.minutes * 60) + timer.seconds
         }
-        totalTimeInSeconds = remainingSeconds
+        if !isResuming {
+            totalTimeInSeconds = remainingSeconds
+        }
         endDate = Date.now.addingTimeInterval(TimeInterval(remainingSeconds))
 
         backgroundTaskManager.beginBackgroundTask()
@@ -137,6 +140,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
         timer.seconds = timer.originalSeconds
         completedRounds = 0
         completedBreaks = 0
+        progress = 0
         totalTimeInSeconds = (timer.minutes * 60) + timer.seconds
         activityManager.setTimer(
             minutes: timer.minutes,
@@ -165,7 +169,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
             return
         }
 
-        let progress = calculateProgress()
+        self.progress = calculateProgress()
         activityManager.setTimer(
             minutes: timer.minutes,
             seconds: timer.seconds,
@@ -262,16 +266,19 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
     }
 
     func resetTimerForNextRound() {
+        progress = 0
         timer.minutes = timer.originalMinutes
         timer.seconds = timer.originalSeconds
     }
 
     func resetTimerForBreak() {
+        progress = 0
         timer.minutes = timer.originalBreakMinutes
         timer.seconds = timer.originalBreakSeconds
     }
 
     func resetTimerForLongBreak() {
+        progress = 0
         timer.minutes = timer.originalLongBreakMinutes
         timer.seconds = timer.originalLongBreakSeconds
     }

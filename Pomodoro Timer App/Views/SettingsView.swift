@@ -178,11 +178,13 @@ struct SettingsView: View {
                     .foregroundColor(.secondary)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        viewModel.saveSettings()
+                    if viewModel.hasChanges {
+                        Button("Save") {
+                            viewModel.saveSettings()
+                        }
+                        .foregroundColor(Color.blue)
+                        .padding()
                     }
-                    .foregroundColor(Color.blue)
-                    .padding()
                 }
             }
             .onAppear {
