@@ -9,20 +9,18 @@ import SwiftUI
 struct TimerView: View {
     @EnvironmentObject var timerManager: TimerManager
     @Binding var colorMode: AppColorMode
-    @State var showingSettings = false
-    @State var focusEmoji: String = "📚"
-    @State var breakEmoji: String = "☕️"
-    @State var longBreakEmoji: String = "🏆"
+    @Binding var focusEmoji: String
+    @Binding var breakEmoji: String
+    @Binding var longBreakEmoji: String
 
     var body: some View {
         ZStack {
             Color.theme.primaryColor.edgesIgnoringSafeArea(.all)
-            
+
             if timerManager.sessionCompleted {
                 TimerCompletedView()
             } else {
                 VStack {
-                    header
                     Spacer()
                     timerContainer
                     progressBar
@@ -35,29 +33,8 @@ struct TimerView: View {
                 }
             }
         }
-        .modifier(ColorModeViewModifier(mode: colorMode))
     }
-    
-    private var header: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Button(action: {
-                    self.showingSettings.toggle()
-                }) {
-                    Image(systemName: "line.horizontal.3")
-                        .imageScale(.medium)
-                        .font(.largeImageIcon)
-                        .padding()
-                }
-            }
-            .sheet(isPresented: $showingSettings) {
-                SettingsView(colorMode: $colorMode, showingSettings: $showingSettings, focusEmoji: $focusEmoji, breakEmoji: $breakEmoji, longBreakEmoji: $longBreakEmoji, timerManager: timerManager)
-            }
-            .foregroundColor(Color.theme.invertedPrimary)
-        }
-    }
-    
+
     private var timerContainer: some View {
         let timerType: String = timerManager.isFocusInterval ? "Focus" : "Break"
         let timeString: String = String(format: "%02dm:%02ds", timerManager.timer.minutes, timerManager.timer.seconds)

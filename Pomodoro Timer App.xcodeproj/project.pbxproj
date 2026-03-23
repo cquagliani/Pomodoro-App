@@ -52,6 +52,7 @@
 		2190D66C2B12F36700F31BDB /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21258FAC2B09B01000C673D4 /* ColorSettings.swift */; };
 		2190D66D2B12F3DB00F31BDB /* DarkLightModeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211E6F5E2B0C3523000E1076 /* DarkLightModeButtonStyle.swift */; };
 		2190D6722B12F8CD00F31BDB /* MockTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */; };
+		219A3B082F6FB93F00A222E5 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219A3B072F6FB93F00A222E5 /* MetricsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		21473EFC2B074948002ECDC6 /* TimerButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButtonStyle.swift; sourceTree = "<group>"; };
 		2190D6682B12F29200F31BDB /* MockSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSettingsView.swift; sourceTree = "<group>"; };
 		2190D6712B12F8CD00F31BDB /* MockTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTimerModel.swift; sourceTree = "<group>"; };
+		219A3B072F6FB93F00A222E5 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +289,7 @@
 				2132F33F2B081FBD0012BA04 /* SettingsView.swift */,
 				21258FEA2B0B120300C673D4 /* TimerCompletedView.swift */,
 				212AD68C2B2592DB00C59A7A /* EmojiGridView.swift */,
+				219A3B072F6FB93F00A222E5 /* MetricsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				210841B92B15B92500A6BDDC /* FontStyles.swift in Sources */,
 				21258FAD2B09B01000C673D4 /* ColorSettings.swift in Sources */,
 				21473EFD2B074948002ECDC6 /* TimerButtonStyle.swift in Sources */,
+				219A3B082F6FB93F00A222E5 /* MetricsView.swift in Sources */,
 				210841B52B157BBE00A6BDDC /* TimerActivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

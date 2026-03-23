@@ -20,8 +20,7 @@ class SettingsViewTests: XCTestCase {
         mockTimerManager = MockTimerManager(timer: mockTimer)
 
         let colorModeBinding = Binding.constant(AppColorMode.light)
-        let showingSettingsBinding = Binding.constant(true)
-        viewModel = MockSettingsViewModel(colorMode: colorModeBinding, showingSettings: showingSettingsBinding, mockTimerManager: mockTimerManager)
+        viewModel = MockSettingsViewModel(colorMode: colorModeBinding, mockTimerManager: mockTimerManager)
     }
 
     func testSaveSettings_WhenTimerValuesChanged_ShouldResetTimer() {

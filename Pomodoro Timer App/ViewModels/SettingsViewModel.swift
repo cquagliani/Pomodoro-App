@@ -10,7 +10,6 @@ import Foundation
 
 class SettingsViewModel: ObservableObject {
     @Binding var colorMode: AppColorMode
-    @Binding var showingSettings: Bool
     @Binding var focusEmoji: String
     @Binding var breakEmoji: String
     @Binding var longBreakEmoji: String
@@ -37,9 +36,8 @@ class SettingsViewModel: ObservableObject {
     // Shared UserDefaults instance
     let sharedUserDefaults: SharedUserDefaults
 
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, longBreakEmoji: Binding<String>, timerManager: TimerManager) {
+    init(colorMode: Binding<AppColorMode>, focusEmoji: Binding<String>, breakEmoji: Binding<String>, longBreakEmoji: Binding<String>, timerManager: TimerManager) {
         self._colorMode = colorMode
-        self._showingSettings = showingSettings
         self._focusEmoji = focusEmoji
         self._breakEmoji = breakEmoji
         self._longBreakEmoji = longBreakEmoji
@@ -93,8 +91,7 @@ class SettingsViewModel: ObservableObject {
         
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
         colorMode = tempColorMode
-        $showingSettings.wrappedValue = false
-        
+
         focusEmoji = tempFocusEmoji
         breakEmoji = tempBreakEmoji
         longBreakEmoji = tempLongBreakEmoji

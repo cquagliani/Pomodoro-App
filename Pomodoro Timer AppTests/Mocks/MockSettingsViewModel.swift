@@ -18,9 +18,8 @@ class MockSettingsViewModel: ObservableObject {
 
     public var mockTimerManager: MockTimerManager
     private var originalColorMode: AppColorMode
-    private var showingSettings: Binding<Bool>
 
-    init(colorMode: Binding<AppColorMode>, showingSettings: Binding<Bool>, mockTimerManager: MockTimerManager) {
+    init(colorMode: Binding<AppColorMode>, mockTimerManager: MockTimerManager) {
         self._tempFocusSessionMinutes = Published(initialValue: mockTimerManager.timer.originalMinutes)
         self._tempShortBreakMinutes = Published(initialValue: mockTimerManager.timer.originalBreakMinutes)
         self._tempLongBreakMinutes = Published(initialValue: mockTimerManager.timer.originalLongBreakMinutes)
@@ -29,7 +28,6 @@ class MockSettingsViewModel: ObservableObject {
 
         self.mockTimerManager = mockTimerManager
         self.originalColorMode = colorMode.wrappedValue
-        self.showingSettings = showingSettings
     }
 
     func saveSettings() {
@@ -45,7 +43,6 @@ class MockSettingsViewModel: ObservableObject {
 
         UIApplication.shared.isIdleTimerDisabled = tempPreventDisplaySleep
         originalColorMode = tempColorMode
-        showingSettings.wrappedValue = false
     }
 
     func toggleColorMode() {
