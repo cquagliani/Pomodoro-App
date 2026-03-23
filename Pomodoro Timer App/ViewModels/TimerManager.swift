@@ -233,6 +233,7 @@ class TimerManager: TimerManagerProtocol, ObservableObject {
                 notificationBody = "Ready to focus? \(timer.rounds - completedRounds) rounds to go!"
 
             } else { // End of the last break
+                DailyStatsManager.shared.recordCompletedSeries()
 
                 notificationTitle = "Pomodoro Session Complete"
                 notificationBody = "Congrats! You made it to the end of your pomodoro session."
